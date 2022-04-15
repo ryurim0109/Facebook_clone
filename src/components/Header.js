@@ -55,7 +55,7 @@ const HeaderBox = styled.header`
   justify-content: space-between;
 `;
 const Logo=styled.div`
-    width:10%;
+    width:100px;
     height:56px;
     display:flex;
     align-items:center;
