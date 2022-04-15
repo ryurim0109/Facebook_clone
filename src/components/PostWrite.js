@@ -4,7 +4,7 @@ import { history } from '../redux/configStore';
 
 import styled from 'styled-components';
 import { MainGrid, Image, MainBtn} from '../elements/index';
-// import PostWriteModal from './PostWriteModal';
+import WriteModal from './WriteModal';
 import { FaVideo } from 'react-icons/fa';
 import { MdPhotoLibrary } from 'react-icons/md';
 import { BsFillEmojiLaughingFill } from 'react-icons/bs';
@@ -14,15 +14,18 @@ import defaultUserImage from '../img/기본프로필사진.png';
 const PostWrite = () => {
 //   const dispatch = useDispatch();
 //   const userInfo = useSelector(state => state.user);
-//   const [openModal, setModal] = useState(false);
-//   const modalOpen = () => {
-//     if (!userInfo.is_login) {
-//       window.alert('로그인이 필요합니다!');
-//       history.push('/');
-//     }
-//     dispatch(postCreators.setDetailPostId(null))
-//     setModal(true);
-//   };
+
+const [openModal, setModal] = useState(false);
+const modalOpen = () => {
+  // if (!userInfo.is_login) {
+  //   window.alert('로그인이 필요합니다!');
+  //   history.push('/');
+  // }
+  // dispatch(postCreators.setDetailPostId(null))
+  setModal(true);
+};
+
+  
 
   return (
     <>
@@ -32,13 +35,12 @@ const PostWrite = () => {
             {/* <Image src={userInfo.imageUrl ? userInfo.imageUrl : defaultUserImage} /> */}
             <Image src={defaultUserImage} />
             {/* <MainBtn width='520px' backgroundColor='#eee' color='#111' borderRadius='30px' _onClick={modalOpen}> */}
-            <PostDiv >
+            <PostDiv onClick={modalOpen}>
               {/* <p>{userInfo.firstName ? userInfo.firstName + userInfo.lastName : 'GUEST'}님, 무슨 생각을 하고 계신가요?</p> */}
               김미미님, 무슨 생각을 하고 계신가요?
-            
-            </PostDiv>
-            {/* <PostWriteModal openModal={openModal} setModal={setModal} /> */}
+             </PostDiv>
           </MainGrid>
+          <WriteModal openModal={openModal} setModal={setModal} />
         </MainGrid>
         <MainGrid width='100%' padding="0 20px"  >
           <MainGrid width='100%' height='40px' display='flex' justifyContent='center' 
@@ -76,7 +78,7 @@ const PostWriteWrapper = styled.div`
   }
   overflow: hidden;
 `;
-const PostDiv=styled.div`
+const PostDiv=styled.button`
     width:420px;
     height:40px;
     background-color:#eee;
@@ -85,6 +87,8 @@ const PostDiv=styled.div`
     box-sizing:border-box;
     border-radius:25px;
     cursor:pointer;
+    text-align:left;
+    border:none;
 
     &:hover{
       background-color:#e0e0e0;

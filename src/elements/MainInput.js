@@ -127,6 +127,10 @@ const Textarea = styled.textarea`
   background-image: ${props => props.backgroundImage};
   box-sizing: border-box;
   background-color: ${props => props.backgroundColor};
+  outline:none;
+  border:none;
+  resize: none;
+  overflow:scroll;
 `;
 
 const Input = styled.input`

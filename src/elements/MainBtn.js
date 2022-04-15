@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { BsSearch,BsFillTrashFill,BsPencilSquare } from "react-icons/bs";
+import { BsSearch,BsFillTrashFill,BsPencilSquare,BsImages,BsXLg } from "react-icons/bs";
+
 
 
 const MainBtn =(props) =>{
     const {color,
+        is_close,
         _onClick,
         children,
         margin,
@@ -70,6 +72,15 @@ const MainBtn =(props) =>{
             </React.Fragment>
         )
     }
+    if(is_close){
+        return (
+            <React.Fragment>
+                <EditBox onClick={_onClick}>
+                    <X/>
+                </ EditBox>
+            </React.Fragment>
+        )
+    }
     
 
    
@@ -110,9 +121,8 @@ const ButtonBox = styled.button`
   ${(props) =>
     props.backgroundColor
       ? `background-color:${props.backgroundColor}`
-      : 'background-color: blue'};
+      : 'background-color: #1b74e4'};
   box-sizing: border-box;
-  border-radius: 5px;
   font-weight: bold;
   border: none;
   ${(props) =>
@@ -159,13 +169,18 @@ const Tr=styled(BsFillTrashFill)`
 transform:scale(1.1,1.1);
 color:#606770;
 
-`
+`;
 const Ed=styled(BsPencilSquare)`
 
 transform:scale(1.1,1.1);
 color:#606770;
 
-`
+`;
+const X=styled(BsXLg)`
+    font-size:14px;
+    color:#050505;
+
+`;
 
 
 
