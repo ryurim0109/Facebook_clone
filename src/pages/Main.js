@@ -1,9 +1,13 @@
 import React from 'react';
+import Header from '../components/Header';
+import { MainGrid } from '../elements/index';
 
 const Main =()=>{
     return (
         <>
-          <p>main</p>
+          <MainGrid>
+            <Header />
+          </MainGrid>
         </>
       );
 };
