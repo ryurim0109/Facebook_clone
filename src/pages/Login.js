@@ -11,9 +11,9 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import { createTheme, ThemeProvider  } from '@mui/material/styles';
 import {actionCreators as LoginActions} from '../redux/modules/Login_module'
 import { useDispatch } from 'react-redux';
+import Signup from './Signup';
 
 
 const Login =()=>{
@@ -41,7 +41,11 @@ const Login =()=>{
 
   const login_click = () =>{
     console.log(values)
-    dispatch(LoginActions.postLogin(values))
+    const Login_info = {
+      userEmail:values.id,
+      password :values.password
+    }
+    dispatch(LoginActions.postLogin(Login_info))
   }
 
     return (
@@ -98,13 +102,7 @@ const Login =()=>{
                     <Button variant="text"  sx={{margin:"auto" }}>비밀번호를 잊으셨나요?</Button>
                   </Stack>
                   <hr/>
-                  <Stack spacing={2} direction="row" sx={{margin : '20px'}} >
-                  <ThemeProvider theme={theme}>
-                  <Button variant="contained" sx={{margin:"auto" ,fontWeight:'bold', fontSize: 20}} color="neutral" size='large'>
-                    새 계정 만들기
-                  </Button>
-                  </ThemeProvider>
-                  </Stack>
+                  <Signup />
               </Paper>
             </div>
           </div>
@@ -144,20 +142,4 @@ const LoginDesign = styled.div`
     height : 300px;
   }
 `
-const theme = createTheme({
-  status: {
-    danger: '#e53e3e',
-  },
-  palette: {
-    primary: {
-      main: '#0971f1',
-      darker: '#053e85',
-    },
-    neutral: {
-      main: '#42B72A',
-      contrastText: '#fff',
-    },
-  },
-});
-
 export default Login;
