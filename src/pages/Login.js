@@ -12,9 +12,12 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider  } from '@mui/material/styles';
+import {actionCreators as LoginActions} from '../redux/modules/Login_module'
+import { useDispatch } from 'react-redux';
 
 
 const Login =()=>{
+  const dispatch = useDispatch();
   const [values, setValues] = React.useState({
     id: '',
     password: '',
@@ -37,7 +40,8 @@ const Login =()=>{
   };
 
   const login_click = () =>{
-    console.log( values)
+    console.log(values)
+    dispatch(LoginActions.postLogin(values))
   }
 
     return (
