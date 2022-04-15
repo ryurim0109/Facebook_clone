@@ -30,8 +30,8 @@ const Signup = () => {
 
 	const default_ymd = {
 		year : [...Array(118).keys()].map(key => key + 1905).reverse(),
-		month : [...Array(12).keys()].map(key => key + 1),
-		day : [...Array(31).keys()].map(key => key + 1)
+		month : [...Array(12).keys()].map(key => (key + 1)),
+		day : [...Array(31).keys()].map(key => (key + 1))
 	}
 	const style = {
 		position: 'absolute',
@@ -39,7 +39,7 @@ const Signup = () => {
 		left: '50%',
 		transform: 'translate(-50%, -50%)',
 		width: 480,
-		height : 520,
+		height : 600,
 		bgcolor: 'background.paper',
 		border: '1px solid #000',
 		boxShadow: 20,
@@ -50,19 +50,6 @@ const Signup = () => {
 	const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
-
-	const regular_exp = (req_value) =>{
-		let boolean_exp = false;
-		const reqEmail = /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-		const reqPassward =/((?=.*[0-9])(?=.*[a-zA-Z])).{4,16}$/;
-	// const reqPassward =/^[0-9a-zA-Z]{4,16}$/;
-		if(reqPassward.test(req_value.password) && reqEmail.test(req_value.email))
-			boolean_exp = true;
-		else 
-			console.log('비밀번호가 맞지않는 형식');
-
-		return boolean_exp;
-	}
 
 	const validation = (value) => {
 		let return_value = false;
@@ -76,7 +63,7 @@ const Signup = () => {
 			case 'name' : 
 				const valiName = /\s/g;
 				if(valiName.test(values.name) || values.name === "")
-						return_value = true;
+					return_value = true;
 				break;
 			case 'email' :
 				const valiEmail = /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
@@ -97,14 +84,11 @@ const Signup = () => {
 
 	const signup_click = () => {
 		console.log(values);
-		if(regular_exp(values))
-		{
-			dispatch(LoginActions.postSignup({
-				userEmail:values.email,
-				password:values.password,
-				userName:values.lastname+values.name,
-			}))
-		}
+		dispatch(LoginActions.postSignup({
+			userEmail:values.email,
+			password:values.password,
+			userName:values.lastname+values.name,
+		}))
 	}
 
 	const [open, setOpen] = React.useState(false);
@@ -204,7 +188,7 @@ const Signup = () => {
 									>
 									{default_ymd.year.map((el) => {
 										return(
-											<MenuItem value={el}>{el}</MenuItem>		
+											<MenuItem key={'Y'+el} value={el}>{el}</MenuItem>		
 										);
 									})}
 								</Select>
@@ -218,7 +202,7 @@ const Signup = () => {
 									>
 									{default_ymd.month.map((el) => {
 										return(
-											<MenuItem value={el}>{el}</MenuItem>		
+											<MenuItem key={'M'+el} value={el}>{el}</MenuItem>		
 										);
 									})}
 								</Select>
@@ -232,7 +216,7 @@ const Signup = () => {
 									>
 									{default_ymd.day.map((el) => {
 										return(
-											<MenuItem value={el}>{el}</MenuItem>		
+											<MenuItem key={'D'+el} value={el}>{el}</MenuItem>		
 										);
 									})}
 								</Select>
@@ -258,6 +242,7 @@ const Signup = () => {
 							sx={{margin:"auto" ,fontWeight:'bold', fontSize: 20 , width: 300 }}
 							color="neutral"
 							onClick={signup_click}
+							disabled = {(validation('lastname') || validation('name') || validation('email') || validation('password'))}
 							>
 								가입하기
 						</Button>
