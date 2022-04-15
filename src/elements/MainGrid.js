@@ -14,7 +14,6 @@ const MainGrid = props => {
     display,
     justifyContent,
     alignItems,
-    gap,
     flexDirection,
     flexWrap,
     textAlign,
