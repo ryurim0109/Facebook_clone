@@ -14,6 +14,7 @@ const MainGrid = props => {
     display,
     justifyContent,
     alignItems,
+    gap,
     flexDirection,
     flexWrap,
     textAlign,
@@ -96,6 +97,7 @@ MainGrid.defaultProps = {
   bg: null,
   display: null,
   justifyContent: null,
+  gap:null,
   alignItems: false,
   flexDirection: false,
   flexWrap: null,
@@ -136,6 +138,7 @@ const GridBox = styled.div`
   justify-content: ${props => props.justifyContent};
   text-align: ${props => props.textAlign};
   border: ${props => props.border};
+  gap:${props => props.gap};
   ${props => (props.borderRadius ? `border-radius: ${props.borderRadius}` : '')};
   border-top: ${props => props.borderTop};
   border-bottom: ${props => props.borderBottom};
@@ -178,6 +181,9 @@ const GridBox = styled.div`
     background-color: grey;
     border-radius: 15px;
   }
+
+  
 `;
+
 
 export default MainGrid;

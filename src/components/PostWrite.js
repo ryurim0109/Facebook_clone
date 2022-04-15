@@ -7,7 +7,7 @@ import { MainGrid, Image, MainBtn} from '../elements/index';
 // import PostWriteModal from './PostWriteModal';
 import { FaVideo } from 'react-icons/fa';
 import { MdPhotoLibrary } from 'react-icons/md';
-import { BsEmojiSmileFill } from 'react-icons/bs';
+import { BsFillEmojiLaughingFill } from 'react-icons/bs';
 import defaultUserImage from '../img/기본프로필사진.png';
 //import { postCreators } from '../redux/modules/post';
 
@@ -34,7 +34,7 @@ const PostWrite = () => {
             {/* <MainBtn width='520px' backgroundColor='#eee' color='#111' borderRadius='30px' _onClick={modalOpen}> */}
             <PostDiv >
               {/* <p>{userInfo.firstName ? userInfo.firstName + userInfo.lastName : 'GUEST'}님, 무슨 생각을 하고 계신가요?</p> */}
-              김유림님, 무슨 생각을 하고 계신가요?
+              김미미님, 무슨 생각을 하고 계신가요?
             
             </PostDiv>
             {/* <PostWriteModal openModal={openModal} setModal={setModal} /> */}
@@ -42,7 +42,7 @@ const PostWrite = () => {
         </MainGrid>
         <MainGrid width='100%' padding="0 20px"  >
           <MainGrid width='100%' height='40px' display='flex' justifyContent='center' 
-          alignItems='center' borderTop="2px solid #eee">
+          alignItems='center' borderTop="1px solid #e4e6eb">
             <LBtn >
               <Video color='#f0284a' />
               라이브방송
@@ -80,30 +80,45 @@ const PostDiv=styled.div`
     width:420px;
     height:40px;
     background-color:#eee;
-    color:#111;
+    color:#67696d;
     padding:10px;
     box-sizing:border-box;
     border-radius:25px;
+    cursor:pointer;
+
+    &:hover{
+      background-color:#e0e0e0;
+    }
 
 `;
 const LBtn=styled.div`
     width:156px;
-    height:40px; 
-    margin-top:35px;
+    height:30px; 
+    margin-top:13px;
     padding:8px;
     font-size:15px;
-    display="flex" ;
     text-align:center;
-
+    cursor:pointer;
+    display:flex;
+    border-radius:8px;
+    justify-content:center;
+    align-items:center;
+    color:#67696d;
+    &:hover{
+        background:#e0e0e0;
+    }
+   
 
 `;
 const Video=styled(FaVideo)`
  margin-right:5px;
+ 
+
 `
 const Library=styled(MdPhotoLibrary)`
  margin-right:5px;
 `
-const Smile=styled(BsEmojiSmileFill)`
+const Smile=styled(BsFillEmojiLaughingFill)`
  margin-right:5px;
 `
 

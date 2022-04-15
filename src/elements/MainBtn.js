@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { BsSearch } from "react-icons/bs";
+import { BsSearch,BsFillTrashFill,BsPencilSquare } from "react-icons/bs";
 
 
 const MainBtn =(props) =>{
@@ -21,6 +21,8 @@ const MainBtn =(props) =>{
         hover,
         display,
         is_S,
+        is_del,
+        is_edit,
         _disabled} =props;
         
 
@@ -50,6 +52,25 @@ const MainBtn =(props) =>{
             </React.Fragment>
         )
     }
+    if(is_del){
+        return (
+            <React.Fragment>
+                <EditBox onClick={_onClick}>
+                    <Tr />
+                </ EditBox>
+            </React.Fragment>
+        )
+    }  
+    if(is_edit){
+        return (
+            <React.Fragment>
+                <EditBox onClick={_onClick}>
+                    <Ed/>
+                </ EditBox>
+            </React.Fragment>
+        )
+    }
+    
 
    
     return(
@@ -122,8 +143,24 @@ const EditBox=styled.button`
     display:flex;
     align-items:center;
     justify-content:center;
+
+    &:hover{
+        background:#e0e0e0;
+    }
 `;
 const Se=styled(BsSearch)`
+
+transform:scale(1.1,1.1);
+color:#606770;
+
+`
+const Tr=styled(BsFillTrashFill)`
+
+transform:scale(1.1,1.1);
+color:#606770;
+
+`
+const Ed=styled(BsPencilSquare)`
 
 transform:scale(1.1,1.1);
 color:#606770;
