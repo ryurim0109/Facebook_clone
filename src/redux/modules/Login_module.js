@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import axios from 'axios'
+import {instance} from '../../shared/api' 
 
 //action
 const LOGIN = 'LOGIN';
@@ -23,16 +23,14 @@ const postLogin = (Login_info) => {
     return function (dispatch, getState,{history}){
         console.log('로그인 시작')
         console.log(Login_info)
-
-        axios.post('http://52.79.228.83:8080/user/login',
+        instance.get('/user/login',
         Login_info
         ).then(function (response){
-            console.log('로그인 성공!')
+            alert(response.msg)
             console.log(response)
             console.log(response.headers.authorization)
-            // 테스트 완료 후 진행.
             sessionStorage.setItem('user',response.headers.authorization);
-            // history.push('/post');
+            history.push('/main');
         }).catch(function (error){
             console.log('로그인 실패!')
         })
@@ -43,7 +41,7 @@ const postLogin = (Login_info) => {
 const postSignup = (Signup_info) => {
     return function (dispatch, getState, {history}){
         console.log(Signup_info)
-        axios.post('http://52.79.228.83:8080/user/signup',
+        instance.post('http://52.79.228.83:8080/user/signup',
         Signup_info
         ).then(function (response){
             console.log(response)
