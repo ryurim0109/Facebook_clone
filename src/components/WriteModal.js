@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {MainGrid,Image,MainBtn,MainInput} from "../elements/index";
 import { Dialog } from '@material-ui/core';
-import Button from '@mui/material/Button';
 import defaultUserImage from '../img/기본프로필사진.png';
+
 
 
 
@@ -15,7 +15,28 @@ const WriteModal = (props) => {
     // console.log(detailPost)
     setModal(false);
   };
-   
+  
+
+  const selectFile = (e) => {
+    const fileName = e.target.files[0].name.split('.')[0];
+    const fileType = e.target.files[0].name.split('.')[1];
+    const fileFullName = e.target.files[0].name;
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+    //   dispatch(
+    //     imageActions.setPostPreview({
+    //       preview: reader.result,
+    //       fileName,
+    //       fileType,
+    //       fileFullName,
+    //       file,
+    //     })
+    //   );
+    };
+}
   
     return (
       <>
@@ -35,6 +56,7 @@ const WriteModal = (props) => {
                 >
                 <MainBtn is_close _onClick={modalClose} />
                 </MainGrid>
+
             <MainGrid display='flex' width="100%" flexDirection='row' alignItems='center'>
            
                 <Image src={defaultUserImage} />
@@ -42,11 +64,57 @@ const WriteModal = (props) => {
             </MainGrid>
             <MainGrid height="40%">
                 <TextArea  placeholder="무슨 생각을 하고 계신가요?" />
-            </MainGrid>
+                <MainGrid
+                  height='auto'
+                  position='relative'
+                //   display={previewDisplay}
+                  id='postPreviewBox'
+                >
+                  <Image
+                    // src={postPreview ? postPreview.preview : detailPost?.imageUrl}
+                    shape='square'
+                    margin='0 0 5px 0'
+                    backgroundPosition='center'
+                  />
+                  <label htmlFor='postFileInput' id='inputLabelButton'>
+                    <MainGrid
+                      display='flex'
+                      alignItems='center'
+                      justifyContent='center'
+                      hover='#e1e2e7'
+                      bg='white'
+                      borderRadius='5px'
+                      width='auto'
+                      padding='5px 10px'
+                    >
+                    </MainGrid>
+                  </label>
+                <input type='file' id='postFileInput' onChange={selectFile} />
+               
+                </MainGrid>
+
+           
+                  <MainGrid
+                    display='flex'
+                    alignItems='center'
+                    justifyContent='space-between'
+                    width="100%"
+                    padding="0 10px"
+                    border="1px solid #BEC3C9"
+                    margin="16px 0"
+                    borderRadius="20px"
+                  >
+                        
+                        <p>게시물에 추가</p>
+                        <MainBtn is_up />
+
+                        
+                  </MainGrid>
             
-            <MainBtn  width="100%" borderRadius="20px" color="#fff" _onClick={modalClose} hover="#3578E5">
-            {is_edit? "수정" :"게시"}
-            </MainBtn>
+                <MainBtn  width="100%" borderRadius="20px" color="#fff" _onClick={modalClose} hover="#3578E5">
+                {is_edit? "수정" :"게시"}
+                </MainBtn>
+            </MainGrid>
             </MainGrid>
            
             
@@ -63,6 +131,7 @@ const Outter=styled.div`
     overflow:scroll;
     padding:10px;
     background:#fff;
+    gap:10px;
 
     & p {
         font-weight:bold;
@@ -95,5 +164,6 @@ const TextArea = styled.textarea`
     display: none;
   }
 `;
+
 
 export default WriteModal;

@@ -34,6 +34,8 @@ Image.defaultProps={
     padding: null,
     size: 36,
     _onClick: () => {},
+    borderRadius: false,
+    backgroundSize:false,
 };
 const AspectOutter = styled.div`
     width:100%;
@@ -44,7 +46,9 @@ const AspectInner = styled.div`
     padding-top: 75%;
     overflow:hidden;
     background-image: url('${(props)=>props.src}');
-    background-size:cover;
+    //background-size:cover;
+    ${props => (props.borderRadius ? `border-radius: ${props.borderRadius}` : '')};
+    ${props => (props.backgroundSize ? `background-size: ${props.backgroundSize}` : '')};
 `;
 
 const ImageCircle =styled.div`

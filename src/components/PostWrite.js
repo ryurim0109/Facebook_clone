@@ -120,7 +120,7 @@ const Video=styled(FaVideo)`
 
 `
 const Library=styled(MdPhotoLibrary)`
- margin-right:5px;
+ color: #45bd62;
 `
 const Smile=styled(BsFillEmojiLaughingFill)`
  margin-right:5px;
