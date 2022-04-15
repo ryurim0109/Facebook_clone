@@ -1,5 +1,5 @@
 import React from 'react';
-import { MainGrid,MainInput,Image,MainBtn } from '../elements';
+import { MainGrid,MainInput,Image,MainBtn } from '../elements/index';
 import {history} from "../redux/configStore";
 import styled from 'styled-components';
 import defaultUserImage from '../img/logo.png';
