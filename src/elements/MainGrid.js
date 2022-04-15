@@ -148,8 +148,8 @@ const GridBox = styled.div`
   max-width: ${props => props.maxWidth};
   min-height: ${props => props.minHeight};
   max-height: ${props => props.maxHeight};
-  background-color: ${props => props.backgroundColor};
-  box-sizing: ${props => props.boxSizing};
+  background-color: ${props => props.bg};
+  box-sizing: border-box;
   box-shadow: ${props => props.boxShadow};
   position: ${props => props.position};
   top: ${props => props.top};

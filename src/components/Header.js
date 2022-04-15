@@ -2,6 +2,7 @@ import React from 'react';
 import { MainGrid,MainInput,Image,MainBtn } from '../elements';
 import {history} from "../redux/configStore";
 import styled from 'styled-components';
+import defaultUserImage from '../img/logo.png';
 
 const Header =(props)=>{
     return (
@@ -11,7 +12,7 @@ const Header =(props)=>{
            boxShadow='rgba(0, 0, 0, 0.1) 0px 2px 12px;'
           >
              <Logo>
-                <Image src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbjBzaq%2FbtrzvAeUmaK%2FEIA81bfLPQyMlGVllzpkTK%2Fimg.png"
+                <Image src={defaultUserImage}
                   size="40" _onClick={()=>{
                       history.push('/main')
                   }}
@@ -26,12 +27,13 @@ const Header =(props)=>{
 };
 
 const Logo=styled.div`
-    width:112px;
+    width:90px;
     height:56px;
     display:flex;
     align-items:center;
     padding-left:16px;
     cursor:pointer;
+    justify-content: space-between;
 
 `
 

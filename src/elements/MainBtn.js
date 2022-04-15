@@ -4,13 +4,41 @@ import { BsSearch } from "react-icons/bs";
 
 
 const MainBtn =(props) =>{
-    const {width,height,margin,padding,bg,text,_onClick,children,is_S,_disabled} =props;
+    const {color,
+        _onClick,
+        children,
+        margin,
+        width,
+        padding,
+        backgroundColor,
+        height,
+        fontSize,
+        borderRadius,
+        top,
+        bottom,
+        left,
+        right,
+        hover,
+        display,
+        is_S,
+        _disabled} =props;
+        
+
     const styles={
-        width:width,
-        margin:margin,
-        padding:padding,
-        bg:bg,
-        height:height,
+        margin,
+        width,
+        padding,
+        backgroundColor,
+        color,
+        height,
+        fontSize,
+        borderRadius,
+        top,
+        bottom,
+        left,
+        right,
+        hover,
+        display,
 
     }
     if(is_S){
@@ -27,37 +55,62 @@ const MainBtn =(props) =>{
     return(
         <React.Fragment>
             <ButtonBox {...styles} onClick={_onClick} disabled={_disabled}>
-                {text? text:children}
+                {children}
             </ButtonBox>
         </React.Fragment>
     );
 };
 
 MainBtn.defaultProps ={
-    children:null,
-    width:"100%",
-    height:"100%",
-    margin:false,
-    padding:false,
-    bg: false,
-    text:"텍스트",
-    is_float:false,
-    _disabled: false,
+  position: false,
+  children: null,
+  _onClick: () => {},
+  isFloat: false,
+  margin: 'auto',
+  width: '100%',
+  padding: '12px 0px',
+  color: 'white',
+  height: '50px',
+  top: null,
+  bottom: null,
+  left: null,
+  right: null,
+  hover: null,
+  display: null,  
 };
 
 const ButtonBox = styled.button`
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
-    border:none;
-    box-sizing:border-box;
-    border-radius:8px;
-    cursor:pointer;
-    ${(props) => (props.margin ? `margin: ${props.margin};` : '')}
-    ${(props) => (props.padding ? `padding: ${props.padding};` : '')}
-    background-color: ${(props) => (props.disabled ? "#E7F6FD" : "#E7F6FD")};
-    color:#6F9FBE;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    @media screen and (max-width: 720px){ height:60px; }
+  width: ${(props) => props.width};
+  color: ${(props) => props.color};
+  padding: ${(props) => props.padding};
+  height: ${(props) => props.height};
+  font-size: ${(props) => props.fontSize};
+  margin: ${(props) => props.margin};
+  ${(props) =>
+    props.backgroundColor
+      ? `background-color:${props.backgroundColor}`
+      : 'background-color: blue'};
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-weight: bold;
+  border: none;
+  ${(props) =>
+    props.borderRadius
+      ? `border-radius:${props.borderRadius}`
+      : 'border-radius: 0px'};
+  cursor: pointer;
+  flex-shrink: 0;
+  &:hover {
+    background-color: ${(props) => props.hover};
+  }
+  vertical-align: middle;
+  top: ${(props) => props.top};
+  bottom: ${(props) => props.bottom};
+  left: ${(props) => props.left};
+  right: ${(props) => props.right};
+  position: ${(props) => props.position};
+  flex-shrink: 0;
+  display: ${props => props.display};
 `;
 const EditBox=styled.button`
     width:41px;
