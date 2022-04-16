@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import {MainGrid,Image,MainBtn,MainInput} from "../elements/index";
 import { Dialog } from '@material-ui/core';
 import defaultUserImage from '../img/기본프로필사진.png';
+import PreImage from '../img/preview.png';
+// import checkFileSize from '../shared/imageVal'; 파일 용량 체크 보류
 
 
 
@@ -15,28 +17,28 @@ const WriteModal = (props) => {
     // console.log(detailPost)
     setModal(false);
   };
-  
 
-  const selectFile = (e) => {
-    const fileName = e.target.files[0].name.split('.')[0];
-    const fileType = e.target.files[0].name.split('.')[1];
-    const fileFullName = e.target.files[0].name;
-    const file = e.target.files[0];
+  const [imageSrc, setImageSrc] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [content, setContent] = useState("");
+  
+  const encodeFileToBase64 = (fileBlob) => {
     const reader = new FileReader();
 
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-    //   dispatch(
-    //     imageActions.setPostPreview({
-    //       preview: reader.result,
-    //       fileName,
-    //       fileType,
-    //       fileFullName,
-    //       file,
-    //     })
-    //   );
-    };
-}
+    reader.readAsDataURL(fileBlob);
+
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        resolve();
+      };
+    });
+  };
+
+  const addPost =()=>{
+    console.log('수정')
+  }
+
   
     return (
       <>
@@ -62,37 +64,28 @@ const WriteModal = (props) => {
                 <Image src={defaultUserImage} />
                 <p>김미미님</p>
             </MainGrid>
-            <MainGrid height="40%">
+            <MainGrid height="30%" overflowY="auto">
                 <TextArea  placeholder="무슨 생각을 하고 계신가요?" />
                 <MainGrid
-                  height='auto'
+                  height="200px"
                   position='relative'
-                //   display={previewDisplay}
-                  id='postPreviewBox'
+                  overflowY="scroll"
                 >
-                  <Image
-                    // src={postPreview ? postPreview.preview : detailPost?.imageUrl}
-                    shape='square'
-                    margin='0 0 5px 0'
-                    backgroundPosition='center'
-                  />
+                 <input type='file' id='postFileInput' style={{display:"none"}} name="postFileInput" accept="image/jpeg, image/png, image/jpg"  onChange={(e)=>{
+                  encodeFileToBase64(e.target.files[0]);
+                  setImageUrl(e.target.files[0]);
+                  }} />
+                  
                   <label htmlFor='postFileInput' id='inputLabelButton'>
-                    <MainGrid
-                      display='flex'
-                      alignItems='center'
-                      justifyContent='center'
-                      hover='#e1e2e7'
-                      bg='white'
-                      borderRadius='5px'
-                      width='auto'
-                      padding='5px 10px'
-                    >
-                    </MainGrid>
+                    <ImageBox>
+                      {imageSrc ? (<img src={imageSrc} alt="이미지미리보기"/>) : (<img src={PreImage}  alt="이미지미리보기"/>) }
+                    </ImageBox>
+                    
                   </label>
-                <input type='file' id='postFileInput' onChange={selectFile} />
+                
                
                 </MainGrid>
-
+                </MainGrid>
            
                   <MainGrid
                     display='flex'
@@ -111,10 +104,10 @@ const WriteModal = (props) => {
                         
                   </MainGrid>
             
-                <MainBtn  width="100%" borderRadius="20px" color="#fff" _onClick={modalClose} hover="#3578E5">
+                <MainBtn  width="100%" borderRadius="20px" color="#fff" _onClick={addPost} hover="#3578E5">
                 {is_edit? "수정" :"게시"}
                 </MainBtn>
-            </MainGrid>
+           
             </MainGrid>
            
             
@@ -163,6 +156,23 @@ const TextArea = styled.textarea`
   place ::-webkit-scrollbar {
     display: none;
   }
+`;
+const ImageBox =styled.div`
+
+display:flex;
+align-items:center;
+justify-content:center;
+background-size:cover;
+border-radius:5px;
+height:auto;
+padding:5px 10px;
+
+&:hover{background-color:#e1e2e7}
+
+& img{
+  width:100%;
+  object-fit: cover;
+}
 `;
 
 
