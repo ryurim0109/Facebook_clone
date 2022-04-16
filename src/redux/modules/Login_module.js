@@ -1,6 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import {instance} from '../../shared/api' 
+import axios from "axios";
 
 //action
 const LOGIN = 'LOGIN';
@@ -23,7 +24,7 @@ const postLogin = (Login_info) => {
     return function (dispatch, getState,{history}){
         console.log('로그인 시작')
         console.log(Login_info)
-        instance.get('/user/login',
+        axios.get('http://52.79.228.83:8080/user/login',
         Login_info
         ).then(function (response){
             alert(response.msg)
@@ -41,7 +42,7 @@ const postLogin = (Login_info) => {
 const postSignup = (Signup_info) => {
     return function (dispatch, getState, {history}){
         console.log(Signup_info)
-        instance.post('http://52.79.228.83:8080/user/signup',
+        axios.post('http://52.79.228.83:8080/user/signup',
         Signup_info
         ).then(function (response){
             console.log(response)

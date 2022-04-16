@@ -80,3 +80,5 @@ export const apis = {
   deletePost: postId => instance.delete(`/api/post/${postId}`),
  // clickLike: postId => instance.post(`/post/${postId}/like`),
 };
+
+export const TokenCheck = sessionStorage.getItem('user') ? true : false;
