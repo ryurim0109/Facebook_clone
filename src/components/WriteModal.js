@@ -11,6 +11,10 @@ import PreImage from '../img/preview.png';
 
 
 const WriteModal = (props) => {
+
+  // const postId = useSelector(state => state.post?.detailPostId);
+  // const detailPost = postList.find(post => post.postId === postId);
+
     const is_edit=false;
     const { openModal, setModal } = props;
   const modalClose = () => {
@@ -65,7 +69,10 @@ const WriteModal = (props) => {
                 <p>김미미님</p>
             </MainGrid>
             <MainGrid height="30%" overflowY="auto">
-                <TextArea  placeholder="무슨 생각을 하고 계신가요?" />
+                <TextArea  placeholder="무슨 생각을 하고 계신가요?" value={content} onChange={(e)=>{
+                  console.log(e.target.value);
+                  setContent(e.target.value);
+                }}/>
                 <MainGrid
                   height="200px"
                   position='relative'

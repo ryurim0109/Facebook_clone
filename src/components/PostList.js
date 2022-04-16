@@ -1,7 +1,8 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { BsHandThumbsUp,BsChatSquare } from "react-icons/bs";
 import { useSelector, useDispatch } from 'react-redux';
 import { history } from '../redux/configStore';
+import WriteModal from './WriteModal';
 
 import styled from 'styled-components';
 import { MainGrid, Image, MainBtn} from '../elements/index';
@@ -11,6 +12,16 @@ import likeBtn from '../img/like.svg';
 //import { postCreators } from '../redux/modules/post';
 
 const PostList = (props) => {
+
+  const [openModal, setModal] = useState(false);
+  const modalOpen = () => {
+    // if (!userInfo.is_login) {
+    //   window.alert('로그인이 필요합니다!');
+    //   history.push('/');
+    // }
+    // dispatch(postCreators.setDetailPostId(null))
+    setModal(true);
+  };
 
 
   return (
@@ -26,12 +37,13 @@ const PostList = (props) => {
           </MainGrid>
           <MainGrid  display="flex" justifyContent="space-between" width="20%" position="relative">
             <MainBtn is_edit _onClick={()=>{
-              // console.log('게시물수정해요~')
+             modalOpen()
             }}/>
             <MainBtn is_del _onClick={()=>{
               console.log('게시물 삭제해요')
             }}/>
           </MainGrid>
+          <WriteModal openModal={openModal} setModal={setModal} />
         </MainGrid>
         {/* 게시글 */}
         <MainGrid display="flex" height="auto" padding="0 16px">
