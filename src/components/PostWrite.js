@@ -9,11 +9,17 @@ import { FaVideo } from 'react-icons/fa';
 import { MdPhotoLibrary } from 'react-icons/md';
 import { BsFillEmojiLaughingFill } from 'react-icons/bs';
 import defaultUserImage from '../img/기본프로필사진.png';
-//import { postCreators } from '../redux/modules/post';
+import { postCreators as postActions } from '../redux/modules/post';
 
-const PostWrite = () => {
-//   const dispatch = useDispatch();
+const PostWrite = (props) => {
+  const dispatch = useDispatch();
 //   const userInfo = useSelector(state => state.user);
+
+// const [pageno, setPageno] = React.useState(1);
+
+// React.useEffect(() => {
+//   dispatch(postActions.getPostDB(pageno));
+// }, []);
 
 const [openModal, setModal] = useState(false);
 const modalOpen = () => {

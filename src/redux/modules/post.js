@@ -1,6 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { produce } from 'immer';
 import { apis } from '../../shared/api';
+import axios from 'axios';
 
 const GET_POST = 'GET_POST';
 const ADD_POST = 'ADD_POST';
@@ -10,7 +11,7 @@ const DELETE_POST = 'DELETE_POST';
 const SET_DETAILPOSTID = 'SET_DETAILPOSTID';
 
 
-const getPost = createAction(GET_POST, (posts) => ({ posts }));
+const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
 const addPost = createAction(ADD_POST, (post) => ({ post }));
 const updatePost = createAction(UPDATE_POST, (postId, post) => ({
   postId,
@@ -27,36 +28,51 @@ const initialState = {
   totalPage : null,
 };
 
-const getPostDB = (page) => {
-  console.log(page);
+const getPostDB = (pageno) => {
+  console.log(pageno);
   return (dispatch) => {
-    apis
-      .getPost(page)
+    axios.get(`http://52.79.228.83:8080/api/${pageno}`)
       .then((res) => {
-        console.log(res);
-        dispatch(getPost(res));
+        console.log(res,"응답 res");
+        console.log(res.posts,"응답 포스트리스트");
+        // dispatch(getPost(res.posts));
       })
-      .catch((res) => {
-        console.log(res);
+      .catch((err) => {
+        console.log(err.response,"게시글 가져오기 오류");
       });
   };
 };
 
-const addPostDB = (postInfo) => {
-  console.log(postInfo);
+const addPostDB = (token,content,imageFile) => {
+  console.log(token,content,imageFile);
+
+  const file = new FormData();
+
+  file.append("content", content);
+  file.append("imageFile", imageFile);
+
   return (dispatch, getState, { history }) => {
-    apis
-      .addPost(postInfo)
-      .then((res) => {
+    axios.post(`http://52.79.228.83:8080/api/post`,
+    file,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type":
+          "multipart/form-data; boundary=----WebKitFormBoundaryfApYSlK1ODwmeKW3",
+      },
+    }).then( (res) =>{
+        alert(res.msg)
         console.log(res.data.post,"난 포스팅추가 res.data.post");
         console.log(res.data,"난 포스팅추가 res.data");
-        dispatch(addPost(res.data.posts));
+        console.log(res,"게시글 추가 res")
+       
+        //dispatch(getPostDB())
+        //dispatch(addPost(res.data.posts));
         history.replace('/main');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+    }).catch( (err)=>{
+        console.log('업로드 실패!',err.response)
+    })
+}
+    
 };
 
 const updatePostDB = (postId, postInfo) => {
@@ -111,21 +127,21 @@ export default handleActions(
   {
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.posts);
-        draft.postList = action.payload.posts;
+        console.log(action.payload.post_list);
+        draft.post_list = action.payload.post_list;
       }),
     [ADD_POST]: (state, action) =>
       produce(state, (draft) => {
         console.log(action.payload);
         console.log(draft);
-        draft.postList.unshift(action.payload.post);
+        draft.post_list.unshift(action.payload.post_list);
       }),
     [UPDATE_POST]: (state, action) =>
       produce(state, (draft) => {
-        let idx = draft.postList.indexOf(
+        let idx = draft.post_list.indexOf(
           (p) => p.postId === action.payload.postId
         );
-        draft.postList[idx + 1] = action.payload.post;
+        draft.post_list[idx + 1] = action.payload.post;
       }),
     [SET_DETAILPOSTID]: (state, action) =>
       produce(state, (draft) => {
@@ -134,7 +150,7 @@ export default handleActions(
     [DELETE_POST]: (state, action) =>
       produce(state, (draft) => {
         const editArr = [];
-        draft.postList.filter((val, idx) => {
+        draft.post_list.filter((val, idx) => {
           if (val.postId !== action.payload.postId) {
             editArr.push(val);
           }
