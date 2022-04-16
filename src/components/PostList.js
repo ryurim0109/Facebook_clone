@@ -16,7 +16,7 @@ const PostList = (props) => {
 
   const [fcstate,setFcstate] = React.useState(false);
   const dispatch = useDispatch();
-    const {postId,content, likeCnt,commentCnt,createAt,userImageUrl,postImageUrl,userName,userId,like } =props
+    const {postId,content, likeCnt,commentCnt,createAt,userImageUrl,postImageUrl,userName,userId,like } =props;
   
 
 
@@ -37,14 +37,14 @@ const PostList = (props) => {
             <p style={{fontSize:"13px",color:"#65676b"}}>{createAt}</p>
           </MainGrid>
           <MainGrid  display="flex" justifyContent="space-between" width="20%" position="relative">
-            <MainBtn is_edit _onClick={()=>{
-             modalOpen()
+            <MainBtn is_edit  _onClick={()=>{
+             modalOpen(postId)
             }}/>
             <MainBtn is_del _onClick={()=>{
               console.log('게시물 삭제해요')
             }}/>
           </MainGrid>
-          <WriteModal openModal={openModal} setModal={setModal} />
+          <WriteModal openModal={openModal} postId={postId} postImageUrl={postImageUrl} content={content} setModal={setModal} />
         </MainGrid>
         {/* 게시글 */}
         <MainGrid display="flex" height="auto" padding="0 16px">
