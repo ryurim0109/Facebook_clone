@@ -6,6 +6,7 @@ import PostList from '../components/PostList';
 import CommentWrite from '../components/CommentWrite';
 
 const Main =()=>{
+
     return (
         <>
           <MainGrid bg="#F2F3F5">

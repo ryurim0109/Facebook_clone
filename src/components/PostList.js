@@ -1,43 +1,67 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { BsHandThumbsUp,BsChatSquare } from "react-icons/bs";
 import { useSelector, useDispatch } from 'react-redux';
 import { history } from '../redux/configStore';
-import Fade from '@mui/material/Fade';
+import WriteModal from './WriteModal';
 
 import styled from 'styled-components';
 import { MainGrid, Image, MainBtn} from '../elements/index';
 // import PostWriteModal from './PostWriteModal';
 import defaultUserImage from '../img/기본프로필사진.png';
 import CommentWrite from './CommentWrite';
+import likeBtn from '../img/like.svg';
 //import { postCreators } from '../redux/modules/post';
 
 const PostList = (props) => {
+const [fcstate,setFcstate] = React.useState(false);
+const dispatch = useDispatch();
 
-  const [fcstate,setFcstate] = React.useState(false);
+  // React.useEffect(() => {
+  //   dispatch(postActions.setpostDB());
+  // }, []);
+
+  const [openModal, setModal] = useState(false);
+  const modalOpen = () => {
+    setModal(true);
+  };
 
   return (
     <>
       <PostL>
-        <MainGrid width="100%"display="flex" justifyContent="start-end">
-          <MainGrid width="10%">
+        <MainGrid width="100%"display="flex" justifyContent="start-end" padding="0 16px">
+          <MainGrid width="10%" position="relative">
           <Image src={defaultUserImage} size="36"/>
           </MainGrid>
-          <MainGrid width="70%">
+          <MainGrid width="70%" position="relative" >
             <p style={{fontSize:"15px",color:"#050505"}}> 김미미</p>
             <p style={{fontSize:"13px",color:"#65676b"}}>1시간전</p>
           </MainGrid>
-          <MainGrid display="flex" justifyContent="space-between" width="20%">
+          <MainGrid  display="flex" justifyContent="space-between" width="20%" position="relative">
             <MainBtn is_edit _onClick={()=>{
-              console.log('게시물수정해요~')
+             modalOpen()
             }}/>
             <MainBtn is_del _onClick={()=>{
               console.log('게시물 삭제해요')
             }}/>
           </MainGrid>
+          <WriteModal openModal={openModal} setModal={setModal} />
         </MainGrid>
         {/* 게시글 */}
-        <PT>불러뷸랄룰</PT>
-        <MainGrid display="flex" borderTop="1px solid #e4e6eb" borderBottom="1px solid #e4e6eb">
+        <MainGrid display="flex" height="auto" padding="0 16px">
+        <PT>zlzl</PT>
+        </MainGrid>
+        <img src="https://i.pinimg.com/474x/98/96/c2/9896c20ac2afa05462e0cb01c79499a0.jpg" alt="이미지"/>
+       
+        <MainGrid display="flex" alignItems="center" justifyContent="space-between" padding="0 16px">
+          <MainGrid display="flex" alignItems="center" width="85%">
+           <Image src={likeBtn} size="20"/> <p style={{color:"#65676b"}}>1</p>
+          </MainGrid>
+          <p  width="15%" style={{color:"#65676b"}}>
+            댓글 1개
+          </p>
+        </MainGrid>
+        <MainGrid  padding="0 16px">
+        <MainGrid display="flex" borderTop="1px solid #e4e6eb" borderBottom="1px solid #e4e6eb" margin="5px 0">
           <LBtn>
              <Like/>좋아요
           </LBtn>
@@ -46,9 +70,8 @@ const PostList = (props) => {
           </LBtn>
         </MainGrid>
         {fcstate && <CommentWrite />}
-        
+        </MainGrid>
       </PostL>
-     
     </>
   );
 };
@@ -58,11 +81,13 @@ const PostL=styled.div`
   box-sizing:border-box;
   display: flex;
   flex-direction: column;
+  position:relative;
   gap:5px;
   margin: 20px auto;
   border-radius: 10px;
   background-color:#fff;
-  padding:12px 16px 0; 
+  height:auto;
+  padding:12px 0; 
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px;
   @media screen and (max-width: 500px) {
     width: 100%;
