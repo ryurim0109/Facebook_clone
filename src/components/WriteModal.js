@@ -89,7 +89,7 @@ const WriteModal = (props) => {
             </MainGrid>
             <MainGrid height="30%" overflowY="auto">
                 <TextArea  placeholder="무슨 생각을 하고 계신가요?" maxlength="200" value={content} onChange={(e)=>{
-                  console.log(e.target.value);
+                  // console.log(e.target.value);
                   setContent(e.target.value);
                 }}/>
                 <MainGrid
