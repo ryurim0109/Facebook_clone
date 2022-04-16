@@ -48,7 +48,7 @@ const postSignup = (Signup_info) => {
         ).then(function (response){
             console.log(response)
         }).catch(function (error){
-
+            console.log(error.response)
         })
     }
 }

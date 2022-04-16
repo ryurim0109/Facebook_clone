@@ -45,12 +45,15 @@ const getPostDB = (pageno) => {
 
 const addPostDB = (token,content,imageFile) => {
   console.log(token,content,imageFile);
+  
 
   const file = new FormData();
 
   file.append("content", content);
   file.append("imageFile", imageFile);
-
+  // for (let value of file.values()) {
+  //   console.log(value);
+  // }
   return (dispatch, getState, { history }) => {
     axios.post(`http://52.79.228.83:8080/api/post`,
     file,{
