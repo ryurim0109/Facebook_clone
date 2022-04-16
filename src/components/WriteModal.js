@@ -64,8 +64,9 @@ const WriteModal = (props) => {
       setImageSrc("");
 			return false;
     }
-    console.log('수정')
     dispatch(postActions.addPostDB(token,content,imageFile));
+    setModal(false);
+
   }
 
   

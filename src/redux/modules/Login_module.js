@@ -66,7 +66,7 @@ const checkUserDB = (token) => {
           headers: { Authorization:token, },
         }
         ).then((res)=>{
-          console.log(res,"체크")
+          //console.log(res,"체크")
           dispatch(
             setUser(
              { userName:res.data.userName,

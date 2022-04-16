@@ -5,7 +5,7 @@ import axios from 'axios';
 import {instance} from '../../shared/api' 
 
 const GET_POST = 'GET_POST';
-const ADD_POST = 'ADD_POST';
+// const ADD_POST = 'ADD_POST';
 const UPDATE_POST = 'UPDATE_POST';
 const DELETE_POST = 'DELETE_POST';
 //const CLICK_LIKE = 'CLICK_LIKE';
@@ -13,7 +13,7 @@ const SET_DETAILPOSTID = 'SET_DETAILPOSTID';
 
 
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const addPost = createAction(ADD_POST, (post) => ({ post }));
+// const addPost = createAction(ADD_POST, (post) => ({ post }));
 const updatePost = createAction(UPDATE_POST, (postId, post) => ({
   postId,
   post,
@@ -25,7 +25,18 @@ const setDetailPostId = createAction(SET_DETAILPOSTID, (postId) => ({
   postId,
 }));
 const initialState = {
-
+  post_list:[{
+    postId:1,
+    content:"ㅋ키키키키키",
+    likeCnt:11,
+    commentCnt:11,
+    createAt:'2022-04-16 10:00:00',
+    userImageUrl:"https://i.pinimg.com/474x/19/08/a7/1908a7eae6903f9d5861b62b1e025788.jpg",
+    postImageUrl:"https://i.pinimg.com/474x/19/08/a7/1908a7eae6903f9d5861b62b1e025788.jpg",
+    userName:"키키키",
+    userId:1,
+    like:"false"
+  }]
 };
 
 const getPostDB = (pageno,token) => {
@@ -66,13 +77,8 @@ const addPostDB = (token,content,imageFile) => {
         "Content-Type":"multipart/form-data",
       },
     }).then( (res) =>{
-        alert(res.msg)
-        console.log(res.data.post,"난 포스팅추가 res.data.post");
-        console.log(res.data,"난 포스팅추가 res.data");
-        console.log(res,"게시글 추가 res")
-       
-        dispatch(addPost(res.data.posts));
-        history.replace('/main');
+        window.alert('업로드 성공!!');
+        history.push('/main');
     }).catch((err)=>{
         console.log('업로드 실패!',err.response)
     })
@@ -135,12 +141,12 @@ export default handleActions(
         console.log(action.payload.post_list);
         draft.post_list = action.payload.post_list;
       }),
-    [ADD_POST]: (state, action) =>
-      produce(state, (draft) => {
-        console.log(action.payload);
-        console.log(draft);
-        draft.post_list.unshift(action.payload.post_list);
-      }),
+    // [ADD_POST]: (state, action) =>
+    //   produce(state, (draft) => {
+    //     console.log(action.payload);
+    //     console.log(draft);
+    //     draft.post_list.unshift(action.payload.post_list);
+    //   }),
     [UPDATE_POST]: (state, action) =>
       produce(state, (draft) => {
         let idx = draft.post_list.indexOf(
