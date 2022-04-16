@@ -8,12 +8,13 @@ import styled from 'styled-components';
 import { MainGrid, Image, MainBtn} from '../elements/index';
 // import PostWriteModal from './PostWriteModal';
 import defaultUserImage from '../img/기본프로필사진.png';
+import CommentWrite from './CommentWrite';
 import likeBtn from '../img/like.svg';
 //import { postCreators } from '../redux/modules/post';
 
 const PostList = (props) => {
-
-  const dispatch = useDispatch();
+const [fcstate,setFcstate] = React.useState(false);
+const dispatch = useDispatch();
 
   // React.useEffect(() => {
   //   dispatch(postActions.setpostDB());
@@ -21,14 +22,8 @@ const PostList = (props) => {
 
   const [openModal, setModal] = useState(false);
   const modalOpen = () => {
-    // if (!userInfo.is_login) {
-    //   window.alert('로그인이 필요합니다!');
-    //   history.push('/');
-    // }
-    // dispatch(postCreators.setDetailPostId(null))
     setModal(true);
   };
-
 
   return (
     <>
@@ -70,14 +65,13 @@ const PostList = (props) => {
           <LBtn>
              <Like/>좋아요
           </LBtn>
-          <LBtn>
+          <LBtn onClick={() => {setFcstate((prev) => !prev)}}>
             <Chat/>댓글달기
           </LBtn>
         </MainGrid>
+        {fcstate && <CommentWrite />}
         </MainGrid>
-
       </PostL>
-     
     </>
   );
 };

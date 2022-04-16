@@ -1,6 +1,5 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import {instance} from '../../shared/api' 
 import axios from "axios";
 
 //action
@@ -9,7 +8,6 @@ const LOGOUT = 'LOGOUT';
 
 //action creators
  const setLogin = createAction(LOGIN,(Login) => ({Login}));
-// const setLogout = createAction(LOGOUT,(Login) => ({Login}));
 
 //initialState
 const initialState = {
@@ -24,17 +22,17 @@ const postLogin = (Login_info) => {
     return function (dispatch, getState,{history}){
         console.log('로그인 시작')
         console.log(Login_info)
-        axios.get('http://52.79.228.83:8080/user/login',
+        axios.post('http://52.79.228.83:8080/user/login',
         Login_info
         ).then(function (response){
-            alert(response.msg)
+            alert('로그인 성공')
             console.log(response)
             console.log(response.headers.authorization)
             sessionStorage.setItem('user',response.headers.authorization);
             dispatch(setLogin(Login_info))
             history.push('/main');
         }).catch(function (error){
-            console.log('로그인 실패!')
+            alert('로그인이 실패했어요')
         })
     }
 }
@@ -47,6 +45,8 @@ const postSignup = (Signup_info) => {
         Signup_info
         ).then(function (response){
             console.log(response)
+            alert(response.data)
+            window.location.reload();
         }).catch(function (error){
 
         })

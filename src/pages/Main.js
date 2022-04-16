@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import { MainGrid } from '../elements/index';
 import PostWrite from '../components/PostWrite';
 import PostList from '../components/PostList';
+import CommentWrite from '../components/CommentWrite';
 
 const Main =()=>{
 
