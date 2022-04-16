@@ -24,7 +24,8 @@ const WriteModal = (props) => {
   };
 
   const [imageSrc, setImageSrc] = useState("");
-  const [imageFile, setImageFile] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [image, setImage] = useState('');
   const [content, setContent] = useState("");
   
   //사진 미리보기
@@ -52,10 +53,10 @@ const WriteModal = (props) => {
     }
     //이미지 10mb제한
     let maxSize = 10 * 1024 * 1024;
-    let fileSize=imageFile.size;
+    let fileSize=image.size;
     if(fileSize > maxSize){
 			window.alert("첨부파일 사이즈는 10MB 이내로 등록 가능합니다.");
-      setImageFile("");
+      setImageSrc("");
 			return false;
     }
     console.log('수정')
@@ -100,6 +101,7 @@ const WriteModal = (props) => {
                  <input type='file' id='postFileInput' style={{display:"none"}} name="postFileInput" accept="image/jpeg, image/png, image/jpg"  onChange={(e)=>{
                   encodeFileToBase64(e.target.files[0]);
                   setImageFile(e.target.files[0]);
+                  setImage(e.target.files[0]);
                   }} />
                   
                   <label htmlFor='postFileInput' id='inputLabelButton'>

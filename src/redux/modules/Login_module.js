@@ -48,7 +48,7 @@ const postSignup = (Signup_info) => {
             alert(response.data)
             window.location.reload();
         }).catch(function (error){
-
+            console.log(error.response)
         })
     }
 }
