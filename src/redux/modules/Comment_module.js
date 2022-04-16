@@ -12,14 +12,7 @@ const GET_COMMENT = 'GET_COMMENT';
 
 //initialState
 const initialState = {
-    comment : [{
-        commentId : '',
-        postId : '',
-        content : '',
-        userName : '',
-        userId : '',
-        createAt : '',
-    }]
+    comments : []
 }
 
 //댓글 추가요청 
@@ -32,7 +25,9 @@ const postComment = (Comment_info) => {
         Comment_info
         ).then(function (response){
             console.log(response)
-            dispatch(addComment(response.data));
+
+
+            dispatch(addComment(Comment_info));
         }).catch(function (error){
             console.log(error)
         })
@@ -44,11 +39,10 @@ const getComment = (Comment_info) => {
     return function (dispatch, getState,{history}){
         console.log('댓글요청 시작')
         console.log(Comment_info)
-
-        instance.get('/api/comment/' + Comment_info.postId
+        instance.get('/api/comment/' + 1 +'/'+ 1
         ).then(function (response){
             console.log(response)
-            dispatch(getComment(response.data));
+            dispatch(putComment(response.data));
         }).catch(function (error){
             console.log(error)
         })
@@ -61,13 +55,14 @@ export default handleActions(
     {
       [ADD_COMMENT]: (state, action) =>
         produce(state, (draft) => {
-          draft.comment[action.payload.comment.commentId].unshift(action.payload.comment);
+            console.log(action.payload.content)
+            // draft.comments.unshift(action.payload.content);
         }),
       [GET_COMMENT]: (state, action) =>
         produce(state, (draft) => {
-          draft.comment = action.payload.comment;
+          console.log(action.payload.content)
+          draft.comments = action.payload.content;
         }),
-    
     },
     initialState
   );
