@@ -8,7 +8,7 @@ const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 
 //action creators
-// const setLogin = createAction(LOGIN,(Login) => ({Login}));
+ const setLogin = createAction(LOGIN,(Login) => ({Login}));
 // const setLogout = createAction(LOGOUT,(Login) => ({Login}));
 
 //initialState
@@ -31,6 +31,7 @@ const postLogin = (Login_info) => {
             console.log(response)
             console.log(response.headers.authorization)
             sessionStorage.setItem('user',response.headers.authorization);
+            dispatch(setLogin(Login_info))
             history.push('/main');
         }).catch(function (error){
             console.log('로그인 실패!')
