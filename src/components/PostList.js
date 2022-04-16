@@ -13,6 +13,12 @@ import likeBtn from '../img/like.svg';
 
 const PostList = (props) => {
 
+  const dispatch = useDispatch();
+
+  // React.useEffect(() => {
+  //   dispatch(postActions.setpostDB());
+  // }, []);
+
   const [openModal, setModal] = useState(false);
   const modalOpen = () => {
     // if (!userInfo.is_login) {

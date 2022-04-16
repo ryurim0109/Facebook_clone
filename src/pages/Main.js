@@ -5,6 +5,7 @@ import PostWrite from '../components/PostWrite';
 import PostList from '../components/PostList';
 
 const Main =()=>{
+
     return (
         <>
           <MainGrid bg="#F2F3F5">

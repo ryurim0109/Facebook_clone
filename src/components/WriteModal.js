@@ -5,27 +5,29 @@ import {MainGrid,Image,MainBtn,MainInput} from "../elements/index";
 import { Dialog } from '@material-ui/core';
 import defaultUserImage from '../img/기본프로필사진.png';
 import PreImage from '../img/preview.png';
-// import checkFileSize from '../shared/imageVal'; 파일 용량 체크 보류
+import { postCreators as postActions } from '../redux/modules/post';
 
 
 
 
 const WriteModal = (props) => {
-
+    const dispatch=useDispatch();
   // const postId = useSelector(state => state.post?.detailPostId);
   // const detailPost = postList.find(post => post.postId === postId);
 
     const is_edit=false;
     const { openModal, setModal } = props;
+
   const modalClose = () => {
     // console.log(detailPost)
     setModal(false);
   };
 
   const [imageSrc, setImageSrc] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState("");
   const [content, setContent] = useState("");
   
+  //사진 미리보기
   const encodeFileToBase64 = (fileBlob) => {
     const reader = new FileReader();
 
@@ -39,8 +41,25 @@ const WriteModal = (props) => {
     });
   };
 
+  const token = sessionStorage.getItem("user");
+  
+
   const addPost =()=>{
+    //글자수 100자 제한
+    if(content.length>100){
+      window.alert('글자수는 100자 이내로 입력해주세요!');
+      return;
+    }
+    //이미지 10mb제한
+    let maxSize = 10 * 1024 * 1024;
+    let fileSize=imageFile.size;
+    if(fileSize > maxSize){
+			window.alert("첨부파일 사이즈는 10MB 이내로 등록 가능합니다.");
+      setImageFile("");
+			return false;
+    }
     console.log('수정')
+    dispatch(postActions.addPostDB(token,content,imageFile));
   }
 
   
@@ -69,7 +88,7 @@ const WriteModal = (props) => {
                 <p>김미미님</p>
             </MainGrid>
             <MainGrid height="30%" overflowY="auto">
-                <TextArea  placeholder="무슨 생각을 하고 계신가요?" value={content} onChange={(e)=>{
+                <TextArea  placeholder="무슨 생각을 하고 계신가요?" maxlength="200" value={content} onChange={(e)=>{
                   console.log(e.target.value);
                   setContent(e.target.value);
                 }}/>
@@ -80,7 +99,7 @@ const WriteModal = (props) => {
                 >
                  <input type='file' id='postFileInput' style={{display:"none"}} name="postFileInput" accept="image/jpeg, image/png, image/jpg"  onChange={(e)=>{
                   encodeFileToBase64(e.target.files[0]);
-                  setImageUrl(e.target.files[0]);
+                  setImageFile(e.target.files[0]);
                   }} />
                   
                   <label htmlFor='postFileInput' id='inputLabelButton'>
