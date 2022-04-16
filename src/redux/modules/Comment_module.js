@@ -45,11 +45,7 @@ const getComment = (Comment_info) => {
         console.log('댓글요청 시작')
         console.log(Comment_info)
 
-        instance.get('/api/comment',{
-            params : {
-                pastid : Comment_info.postId
-            }
-        }
+        instance.get('/api/comment/' + Comment_info.postId
         ).then(function (response){
             console.log(response)
             dispatch(getComment(response.data));

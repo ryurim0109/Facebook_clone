@@ -9,11 +9,13 @@ import {actionCreators as CommentAction} from '../redux/modules/Comment_module'
 
 const CommentList = () => {
     const comment_list = useSelector((state) => state.comment);
-    console.log(comment_list)
     const dispatch = useDispatch();
 
     React.useEffect(() => {
-        dispatch(CommentAction.getComment());
+        const comment_info = {
+            postId : 1
+        }
+        dispatch(CommentAction.getComment(comment_info));
     },[])
     return (
         <Box
@@ -22,7 +24,7 @@ const CommentList = () => {
           display: 'flex',
           alignItems: 'center',
         }}>
-          {comment_list.map((el) => {
+          {comment_list && comment_list.map((el) => {
             return (
               <Stack direction="row" spacing={2} sx={{margin : '10px 0px 10px 15px' }}>
                 <Avatar sx={{ width: 32, height: 32 }} src={defaultUserImage}/>
