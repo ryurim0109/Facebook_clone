@@ -2,6 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { produce } from 'immer';
 import { apis } from '../../shared/api';
 import axios from 'axios';
+import {instance} from '../../shared/api' 
 
 const GET_POST = 'GET_POST';
 const ADD_POST = 'ADD_POST';
@@ -24,18 +25,21 @@ const setDetailPostId = createAction(SET_DETAILPOSTID, (postId) => ({
   postId,
 }));
 const initialState = {
-  posts: [],
-  totalPage : null,
+
 };
 
-const getPostDB = (pageno) => {
+const getPostDB = (pageno,token) => {
   console.log(pageno);
   return (dispatch) => {
-    axios.get(`http://52.79.228.83:8080/api/${pageno}`)
+    axios.get(`http://52.79.228.83:8080/api/post/${pageno}`,
+    {
+      headers: {
+        Authorization: token
+      },
+    })
       .then((res) => {
-        console.log(res,"응답 res");
-        console.log(res.posts,"응답 포스트리스트");
-        // dispatch(getPost(res.posts));
+        console.log(res.data.postList,"응답 포스트리스트");
+        dispatch(getPost(res.data.postList));
       })
       .catch((err) => {
         console.log(err.response,"게시글 가져오기 오류");
@@ -50,7 +54,7 @@ const addPostDB = (token,content,imageFile) => {
   const file = new FormData();
 
   file.append("content", content);
-  file.append("imageFile", imageFile);
+  file.append("image", imageFile);
   // for (let value of file.values()) {
   //   console.log(value);
   // }
@@ -58,9 +62,8 @@ const addPostDB = (token,content,imageFile) => {
     axios.post(`http://52.79.228.83:8080/api/post`,
     file,{
       headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type":
-          "multipart/form-data; boundary=----WebKitFormBoundaryfApYSlK1ODwmeKW3",
+        Authorization: token,
+        "Content-Type":"multipart/form-data",
       },
     }).then( (res) =>{
         alert(res.msg)
@@ -68,10 +71,9 @@ const addPostDB = (token,content,imageFile) => {
         console.log(res.data,"난 포스팅추가 res.data");
         console.log(res,"게시글 추가 res")
        
-        //dispatch(getPostDB())
-        //dispatch(addPost(res.data.posts));
+        dispatch(addPost(res.data.posts));
         history.replace('/main');
-    }).catch( (err)=>{
+    }).catch((err)=>{
         console.log('업로드 실패!',err.response)
     })
 }

@@ -15,6 +15,11 @@ const WriteModal = (props) => {
   // const postId = useSelector(state => state.post?.detailPostId);
   // const detailPost = postList.find(post => post.postId === postId);
 
+    const user_info=useSelector((state)=>state.user.user);
+    const userPro=user_info.userImage;
+    const _user=user_info.userName;
+
+
     const is_edit=false;
     const { openModal, setModal } = props;
 
@@ -85,8 +90,8 @@ const WriteModal = (props) => {
 
             <MainGrid display='flex' width="100%" flexDirection='row' alignItems='center'>
            
-                <Image src={defaultUserImage} />
-                <p>김미미님</p>
+                <Image src={userPro==='없음'? defaultUserImage:userPro } />
+                <p>{_user}님</p>
             </MainGrid>
             <MainGrid height="30%" overflowY="auto">
                 <TextArea  placeholder="무슨 생각을 하고 계신가요?" maxlength="200" value={content} onChange={(e)=>{

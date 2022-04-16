@@ -10,43 +10,39 @@ import { MdPhotoLibrary } from 'react-icons/md';
 import { BsFillEmojiLaughingFill } from 'react-icons/bs';
 import defaultUserImage from '../img/기본프로필사진.png';
 import { postCreators as postActions } from '../redux/modules/post';
+import {actionCreators as userActions} from '../redux/modules/Login_module';
 
 const PostWrite = (props) => {
   const dispatch = useDispatch();
-//   const userInfo = useSelector(state => state.user);
 
-// const [pageno, setPageno] = React.useState(1);
+  React.useEffect(() => {
+    dispatch(userActions.checkUserDB(sessionStorage.getItem('user')))
+  }, []);
 
-// React.useEffect(() => {
-//   dispatch(postActions.getPostDB(pageno));
-// }, []);
+  const user_info=useSelector((state)=>state.user.user);
+  const userPro=user_info.userImage;
+  const _user=user_info.userName;
+
 
 const [openModal, setModal] = useState(false);
 const modalOpen = () => {
-  // if (!userInfo.is_login) {
-  //   window.alert('로그인이 필요합니다!');
-  //   history.push('/');
-  // }
+  
   // dispatch(postCreators.setDetailPostId(null))
   setModal(true);
 };
 
-  
 
   return (
     <>
       <PostWriteWrapper>
         <MainGrid>
           <MainGrid display='flex' flexDirection='row' alignItems='center' justifyContent='space-around;' padding='12px 16px 10px 0'>
-            {/* <Image src={userInfo.imageUrl ? userInfo.imageUrl : defaultUserImage} /> */}
-            <Image src={defaultUserImage} />
-            {/* <MainBtn width='520px' backgroundColor='#eee' color='#111' borderRadius='30px' _onClick={modalOpen}> */}
+            <Image src={userPro==="없음"? defaultUserImage : userPro} />
             <PostDiv onClick={modalOpen}>
-              {/* <p>{userInfo.firstName ? userInfo.firstName + userInfo.lastName : 'GUEST'}님, 무슨 생각을 하고 계신가요?</p> */}
-              김미미님, 무슨 생각을 하고 계신가요?
+              {_user?_user: 'GUEST'}님, 무슨 생각을 하고 계신가요?
              </PostDiv>
           </MainGrid>
-          <WriteModal openModal={openModal} setModal={setModal} />
+          <WriteModal openModal={openModal} setModal={setModal} {...user_info} />
         </MainGrid>
         <MainGrid width='100%' padding="0 20px"  >
           <MainGrid width='100%' height='40px' display='flex' justifyContent='center' 
