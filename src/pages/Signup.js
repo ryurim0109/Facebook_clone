@@ -30,8 +30,8 @@ const Signup = () => {
 
 	const default_ymd = {
 		year : [...Array(118).keys()].map(key => key + 1905).reverse(),
-		month : [...Array(12).keys()].map(key => key + 1),
-		day : [...Array(31).keys()].map(key => key + 1)
+		month : [...Array(12).keys()].map(key => (key + 1)),
+		day : [...Array(31).keys()].map(key => (key + 1))
 	}
 	const style = {
 		position: 'absolute',
@@ -39,7 +39,7 @@ const Signup = () => {
 		left: '50%',
 		transform: 'translate(-50%, -50%)',
 		width: 480,
-		height : 520,
+		height : 600,
 		bgcolor: 'background.paper',
 		border: '1px solid #000',
 		boxShadow: 20,
@@ -51,14 +51,44 @@ const Signup = () => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
+	const validation = (value) => {
+		let return_value = false;
+		switch(value)
+		{
+			case 'lastname' : 
+				const valiLastname = /\s/g;
+				if(valiLastname.test(values.lastname) || values.lastname === "")
+					return_value = true;
+				break;
+			case 'name' : 
+				const valiName = /\s/g;
+				if(valiName.test(values.name) || values.name === "")
+					return_value = true;
+				break;
+			case 'email' :
+				const valiEmail = /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+				if(!valiEmail.test(values.email))
+					return_value = true;
+				break;
+			case 'password':
+				const valiPassword = /((?=.*[0-9])(?=.*[a-zA-Z])).{4,16}$/;
+				if(!valiPassword.test(values.password))
+					return_value = true;
+				break;
+			default :
+				return_value = true;
+				break;
+		}
+		return return_value;
+	}
+
 	const signup_click = () => {
 		console.log(values);
-		const Signup_info = {
+		dispatch(LoginActions.postSignup({
 			userEmail:values.email,
 			password:values.password,
 			userName:values.lastname+values.name,
-		}
-		dispatch(LoginActions.postSignup(Signup_info))
+		}))
 	}
 
 	const [open, setOpen] = React.useState(false);
@@ -105,14 +135,44 @@ const Signup = () => {
 						</Typography>
 						<hr/>
 						<div>
-							<TextField label="" placeholder='성(姓)' variant="outlined" onChange={handleChange('lastname')} sx={{margin : '0px 5px'}} />
-							<TextField label="" placeholder='이름(성은 제외)' variant="outlined" onChange={handleChange('name')} sx={{margin : '0px 5px'}} />
+							<TextField 
+								label="" 
+								placeholder='성(姓)' 
+								variant="outlined" 
+								onChange={handleChange('lastname')} 
+								sx={{margin : '0px 5px'}} 
+								error={validation('lastname')} 
+								helperText={validation('lastname') ? "빈값/공백 입력 하실 수 없습니다.":""}
+								/>
+							<TextField 
+								label="" 
+								placeholder='이름(성은 제외)' 
+								variant="outlined" 
+								onChange={handleChange('name')} 
+								sx={{margin : '0px 5px'}} 
+								error={validation('name')} 
+								helperText={validation('name') ? "빈값/공백 입력 하실 수 없습니다.":""} />
 						</div>
 						<div>
-							<TextField label="" placeholder='휴대폰 번호 또는 이메일' variant="outlined" onChange={handleChange('email')} sx={{margin : '10px 5px', width : '95%'}} />
+							<TextField 
+								label="" 
+								placeholder='휴대폰 번호 또는 이메일' 
+								variant="outlined" 
+								onChange={handleChange('email')} 
+								sx={{margin : '10px 5px', width : '95%'}} 	
+								error={validation('email')} 
+								helperText={validation('email') ? "적합한 이메일형식이 아닙니다.":""}/>
 						</div>
 						<div>
-							<TextField label="" placeholder='새 비밀번호' type={'password'} onChange={handleChange('password')} variant="outlined" sx={{margin : '0px 5px', width : '95%'}} />
+							<TextField 
+								label="" 
+								placeholder='새 비밀번호' 
+								type={'password'} 
+								onChange={handleChange('password')} 
+								variant="outlined" 
+								sx={{margin : '0px 5px', width : '95%'}} 
+								error={validation('password')} 
+								helperText={validation('password') ? "적합한 비밀번호 형식이 아닙니다.":""} />
 						</div>
 						<div>
 							<div>
@@ -128,7 +188,7 @@ const Signup = () => {
 									>
 									{default_ymd.year.map((el) => {
 										return(
-											<MenuItem value={el}>{el}</MenuItem>		
+											<MenuItem key={'Y'+el} value={el}>{el}</MenuItem>		
 										);
 									})}
 								</Select>
@@ -142,7 +202,7 @@ const Signup = () => {
 									>
 									{default_ymd.month.map((el) => {
 										return(
-											<MenuItem value={el}>{el}</MenuItem>		
+											<MenuItem key={'M'+el} value={el}>{el}</MenuItem>		
 										);
 									})}
 								</Select>
@@ -156,7 +216,7 @@ const Signup = () => {
 									>
 									{default_ymd.day.map((el) => {
 										return(
-											<MenuItem value={el}>{el}</MenuItem>		
+											<MenuItem key={'D'+el} value={el}>{el}</MenuItem>		
 										);
 									})}
 								</Select>
@@ -182,6 +242,7 @@ const Signup = () => {
 							sx={{margin:"auto" ,fontWeight:'bold', fontSize: 20 , width: 300 }}
 							color="neutral"
 							onClick={signup_click}
+							disabled = {(validation('lastname') || validation('name') || validation('email') || validation('password'))}
 							>
 								가입하기
 						</Button>

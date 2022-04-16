@@ -60,7 +60,7 @@ const Login =()=>{
                 </Typography>
               </div>
               <Paper elevation={3} sx={{width: '400px', height : '350px', padding : '5px'}}>
-                  <FormControl sx={{ m: 1 , width : '96%' }} margin="auto" variant="outlined">
+                  <FormControl sx={{ m: 1 , width : '96%' }} margin="normal" variant="outlined">
                     <TextField 
                       id="outlined-basic"
                       placeholder="이메일 또는 전화번호"

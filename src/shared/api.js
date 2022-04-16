@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const instance = axios.create({
-  baseURL: 'http://13.125.243.106:8080',
+//1. axios 인터셉터 생성 
+export const instance = axios.create({
+  baseURL: 'http://52.79.228.83:8080',
   headers: {
     'content-type': 'application/json; charset=UTF-8',
     accept: 'application/json',
@@ -9,28 +10,32 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+//2. 요청 인터셉터
 instance.interceptors.request.use(
+  //요청직전 호출
   config => {
-    const cookie = document.cookie;
-    console.log(cookie);
-    if (cookie === '') {
+    const Token = sessionStorage.getItem('user');
+    console.log(Token);
+    if (Token === '') {
       return config;
     }
 
-    const cookieSplit = cookie.split('=')[1];
+    const tokens = Token.split('=')[1];
 
     config.headers = {
       'content-type': 'application/json;charset=UTF-8',
       accept: 'application/json',
-      Authorization: `Bearer ${cookieSplit}`,
+      Authorization: `Bearer ${tokens}`,
     };
     return config;
   },
+  //에러 전 호출
   err => {
     console.log(err);
   }
 );
 
+//3. 응답 인터셉터
 instance.interceptors.response.use(
   success => {
     console.log(success);
