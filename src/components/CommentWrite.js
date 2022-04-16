@@ -6,8 +6,9 @@ import styled from 'styled-components';
 import { borderRadius } from '@mui/system';
 import Box from '@mui/material/Box';
 import defaultUserImage from '../img/기본프로필사진.png';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {actionCreators as CommentAction} from '../redux/modules/Comment_module'
+import CommentList from './CommentList';
 
 const CommentWrite = (props) => {
     const postId = props.postId;
@@ -46,6 +47,7 @@ const CommentWrite = (props) => {
           <PostDiv placeholder='댓글을 입력하세요...' onChange={change_comment} onKeyUp={Entercheck}/>
         </Box>
         </div>
+        <CommentList />
         </Comment_design>
     );
 }
@@ -74,12 +76,12 @@ const PostDiv=styled.input`
     cursor:pointer;
     text-align:left;
     border:none;
-  
-
     &:visited{
       background-color:#e0e0e0;
       border:none;
     }
-
 `;
+
+
+
 export default CommentWrite;
