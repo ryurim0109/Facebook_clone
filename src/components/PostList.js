@@ -2,15 +2,18 @@ import React from 'react';
 import { BsHandThumbsUp,BsChatSquare } from "react-icons/bs";
 import { useSelector, useDispatch } from 'react-redux';
 import { history } from '../redux/configStore';
+import Fade from '@mui/material/Fade';
 
 import styled from 'styled-components';
 import { MainGrid, Image, MainBtn} from '../elements/index';
 // import PostWriteModal from './PostWriteModal';
 import defaultUserImage from '../img/기본프로필사진.png';
+import CommentWrite from './CommentWrite';
 //import { postCreators } from '../redux/modules/post';
 
 const PostList = (props) => {
 
+  const [fcstate,setFcstate] = React.useState(false);
 
   return (
     <>
@@ -38,11 +41,12 @@ const PostList = (props) => {
           <LBtn>
              <Like/>좋아요
           </LBtn>
-          <LBtn>
+          <LBtn onClick={() => {setFcstate((prev) => !prev)}}>
             <Chat/>댓글달기
           </LBtn>
         </MainGrid>
-
+        {fcstate && <CommentWrite />}
+        
       </PostL>
      
     </>

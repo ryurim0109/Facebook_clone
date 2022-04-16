@@ -7,7 +7,7 @@ export const instance = axios.create({
     'content-type': 'application/json; charset=UTF-8',
     accept: 'application/json',
   },
-  withCredentials: true,
+  withCredentials: false,
 });
 
 //2. 요청 인터셉터
@@ -15,17 +15,14 @@ instance.interceptors.request.use(
   //요청직전 호출
   config => {
     const Token = sessionStorage.getItem('user');
-    console.log(Token);
     if (Token === '') {
       return config;
     }
-
-    const tokens = Token.split('=')[1];
-
+    // const tokens = Token.split('=')[1];
     config.headers = {
       'content-type': 'application/json;charset=UTF-8',
       accept: 'application/json',
-      Authorization: `Bearer ${tokens}`,
+      Authorization: `${Token}`,
     };
     return config;
   },
@@ -50,7 +47,7 @@ instance.interceptors.response.use(
     return success;
   },
   error => {
-    console.log(error.response);
+    console.log(error);
 
     if (error.response.status === 403 && error.response.responseMessage === '권한이 없습니다.') {
       window.alert('권한이 없습니다.');
