@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { MainGrid, Image, MainBtn} from '../elements/index';
 // import PostWriteModal from './PostWriteModal';
 import defaultUserImage from '../img/기본프로필사진.png';
+import likeBtn from '../img/like.svg';
 //import { postCreators } from '../redux/modules/post';
 
 const PostList = (props) => {
@@ -34,7 +35,15 @@ const PostList = (props) => {
         </MainGrid>
         {/* 게시글 */}
         <PT>불러뷸랄룰</PT>
-        <MainGrid display="flex" borderTop="1px solid #e4e6eb" borderBottom="1px solid #e4e6eb">
+        <MainGrid display="flex" alignItems="center" justifyContent="space-between">
+          <MainGrid display="flex" alignItems="center" width="85%">
+           <Image src={likeBtn} size="20"/> <p style={{color:"#65676b"}}>1</p>
+          </MainGrid>
+          <p  width="15%" style={{color:"#65676b"}}>
+            댓글 1개
+          </p>
+        </MainGrid>
+        <MainGrid display="flex" borderTop="1px solid #e4e6eb" borderBottom="1px solid #e4e6eb" margin="5px 0">
           <LBtn>
              <Like/>좋아요
           </LBtn>

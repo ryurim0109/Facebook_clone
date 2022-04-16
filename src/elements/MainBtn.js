@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { BsSearch,BsFillTrashFill,BsPencilSquare,BsImages,BsXLg } from "react-icons/bs";
+import { MdPhotoLibrary } from 'react-icons/md';
 
 
 
@@ -25,6 +26,7 @@ const MainBtn =(props) =>{
         is_S,
         is_del,
         is_edit,
+        is_up,
         _disabled} =props;
         
 
@@ -51,6 +53,15 @@ const MainBtn =(props) =>{
                 <EditBox onClick={_onClick}>
                     <Se />
                 </ EditBox>
+            </React.Fragment>
+        )
+    }
+    if(is_up){
+        return (
+            <React.Fragment>
+                <UpBox onClick={_onClick}>
+                    <Library />
+                </ UpBox>
             </React.Fragment>
         )
     }
@@ -181,6 +192,30 @@ const X=styled(BsXLg)`
     color:#050505;
 
 `;
+const UpBox=styled.button`
+    width:41px;
+    height:41px;
+    background:#fff;
+    border-radius:25px;
+    border:none;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    
+
+    &:hover{
+        background:#e0e0e0;
+    }
+`;
+const Library=styled(MdPhotoLibrary)`
+ font-size:24px;
+ color:#45bd62;
+ &:hover{
+        background:#e0e0e0;
+    }
+
+`
 
 
 
