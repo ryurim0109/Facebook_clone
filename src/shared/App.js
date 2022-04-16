@@ -10,8 +10,8 @@ function App() {
     <React.Fragment>
       <ConnectedRouter history={history}>
         <Route path='/' exact component={Login}  />
-        <PrivateRoute path='/main' exact component={Main} />
-        {/* <Route path='/main' exact component={Main} /> */}
+        {/* <PrivateRoute path='/main' exact component={Main} /> */}
+        <Route path='/main' exact component={Main} />
         
       </ConnectedRouter>
     </React.Fragment>

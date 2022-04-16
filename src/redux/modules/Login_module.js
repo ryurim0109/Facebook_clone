@@ -5,9 +5,11 @@ import axios from "axios";
 //action
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
+const SET_USER = "SET_USER";
 
 //action creators
  const setLogin = createAction(LOGIN,(Login) => ({Login}));
+ const setUser = createAction(SET_USER, (user) => ({ user }));
 
 //initialState
 const initialState = {
@@ -53,6 +55,33 @@ const postSignup = (Signup_info) => {
     }
 }
 
+//유저 정보
+const checkUserDB = (token) => {
+    return function (dispatch, getState, { history }) {
+      
+      axios.post(
+        "http://52.79.228.83:8080/api/user/islogin",{
+  
+        },{
+          headers: { Authorization:token, },
+        }
+        ).then((res)=>{
+          console.log(res,"체크")
+          dispatch(
+            setUser(
+             { userName:res.data.userName,
+                userImage:res.data.userImage,
+                is_login:res.data.is_login,
+                userId:res.data.userId,
+                userEmail:res.data.userEmail
+            }
+            )
+          );
+        }).catch((err) => {
+          console.log("체크에러다!!!!", err.response);
+        }); 
+    };
+  };
 // reducer
 export default handleActions(
     {
@@ -64,6 +93,11 @@ export default handleActions(
         produce(state, (draft) => {
             sessionStorage.clear();
         }),
+        [SET_USER]: (state, action) =>
+        produce(state, (draft) => {
+            draft.user = action.payload.user;
+
+      }),
     },
     initialState
   );
@@ -73,6 +107,7 @@ export default handleActions(
 const actionCreators = {
     postLogin,
     postSignup,
+    checkUserDB,
   };
   
 export { actionCreators };

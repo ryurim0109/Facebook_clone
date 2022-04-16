@@ -10,15 +10,15 @@ import { MainGrid, Image, MainBtn} from '../elements/index';
 import defaultUserImage from '../img/기본프로필사진.png';
 import CommentWrite from './CommentWrite';
 import likeBtn from '../img/like.svg';
-//import { postCreators } from '../redux/modules/post';
+import { postCreators as postActions } from '../redux/modules/post';
 
 const PostList = (props) => {
-const [fcstate,setFcstate] = React.useState(false);
-const dispatch = useDispatch();
 
-  // React.useEffect(() => {
-  //   dispatch(postActions.setpostDB());
-  // }, []);
+  const [fcstate,setFcstate] = React.useState(false);
+  const dispatch = useDispatch();
+    const {postId,content, likeCnt,commentCnt,createAt,userImageUrl,postImageUrl,userName,userId,like } =props
+  
+
 
   const [openModal, setModal] = useState(false);
   const modalOpen = () => {
@@ -30,11 +30,11 @@ const dispatch = useDispatch();
       <PostL>
         <MainGrid width="100%"display="flex" justifyContent="start-end" padding="0 16px">
           <MainGrid width="10%" position="relative">
-          <Image src={defaultUserImage} size="36"/>
+          <Image src={userImageUrl==='없음'?defaultUserImage:userImageUrl} size="36"/>
           </MainGrid>
           <MainGrid width="70%" position="relative" >
-            <p style={{fontSize:"15px",color:"#050505"}}> 김미미</p>
-            <p style={{fontSize:"13px",color:"#65676b"}}>1시간전</p>
+            <p style={{fontSize:"15px",color:"#050505"}}> {userName}</p>
+            <p style={{fontSize:"13px",color:"#65676b"}}>{createAt}</p>
           </MainGrid>
           <MainGrid  display="flex" justifyContent="space-between" width="20%" position="relative">
             <MainBtn is_edit _onClick={()=>{
@@ -48,16 +48,16 @@ const dispatch = useDispatch();
         </MainGrid>
         {/* 게시글 */}
         <MainGrid display="flex" height="auto" padding="0 16px">
-        <PT>zlzl</PT>
+        <PT>{content}</PT>
         </MainGrid>
-        <img src="https://i.pinimg.com/474x/98/96/c2/9896c20ac2afa05462e0cb01c79499a0.jpg" alt="이미지"/>
+        <img src={postImageUrl} alt="이미지"/>
        
         <MainGrid display="flex" alignItems="center" justifyContent="space-between" padding="0 16px">
           <MainGrid display="flex" alignItems="center" width="85%">
-           <Image src={likeBtn} size="20"/> <p style={{color:"#65676b"}}>1</p>
+           <Image src={likeBtn} size="20"/> <p style={{color:"#65676b"}}>{likeCnt}</p>
           </MainGrid>
           <p  width="15%" style={{color:"#65676b"}}>
-            댓글 1개
+            댓글 {commentCnt}개
           </p>
         </MainGrid>
         <MainGrid  padding="0 16px">
