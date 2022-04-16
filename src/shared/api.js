@@ -35,9 +35,7 @@ instance.interceptors.request.use(
 //3. 응답 인터셉터
 instance.interceptors.response.use(
   success => {
-    console.log(success);
     const response = success.data;
-    console.log(response.token);
 
     if (response.statusCode === 200 && response.responseMessage === '게시글 조회 성공') {
       return response.posts;
