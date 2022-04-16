@@ -9,10 +9,10 @@ import { FaVideo } from 'react-icons/fa';
 import { MdPhotoLibrary } from 'react-icons/md';
 import { BsFillEmojiLaughingFill } from 'react-icons/bs';
 import defaultUserImage from '../img/기본프로필사진.png';
-import { postCreators as postActions } from '../redux/modules/post';
+import post, { postCreators as postActions } from '../redux/modules/post';
 import {actionCreators as userActions} from '../redux/modules/Login_module';
 
-const PostWrite = (props) => {
+const PostWrite = () => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -22,6 +22,9 @@ const PostWrite = (props) => {
   const user_info=useSelector((state)=>state.user.user);
   const userPro=user_info.userImage;
   const _user=user_info.userName;
+
+
+  
 
 
 const [openModal, setModal] = useState(false);
@@ -37,12 +40,12 @@ const modalOpen = () => {
       <PostWriteWrapper>
         <MainGrid>
           <MainGrid display='flex' flexDirection='row' alignItems='center' justifyContent='space-around;' padding='12px 16px 10px 0'>
-            <Image src={userPro==="없음"? defaultUserImage : userPro} />
+            <Image src={user_info==="없음"? defaultUserImage : userPro} />
             <PostDiv onClick={modalOpen}>
               {_user?_user: 'GUEST'}님, 무슨 생각을 하고 계신가요?
              </PostDiv>
           </MainGrid>
-          <WriteModal openModal={openModal} setModal={setModal} {...user_info} />
+          <WriteModal openModal={openModal} setModal={setModal} />
         </MainGrid>
         <MainGrid width='100%' padding="0 20px"  >
           <MainGrid width='100%' height='40px' display='flex' justifyContent='center' 
