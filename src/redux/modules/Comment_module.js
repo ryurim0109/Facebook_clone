@@ -53,6 +53,7 @@ const getComment = (Comment_info) => {
 // reducer
 export default handleActions(
     {
+       //댓글 가져오기 테스트 추가 진행 필요함
       [ADD_COMMENT]: (state, action) =>
         produce(state, (draft) => {
             console.log(action.payload.content)

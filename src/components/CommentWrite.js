@@ -58,12 +58,6 @@ const Comment_design = styled.div`
         display: flex;
         padding: 5px;
     }
-    /* input{
-        background-color: aliceblue;
-        border-radius: 30px;
-        height: 30px;
-        width: 400px;
-    } */
 `
 const PostDiv=styled.input`
     width:400px;
