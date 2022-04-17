@@ -47,7 +47,7 @@ const CommentWrite = (props) => {
           <PostDiv placeholder='댓글을 입력하세요...' onChange={change_comment} onKeyUp={Entercheck}/>
         </Box>
         </div>
-        <CommentList />
+        <CommentList postId = {postId} />
         </Comment_design>
     );
 }
@@ -58,12 +58,6 @@ const Comment_design = styled.div`
         display: flex;
         padding: 5px;
     }
-    /* input{
-        background-color: aliceblue;
-        border-radius: 30px;
-        height: 30px;
-        width: 400px;
-    } */
 `
 const PostDiv=styled.input`
     width:400px;

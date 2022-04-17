@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
@@ -6,19 +6,26 @@ import styled from 'styled-components';
 import Box from '@mui/material/Box';
 import defaultUserImage from '../img/기본프로필사진.png';
 import {actionCreators as CommentAction} from '../redux/modules/Comment_module'
+import {useInView} from 'react-intersection-observer'
 
 const CommentList = (props) => {
     const comment_list = useSelector((state) => state.Comment.comments);
+    const postIds = props.postId;
     const dispatch = useDispatch();
-    const [pages,setPage] = React.useState(1);
+    const [pages,setPage] = useState(1);
     console.log(comment_list)
 
+    const [loading,setLoding] = useState(false);
+    const [ref,inView] = useInView();
+
+    console.log(postIds)
 
     React.useEffect(() => {
-        dispatch(CommentAction.getComment({postId : pages}));
+        dispatch(CommentAction.getComment({postId : postIds, page : pages}));
     },[pages])
 
     return (
+      <div>
         <Box
         sx={{
           width: 400,
@@ -28,7 +35,7 @@ const CommentList = (props) => {
         }}>
           {comment_list.comments && comment_list.comments.map((el,idx) => {
             return (
-              <Stack key={idx} direction="row" spacing={2} sx={{margin : '8px 0px 0px 75px' }}>
+              <Stack key={idx} direction="row" spacing={2} sx={{margin : '8px 0px 0px 75px' }} >
                 <Avatar sx={{ width: 32, height: 32 }} src={defaultUserImage}/>
                   <Comment_p >
                     <Comment_title>{el.userName}</Comment_title>
@@ -39,6 +46,11 @@ const CommentList = (props) => {
           })
           }
         </Box>
+        <div>
+        <button onClick={()=>setPage((prev)=> prev+1)}>댓글 더보기</button>
+        <p>총 댓글 페이지</p>
+        </div>
+      </div>
     );
 }
 
