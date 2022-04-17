@@ -47,7 +47,7 @@ const CommentWrite = (props) => {
           <PostDiv placeholder='댓글을 입력하세요...' onChange={change_comment} onKeyUp={Entercheck}/>
         </Box>
         </div>
-        <CommentList />
+        <CommentList postId = {postId} />
         </Comment_design>
     );
 }

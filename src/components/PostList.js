@@ -18,6 +18,7 @@ const PostList = (props) => {
   const dispatch = useDispatch();
     const {postId,content, likeCnt,commentCnt,createAt,userImageUrl,postImageUrl,userName,userId,like } =props;
   
+    console.log(postId)
 
 
   const [openModal, setModal] = useState(false);
@@ -69,7 +70,7 @@ const PostList = (props) => {
             <Chat/>댓글달기
           </LBtn>
         </MainGrid>
-        {fcstate && <CommentWrite />}
+        {fcstate && <CommentWrite postId={postId} />}
         </MainGrid>
       </PostL>
     </>

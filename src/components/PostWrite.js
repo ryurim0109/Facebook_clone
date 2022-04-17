@@ -12,9 +12,9 @@ import defaultUserImage from '../img/기본프로필사진.png';
 import post, { postCreators as postActions } from '../redux/modules/post';
 import {actionCreators as userActions} from '../redux/modules/Login_module';
 
-const PostWrite = () => {
+const PostWrite = (props) => {
   const dispatch = useDispatch();
-
+  const PostIds = props.PostId;
   React.useEffect(() => {
     dispatch(userActions.checkUserDB(sessionStorage.getItem('user')))
   }, []);
@@ -23,13 +23,8 @@ const PostWrite = () => {
   const userPro=user_info.userImage;
   const _user=user_info.userName;
 
-
-  
-
-
-const [openModal, setModal] = useState(false);
-const modalOpen = () => {
-  
+  const [openModal, setModal] = useState(false);
+  const modalOpen = () => {
   // dispatch(postCreators.setDetailPostId(null))
   setModal(true);
 };

@@ -12,7 +12,8 @@ const GET_COMMENT = 'GET_COMMENT';
 
 //initialState
 const initialState = {
-    comments : []
+    comments : [],
+    totaLPage : 1,
 }
 
 //댓글 추가요청 
@@ -26,8 +27,7 @@ const postComment = (Comment_info) => {
         ).then(function (response){
             console.log(response)
 
-
-            dispatch(addComment(Comment_info));
+            dispatch(addComment(response.data));
         }).catch(function (error){
             console.log(error)
         })
@@ -39,7 +39,7 @@ const getComment = (Comment_info) => {
     return function (dispatch, getState,{history}){
         console.log('댓글요청 시작')
         console.log(Comment_info)
-        instance.get('/api/comment/' + 1 +'/'+ 1
+        instance.get(`/api/comment/${Comment_info.postId}/${Comment_info.page}`
         ).then(function (response){
             console.log(response)
             dispatch(putComment(response.data));
@@ -56,10 +56,16 @@ export default handleActions(
       [ADD_COMMENT]: (state, action) =>
         produce(state, (draft) => {
             console.log(action.payload.content)
-            // draft.comments.unshift(action.payload.content);
+            console.log(state.comments.comments)
+            state.comments.comments.push(action.payload.content)
+            draft.comments.comments = state.comments.comments
         }),
       [GET_COMMENT]: (state, action) =>
         produce(state, (draft) => {
+          console.log(action.payload.content)
+          console.log(state.comments.comments)
+          if(state.comments.comments)
+            action.payload.content.comments =  state.comments.comments.concat(action.payload.content.comments)
           console.log(action.payload.content)
           draft.comments = action.payload.content;
         }),
