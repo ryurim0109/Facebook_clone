@@ -15,13 +15,13 @@ const WriteModal = (props) => {
   // const detailPost = postList.find(post => post.postId === postId);
 
     const user_info=useSelector((state)=>state.user.user);
-    const userPro=user_info.userImage;
-    const _user=user_info.userName;
+    const userPro=user_info?.userImage;
+    const _user=user_info?.userName;
     const {postId} =props;
     const post_list = useSelector((state)=>state.post.post_list);
     const con= post_list[postId-1]?.content;
     const img= post_list[postId-1]?.postImageUrl;
-    console.log(img)
+   // console.log(img)
 
 
     const { openModal, setModal } = props;
@@ -73,7 +73,26 @@ const WriteModal = (props) => {
     }
     dispatch(postActions.addPostDB(token,content,imageFile));
     setModal(false);
+  }
 
+  const editPost=()=>{
+    if(content.length>100){
+      window.alert('글자수는 100자 이내로 입력해주세요!');
+      return;
+    }
+    if(image === ''){
+      window.alert('사진이 빠졌군요?')
+      return;
+    }
+    let maxSize = 10 * 1024 * 1024;
+    let fileSize=image.size;
+    if(fileSize > maxSize){
+			window.alert("첨부파일 사이즈는 10MB 이내로 등록 가능합니다.");
+      setImageSrc("");
+			return false;
+    }
+    dispatch(postActions.updatePostDB(token,content,imageFile,postId));
+    //setModal(false);
   }
 
   
@@ -102,7 +121,7 @@ const WriteModal = (props) => {
                 <p>{_user}님</p>
             </MainGrid>
             <MainGrid height="30%" overflowY="auto">
-                <TextArea  placeholder="무슨 생각을 하고 계신가요?" value={con} maxlength="200" onChange={(e)=>{
+                <TextArea  placeholder="무슨 생각을 하고 계신가요?" defaultValue={con} maxlength="200" onChange={(e)=>{
                   // console.log(e.target.value);
                   setContent(e.target.value);
                 }}/>
@@ -118,29 +137,18 @@ const WriteModal = (props) => {
                   }} />
                   
                   <label htmlFor='postFileInput' id='inputLabelButton'>
-                  {postId? 
-                  ( <ImageBox>
-                     <img src={img}  alt="이미지미리보기"/>
-                    
-                  </ImageBox>):(<ImageBox>
-                    {imageSrc ? (<img src={imageSrc} alt="이미지미리보기"/>) : (<img src={PreImage}  alt="이미지미리보기"/>) }
-                    </ImageBox>)}
-
-                  {postId? 
-                  ( <ImageBox>
-                     <img src={img}  alt="이미지미리보기"/>
-                  </ImageBox>):
-                  (<ImageBox>
+                    {postId? 
+                    ( <ImageBox>
+                    <img src={imageSrc? imageSrc:img}  alt="이미지미리보기"/>) 
                       
-                    </ImageBox>)}
-                    
-                    
+                    </ImageBox>):(<ImageBox>
+                      {imageSrc ? (<img src={imageSrc} alt="이미지미리보기"/>) : (<img src={PreImage}  alt="이미지미리보기"/>) }
+                      </ImageBox>)}
                   </label>
                 
                
                 </MainGrid>
                 </MainGrid>
-           
                   <MainGrid
                     display='flex'
                     alignItems='center'
@@ -155,10 +163,10 @@ const WriteModal = (props) => {
                         <p>게시물에 추가</p>
                         <MainBtn is_up />
 
-                        
+                   
                   </MainGrid>
                   {postId?
-                  (<MainBtn  width="100%" borderRadius="20px" color="#fff" _onClick={addPost} hover="#3578E5"
+                  (<MainBtn  width="100%" borderRadius="20px" color="#fff" _onClick={editPost} hover="#3578E5"
                   _disabled={(content === "" || !PreImage )? true : false} >
                  수정 </MainBtn>):(<MainBtn  width="100%" borderRadius="20px" color="#fff" _onClick={addPost} hover="#3578E5"
                   _disabled={(content === "" || !PreImage )? true : false}
