@@ -41,7 +41,7 @@ const PostList = (props) => {
              modalOpen(postId)
             }}/>
             <MainBtn is_del _onClick={()=>{
-              console.log('게시물 삭제해요')
+              dispatch(postActions.deletePostDB(postId))
             }}/>
           </MainGrid>
           <WriteModal openModal={openModal} postId={postId} postImageUrl={postImageUrl} content={content} setModal={setModal} />

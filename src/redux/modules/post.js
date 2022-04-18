@@ -1,11 +1,10 @@
 import { createAction, handleActions } from 'redux-actions';
 import { produce } from 'immer';
-import { apis } from '../../shared/api';
-import axios from 'axios';
 import {instance} from '../../shared/api' 
+import axios from 'axios';
 
 const GET_POST = 'GET_POST';
-// const ADD_POST = 'ADD_POST';
+const ADD_POST = 'ADD_POST';
 const UPDATE_POST = 'UPDATE_POST';
 const DELETE_POST = 'DELETE_POST';
 //const CLICK_LIKE = 'CLICK_LIKE';
@@ -13,7 +12,7 @@ const SET_DETAILPOSTID = 'SET_DETAILPOSTID';
 
 
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-// const addPost = createAction(ADD_POST, (post) => ({ post }));
+const addPost = createAction(ADD_POST, (post) => ({ post }));
 const updatePost = createAction(UPDATE_POST, (postId, post) => ({
   postId,
   post,
@@ -40,7 +39,7 @@ const initialState = {
 };
 
 const getPostDB = (pageno,token) => {
-  console.log(pageno);
+  //console.log(pageno);
   return (dispatch) => {
     axios.get(`http://52.79.228.83:8080/api/post/${pageno}`,
     {
@@ -49,7 +48,7 @@ const getPostDB = (pageno,token) => {
       },
     })
       .then((res) => {
-        console.log(res.data.postList,"응답 포스트리스트");
+        //console.log(res.data.postList,"응답 포스트리스트");
         dispatch(getPost(res.data.postList));
       })
       .catch((err) => {
@@ -78,7 +77,7 @@ const addPostDB = (token,content,imageFile) => {
       },
     }).then( (res) =>{
         window.alert('업로드 성공!!');
-        history.push('/main');
+        history.replace('/main');
     }).catch((err)=>{
         console.log('업로드 실패!',err.response)
     })
@@ -86,34 +85,50 @@ const addPostDB = (token,content,imageFile) => {
     
 };
 
-const updatePostDB = (postId, postInfo) => {
+const updatePostDB = (token,content,imageFile,postId) => {
+  
   return (dispatch) => {
-    apis
-      .updatePost(postId, postInfo)
-      .then((res) => {
-        console.log(res);
-        dispatch(updatePost(postId, res.data.posts));
+    const file = new FormData();
+
+    file.append("content", content);
+    file.append("image", imageFile);
+
+    return (dispatch, getState, { history }) => {
+      axios.put(`http://52.79.228.83:8080/api/post/${postId}`,
+      file,{
+        headers: {
+          Authorization: token,
+          "Content-Type":"multipart/form-data",
+        },
+      }).then((res) =>{
+          console.log(content)
+          return;
+          window.alert('수정 성공!!');
+          dispatch(getPost(res.data.postList));
+          history.replace('/main');
+      }).catch((err)=>{
+          console.log('수정 실패!',err.response)
       })
-      .catch((err) => {
-        console.log(err);
-      });
+  }
   };
 };
 
-const deletePostDB= (postId) => {
+const deletePostDB= (postId,token) => {
+  console.log(postId,token)
   return (dispatch) => {
-    apis
-      .deletePost(postId)
-      .then((res) => {
-        console.log(res);
-        if (res === undefined) {
-          return;
-        }
-        dispatch(deletePost(postId));
+    return (dispatch, getState, { history }) => {
+      instance.delete(`/api/post/${postId}`,
+      {
+        headers: {
+          Authorization: token,
+          "Content-Type":"multipart/form-data",
+        },
+      }).then((res) =>{
+          console.log(res)
+      }).catch((err)=>{
+          console.log('삭제 실패!',err.response)
       })
-      .catch((err) => {
-        console.log(err);
-      });
+  }
   };
 };
 
@@ -138,15 +153,15 @@ export default handleActions(
   {
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.post_list);
+        //console.log(action.payload.post_list);
         draft.post_list = action.payload.post_list;
       }),
-    // [ADD_POST]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     console.log(action.payload);
-    //     console.log(draft);
-    //     draft.post_list.unshift(action.payload.post_list);
-    //   }),
+    [ADD_POST]: (state, action) =>
+      produce(state, (draft) => {
+        console.log(action.payload);
+        console.log(draft);
+        draft.post_list.unshift(action.payload.post_list);
+      }),
     [UPDATE_POST]: (state, action) =>
       produce(state, (draft) => {
         let idx = draft.post_list.indexOf(

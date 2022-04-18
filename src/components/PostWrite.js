@@ -20,8 +20,9 @@ const PostWrite = () => {
   }, []);
 
   const user_info=useSelector((state)=>state.user.user);
-  const userPro=user_info.userImage;
-  const _user=user_info.userName;
+  const userPro=user_info?.userImage;
+  const _user=user_info?.userName;
+  //console.log(user_info)
 
 
   
@@ -40,7 +41,7 @@ const modalOpen = () => {
       <PostWriteWrapper>
         <MainGrid>
           <MainGrid display='flex' flexDirection='row' alignItems='center' justifyContent='space-around;' padding='12px 16px 10px 0'>
-            <Image src={user_info==="없음"? defaultUserImage : userPro} />
+            <Image src={userPro==='없음'? defaultUserImage:userPro} />
             <PostDiv onClick={modalOpen}>
               {_user?_user: 'GUEST'}님, 무슨 생각을 하고 계신가요?
              </PostDiv>
