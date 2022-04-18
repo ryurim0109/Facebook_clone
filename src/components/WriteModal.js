@@ -15,6 +15,8 @@ const WriteModal = (props) => {
   // const detailPost = postList.find(post => post.postId === postId);
 
     const user_info=useSelector((state)=>state.user.user);
+    const pageno=useSelector(state => state.Comment.totaLPage)
+    //console.log(pageno)
     const userPro=user_info?.userImage;
     const _user=user_info?.userName;
     const {postId,postImageUrl,content, openModal, setModal} =props;
@@ -44,6 +46,7 @@ const WriteModal = (props) => {
   };
 
   const token = sessionStorage.getItem("user");
+  //console.log(token)
   
 
   const addPost =()=>{
@@ -81,7 +84,7 @@ const WriteModal = (props) => {
 			return false;
     }
 
-    dispatch(postActions.updatePostDB(token,_content,imageFile,postId));
+    dispatch(postActions.updatePostDB(token,_content,imageFile,postId,pageno));
     
    
     //setModal(false);

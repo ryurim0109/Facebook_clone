@@ -13,14 +13,15 @@ const Main =()=>{
   const dispatch =useDispatch()
 
   const post_list =useSelector((state)=>state.post.post_list);
-  //console.log(post_list)
-  const [pageno,setPageno] = React.useState(2);
+  const token = sessionStorage.getItem("user");
+  console.log(token)
+  const [pageno,setPageno] = React.useState(1);
 
 
   React.useEffect(()=>{
-    if(post_list.length< 8){
-      dispatch(postActions.getPostDB(pageno,sessionStorage.getItem('user')));
-    }
+    
+      dispatch(postActions.getPostDB(pageno,token));
+    
     
   },[])
 
