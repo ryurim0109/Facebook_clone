@@ -33,7 +33,7 @@ const CommentList = (props) => {
         sx={{
           width: 400,
           display: 'flex',
-          flexDirection : 'column-reverse',
+          flexDirection : 'column',
           alignItems: 'center',
         }}>
           {comment_list.comments && comment_list.comments.map((el,idx) => {

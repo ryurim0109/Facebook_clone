@@ -5,6 +5,7 @@ import PostWrite from '../components/PostWrite';
 import PostList from '../components/PostList';
 import CommentWrite from '../components/CommentWrite';
 import { useSelector,useDispatch } from 'react-redux';
+import Chatting from '../components/Chatting'
 import {postCreators as postActions} from '../redux/modules/post'
 
 
@@ -14,7 +15,7 @@ const Main =()=>{
 
   const post_list =useSelector((state)=>state.post.post_list);
   //console.log(post_list)
-  const [pageno,setPageno] = React.useState(2);
+  const [pageno,setPageno] = React.useState(1);
 
 
   React.useEffect(()=>{
@@ -28,14 +29,15 @@ const Main =()=>{
         <>
           <MainGrid bg="#F2F3F5">
             <Header />
-           <MainGrid position="relative" top="56px" bg="#f2f3f5">
-              <PostWrite/>
-              {post_list && post_list?.map((c,idx)=>{
-                return <PostList key={idx} {...c} />
-              })}
-              
-            </MainGrid>
+              <MainGrid position="relative" top="56px" bg="#f2f3f5">
+                <PostWrite/>
+                {post_list && post_list?.map((c,idx)=>{
+                  return <PostList key={idx} {...c} />
+                })}
+              </MainGrid>
+            <Chatting />
           </MainGrid>
+          
         </>
       );
 };

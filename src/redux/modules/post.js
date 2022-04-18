@@ -105,7 +105,7 @@ const updatePostDB = (token,content,imageFile,postId) => {
       }).then((res) =>{
           console.log(res);
           return;
-          window.alert('수정 성공!!');
+          alert('수정 성공!!');
           dispatch(getPost());
           history.replace('/main');
       }).catch((err)=>{
