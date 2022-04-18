@@ -6,7 +6,9 @@ import styled from 'styled-components';
 import Box from '@mui/material/Box';
 import defaultUserImage from '../img/기본프로필사진.png';
 import {actionCreators as CommentAction} from '../redux/modules/Comment_module'
-import {useInView} from 'react-intersection-observer'
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 
 const CommentList = (props) => {
     const comment_list = useSelector((state) => state.Comment.comments);
@@ -14,13 +16,14 @@ const CommentList = (props) => {
     const dispatch = useDispatch();
     const [pages,setPage] = useState(1);
     console.log(comment_list)
+    console.log(comment_list)
 
     const [loading,setLoding] = useState(false);
-    const [ref,inView] = useInView();
 
     console.log(postIds)
 
     React.useEffect(() => {
+        console.log('기동')
         dispatch(CommentAction.getComment({postId : postIds, page : pages}));
     },[pages])
 
@@ -46,10 +49,19 @@ const CommentList = (props) => {
           })
           }
         </Box>
-        <div>
-        <button onClick={()=>setPage((prev)=> prev+1)}>댓글 더보기</button>
-        <p>총 댓글 페이지</p>
+        <Footer_div>
+        <div className='footer_container'>
+          <div role="presentation" onClick={()=>setPage((prev)=> prev+1)}>
+            <Breadcrumbs aria-label="breadcrumb">
+              <Link underline="hover" color="inherit">
+                댓글 더보기
+              </Link>
+            </Breadcrumbs>
+          </div>
+          {comment_list.totalPage &&
+          <Typography variant="overline" display="block" gutterBottom>총 {comment_list.totalPage}페이지 중 {pages}페이지 </Typography> }
         </div>
+        </Footer_div>
       </div>
     );
 }
@@ -80,6 +92,14 @@ const Comment_content=styled.p`
   margin-top: 10px;
   font-size: 13px;
   font-weight: lighter;
+`;
+
+const Footer_div = styled.div`
+  .footer_container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 export default CommentList;
