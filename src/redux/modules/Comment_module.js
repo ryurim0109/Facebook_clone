@@ -26,7 +26,6 @@ const postComment = (Comment_info) => {
         Comment_info
         ).then(function (response){
             console.log(response)
-
             dispatch(addComment(response.data));
         }).catch(function (error){
             console.log(error)
@@ -56,8 +55,9 @@ export default handleActions(
        //댓글 가져오기 테스트 추가 진행 필요함
       [ADD_COMMENT]: (state, action) =>
         produce(state, (draft) => {
-            const arrays = state.comments.comments.concat(action.payload.content)
-             draft.comments.comments = arrays
+            const arrays = [...state.comments.comments] //state를 배열로 복사 
+            arrays.unshift(action.payload.content); //복사한 배열에 첫번쨰 요소에 신규 comment 추가 
+            draft.comments.comments = arrays 
         }),
       [GET_COMMENT]: (state, action) =>
         produce(state, (draft) => {

@@ -99,8 +99,8 @@ const updatePostDB = (token,content,imageFile,postId) => {
         },
       }).then((res) =>{
           console.log(res);
+
           window.alert('수정 성공!!');
-          //dispatch(getPost());
           history.replace('/main');
       }).catch((err)=>{
           console.log('수정 실패!',err.response)
