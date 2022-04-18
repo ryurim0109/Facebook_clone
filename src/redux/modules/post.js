@@ -56,7 +56,7 @@ const getPostDB = (pageno) => {
 };
 
 const addPostDB = (token,content,imageFile,pageno) => {
-  console.log(token,content,imageFile);
+  //console.log(token,content,imageFile);
   
 
   const file = new FormData();
@@ -135,16 +135,22 @@ const deletePostDB= (postId,pageno) => {
   };
 
 
-const clickLikeDB = (postId) => {
+const clickLikeDB = (postId,pageno) => {
   return (dispatch) => {
     instance
       .post(`/api/post/like/${postId}`)
       .then((res) => {
-        console.log(res);
+
+        if(res.data===true){
+          window.alert('좋아요를 누르셨습니다.')
+        }else{
+          window.alert('좋아요를 취소했습니다.')
+        }
+        
         // if (res.status !== 200) {
         //   return;
         // }
-        dispatch(clickLike(postId));
+        dispatch(getPostDB(pageno))
       })
       .catch((err) => {
         console.log(err);
