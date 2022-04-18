@@ -56,18 +56,13 @@ export default handleActions(
        //댓글 가져오기 테스트 추가 진행 필요함
       [ADD_COMMENT]: (state, action) =>
         produce(state, (draft) => {
-            console.log(action.payload.content)
-            console.log(state.comments.comments)
-            state.comments.comments.push(action.payload.content)
-            draft.comments.comments = state.comments.comments
+            const arrays = state.comments.comments.concat(action.payload.content)
+             draft.comments.comments = arrays
         }),
       [GET_COMMENT]: (state, action) =>
         produce(state, (draft) => {
-          console.log(action.payload.content)
-          console.log(state.comments.comments)
           if(state.comments.comments)
             action.payload.content.comments =  state.comments.comments.concat(action.payload.content.comments)
-          console.log(action.payload.content)
           draft.comments = action.payload.content;
         }),
     },
