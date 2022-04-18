@@ -17,6 +17,7 @@ const PostList = (props) => {
   const [fcstate,setFcstate] = React.useState(false);
   const dispatch = useDispatch();
   const {postId,content, likeCnt,commentCnt,createAt,userImageUrl,postImageUrl,userName,userId,like } =props;
+  const pageno=useSelector(state => state.post.page)
   const user_info=useSelector((state)=>state.user.user);
   
   const is_me = userName === user_info?.userName;
@@ -44,7 +45,10 @@ const PostList = (props) => {
              modalOpen(postId)
             }}/>
             <MainBtn is_del _onClick={()=>{
-              dispatch(postActions.deletePostDB(postId))
+               window.confirm("게시물을 삭제하시겠습니까?")
+               ? dispatch(postActions.deletePostDB(postId,pageno))
+               : window.alert("삭제가 취소되었습니다");
+              
             }}/>
           
           </MainGrid>}
@@ -66,7 +70,9 @@ const PostList = (props) => {
         </MainGrid>
         <MainGrid  padding="0 16px">
         <MainGrid display="flex" borderTop="1px solid #e4e6eb" borderBottom="1px solid #e4e6eb" margin="5px 0">
-          <LBtn>
+          <LBtn onClick={()=>{
+            dispatch(postActions.clickLikeDB(postId))
+          }}>
              <Like/>좋아요
           </LBtn>
           <LBtn onClick={() => {setFcstate((prev) => !prev)}}>
