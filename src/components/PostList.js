@@ -16,9 +16,10 @@ const PostList = (props) => {
 
   const [fcstate,setFcstate] = React.useState(false);
   const dispatch = useDispatch();
-    const {postId,content, likeCnt,commentCnt,createAt,userImageUrl,postImageUrl,userName,userId,like } =props;
+  const {postId,content, likeCnt,commentCnt,createAt,userImageUrl,postImageUrl,userName,userId,like } =props;
+  const user_info=useSelector((state)=>state.user.user);
   
-    console.log(postId)
+  const is_me = userName === user_info?.userName;
 
 
   const [openModal, setModal] = useState(false);
@@ -37,6 +38,7 @@ const PostList = (props) => {
             <p style={{fontSize:"15px",color:"#050505"}}> {userName}</p>
             <p style={{fontSize:"13px",color:"#65676b"}}>{createAt}</p>
           </MainGrid>
+          {is_me &&  
           <MainGrid  display="flex" justifyContent="space-between" width="20%" position="relative">
             <MainBtn is_edit  _onClick={()=>{
              modalOpen(postId)
@@ -44,8 +46,9 @@ const PostList = (props) => {
             <MainBtn is_del _onClick={()=>{
               dispatch(postActions.deletePostDB(postId))
             }}/>
-          </MainGrid>
-          <WriteModal openModal={openModal} postId={postId} postImageUrl={postImageUrl} content={content} setModal={setModal} />
+          
+          </MainGrid>}
+          <WriteModal openModal={openModal} userName={userName} postId={postId} postImageUrl={postImageUrl} content={content} setModal={setModal} />
         </MainGrid>
         {/* 게시글 */}
         <MainGrid display="flex" height="auto" padding="0 16px">
@@ -101,7 +104,7 @@ const PostL=styled.div`
   }
 `;
 const PT=styled.p`
-  font-size:24px;
+  font-size:16px;
 
 `;
 

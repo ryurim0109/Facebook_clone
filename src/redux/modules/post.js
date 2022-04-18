@@ -75,8 +75,9 @@ const addPostDB = (token,content,imageFile) => {
         Authorization: token,
         "Content-Type":"multipart/form-data",
       },
-    }).then( (res) =>{
+    }).then((res) =>{
         window.alert('업로드 성공!!');
+        dispatch(getPost());
         history.replace('/main');
     }).catch((err)=>{
         console.log('업로드 실패!',err.response)
@@ -86,6 +87,7 @@ const addPostDB = (token,content,imageFile) => {
 };
 
 const updatePostDB = (token,content,imageFile,postId) => {
+  console.log(content,imageFile)
   
   return (dispatch) => {
     const file = new FormData();
@@ -101,10 +103,10 @@ const updatePostDB = (token,content,imageFile,postId) => {
           "Content-Type":"multipart/form-data",
         },
       }).then((res) =>{
-          console.log(content)
+          console.log(res);
           return;
           window.alert('수정 성공!!');
-          dispatch(getPost(res.data.postList));
+          dispatch(getPost());
           history.replace('/main');
       }).catch((err)=>{
           console.log('수정 실패!',err.response)
@@ -113,18 +115,15 @@ const updatePostDB = (token,content,imageFile,postId) => {
   };
 };
 
-const deletePostDB= (postId,token) => {
-  console.log(postId,token)
+const deletePostDB= (postId) => {
+  console.log(postId)
   return (dispatch) => {
     return (dispatch, getState, { history }) => {
-      instance.delete(`/api/post/${postId}`,
-      {
-        headers: {
-          Authorization: token,
-          "Content-Type":"multipart/form-data",
-        },
-      }).then((res) =>{
-          console.log(res)
+      instance.delete(`/api/post/${postId}`)
+      .then((res) =>{
+          //console.log(res)
+          dispatch(getPost());
+          history.replace('/main');
       }).catch((err)=>{
           console.log('삭제 실패!',err.response)
       })
@@ -158,8 +157,6 @@ export default handleActions(
       }),
     [ADD_POST]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload);
-        console.log(draft);
         draft.post_list.unshift(action.payload.post_list);
       }),
     [UPDATE_POST]: (state, action) =>
@@ -168,10 +165,6 @@ export default handleActions(
           (p) => p.postId === action.payload.postId
         );
         draft.post_list[idx + 1] = action.payload.post;
-      }),
-    [SET_DETAILPOSTID]: (state, action) =>
-      produce(state, (draft) => {
-        draft.detailPostId = action.payload.postId;
       }),
     [DELETE_POST]: (state, action) =>
       produce(state, (draft) => {

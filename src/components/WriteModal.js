@@ -17,14 +17,8 @@ const WriteModal = (props) => {
     const user_info=useSelector((state)=>state.user.user);
     const userPro=user_info?.userImage;
     const _user=user_info?.userName;
-    const {postId} =props;
-    const post_list = useSelector((state)=>state.post.post_list);
-    const con= post_list[postId-1]?.content;
-    const img= post_list[postId-1]?.postImageUrl;
-   // console.log(img)
-
-
-    const { openModal, setModal } = props;
+    const {postId,postImageUrl,content, openModal, setModal} =props;
+  
 
   const modalClose = () => {
     // console.log(detailPost)
@@ -32,9 +26,8 @@ const WriteModal = (props) => {
   };
 
   const [imageSrc, setImageSrc] = useState("");
-  const [imageFile, setImageFile] = useState(null);
-  const [image, setImage] = useState('');
-  const [content, setContent] = useState(postId?post_list[postId]?.content:"");
+  const [imageFile, setImageFile] = useState("");
+  const [_content, setContent] = useState(postId?content:"");
   
   //사진 미리보기
   const encodeFileToBase64 = (fileBlob) => {
@@ -55,43 +48,42 @@ const WriteModal = (props) => {
 
   const addPost =()=>{
     //글자수 100자 제한
-    if(content.length>100){
+    if(_content.length>100){
       window.alert('글자수는 100자 이내로 입력해주세요!');
       return;
     }
-    if(image === ''){
+    if(imageFile === ''){
       window.alert('사진이 빠졌군요?')
       return;
     }
     //이미지 10mb제한
     let maxSize = 10 * 1024 * 1024;
-    let fileSize=image.size;
+    let fileSize=imageFile.size;
     if(fileSize > maxSize){
 			window.alert("첨부파일 사이즈는 10MB 이내로 등록 가능합니다.");
       setImageSrc("");
 			return false;
     }
-    dispatch(postActions.addPostDB(token,content,imageFile));
+    dispatch(postActions.addPostDB(token,_content,imageFile));
     setModal(false);
   }
 
   const editPost=()=>{
-    if(content.length>100){
+    if(_content.length>100){
       window.alert('글자수는 100자 이내로 입력해주세요!');
       return;
     }
-    if(image === ''){
-      window.alert('사진이 빠졌군요?')
-      return;
-    }
     let maxSize = 10 * 1024 * 1024;
-    let fileSize=image.size;
+    let fileSize=imageFile.size;
     if(fileSize > maxSize){
 			window.alert("첨부파일 사이즈는 10MB 이내로 등록 가능합니다.");
       setImageSrc("");
 			return false;
     }
-    dispatch(postActions.updatePostDB(token,content,imageFile,postId));
+
+    dispatch(postActions.updatePostDB(token,_content,imageFile,postId));
+    
+   
     //setModal(false);
   }
 
@@ -121,7 +113,7 @@ const WriteModal = (props) => {
                 <p>{_user}님</p>
             </MainGrid>
             <MainGrid height="30%" overflowY="auto">
-                <TextArea  placeholder="무슨 생각을 하고 계신가요?" defaultValue={con} maxlength="200" onChange={(e)=>{
+                <TextArea  placeholder="무슨 생각을 하고 계신가요?" defaultValue={content} maxlength="200" onChange={(e)=>{
                   // console.log(e.target.value);
                   setContent(e.target.value);
                 }}/>
@@ -130,16 +122,15 @@ const WriteModal = (props) => {
                   position='relative'
                   overflowY="scroll"
                 >
-                 <input type='file' id='postFileInput'  style={{display:"none"}}  name="postFileInput" accept="image/jpeg, image/png, image/jpg"  onChange={(e)=>{
+                 <input type='file' id='postFileInput'  style={{display:"none"}} name="postFileInput" accept="image/jpeg, image/png, image/jpg"  onChange={(e)=>{
                   encodeFileToBase64(e.target.files[0]);
                   setImageFile(e.target.files[0]);
-                  setImage(e.target.files[0]);
                   }} />
                   
                   <label htmlFor='postFileInput' id='inputLabelButton'>
                     {postId? 
                     ( <ImageBox>
-                    <img src={imageSrc? imageSrc:img}  alt="이미지미리보기"/>) 
+                    <img src={imageSrc? imageSrc:postImageUrl}  alt="이미지미리보기"/>) 
                       
                     </ImageBox>):(<ImageBox>
                       {imageSrc ? (<img src={imageSrc} alt="이미지미리보기"/>) : (<img src={PreImage}  alt="이미지미리보기"/>) }
@@ -167,9 +158,9 @@ const WriteModal = (props) => {
                   </MainGrid>
                   {postId?
                   (<MainBtn  width="100%" borderRadius="20px" color="#fff" _onClick={editPost} hover="#3578E5"
-                  _disabled={(content === "" || !PreImage )? true : false} >
+                  >
                  수정 </MainBtn>):(<MainBtn  width="100%" borderRadius="20px" color="#fff" _onClick={addPost} hover="#3578E5"
-                  _disabled={(content === "" || !PreImage )? true : false}
+                  // _disabled={(_content === "" || !PreImage )? true : false}
                  >
                  게시
                 </MainBtn>)
