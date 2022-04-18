@@ -39,16 +39,11 @@ const initialState = {
 };
 
 const getPostDB = (pageno,token) => {
-  //console.log(pageno);
+  console.log(token);
   return (dispatch) => {
-    axios.get(`http://52.79.228.83:8080/api/post/${pageno}`,
-    {
-      headers: {
-        Authorization: token
-      },
-    })
+    instance.get(`/api/post/${pageno}`)
       .then((res) => {
-        //console.log(res.data.postList,"응답 포스트리스트");
+        console.log(res.data.postList,"응답 포스트리스트");
         dispatch(getPost(res.data.postList));
       })
       .catch((err) => {
@@ -57,7 +52,7 @@ const getPostDB = (pageno,token) => {
   };
 };
 
-const addPostDB = (token,content,imageFile) => {
+const addPostDB = (token,content,imageFile,pageno) => {
   console.log(token,content,imageFile);
   
 
@@ -77,7 +72,7 @@ const addPostDB = (token,content,imageFile) => {
       },
     }).then((res) =>{
         window.alert('업로드 성공!!');
-        dispatch(getPost());
+        console.log(res)
         history.replace('/main');
     }).catch((err)=>{
         console.log('업로드 실패!',err.response)
@@ -104,9 +99,8 @@ const updatePostDB = (token,content,imageFile,postId) => {
         },
       }).then((res) =>{
           console.log(res);
-          return;
-          alert('수정 성공!!');
-          dispatch(getPost());
+
+          window.alert('수정 성공!!');
           history.replace('/main');
       }).catch((err)=>{
           console.log('수정 실패!',err.response)
@@ -116,20 +110,19 @@ const updatePostDB = (token,content,imageFile,postId) => {
 };
 
 const deletePostDB= (postId) => {
-  console.log(postId)
-  return (dispatch) => {
+  
     return (dispatch, getState, { history }) => {
+      console.log(postId)
       instance.delete(`/api/post/${postId}`)
       .then((res) =>{
-          //console.log(res)
-          dispatch(getPost());
-          history.replace('/main');
+          console.log(res)
+         // history.replace('/main');
       }).catch((err)=>{
           console.log('삭제 실패!',err.response)
       })
   }
   };
-};
+
 
 // const clickLikeMiddleware = (postId) => {
 //   return (dispatch) => {

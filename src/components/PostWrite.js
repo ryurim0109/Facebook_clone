@@ -14,7 +14,7 @@ import {actionCreators as userActions} from '../redux/modules/Login_module';
 
 const PostWrite = (props) => {
   const dispatch = useDispatch();
-  const PostIds = props.PostId;
+  
   React.useEffect(() => {
     dispatch(userActions.checkUserDB(sessionStorage.getItem('user')))
   }, []);
