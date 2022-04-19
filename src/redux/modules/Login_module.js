@@ -26,7 +26,9 @@ const postLogin = (Login_info) => {
     return function (dispatch, getState,{history}){
         console.log('로그인 시작')
         console.log(Login_info)
-        axios.post('http://52.79.228.83:8080/user/login',
+        //15.164.96.141:8080
+        //52.79.228.83:8080
+        axios.post('http://15.164.96.141:8080/user/login',
         Login_info
         ).then(function (response){
             alert('로그인 성공')
@@ -45,7 +47,7 @@ const postLogin = (Login_info) => {
 const postSignup = (Signup_info) => {
     return function (dispatch, getState, {history}){
         console.log(Signup_info)
-        axios.post('http://52.79.228.83:8080/user/signup',
+        axios.post('http://15.164.96.141:8080/user/signup',
         Signup_info
         ).then(function (response){
             console.log(response)
