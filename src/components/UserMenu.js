@@ -132,6 +132,7 @@ const UserB=styled.div`
      background:#F5F6F7;
      text-align:center;
      font-size:15px;
+     cursor:pointer;
     
   `;
   const SaveBtn=styled.button`
@@ -140,6 +141,7 @@ const UserB=styled.div`
     font-size:15px;
     margin:0 10px;
     background:#F5F6F7;
+    cursor:pointer;
   
   `;
   const Btn=styled.button`

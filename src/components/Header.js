@@ -6,12 +6,18 @@ import defaultUserImage from '../img/logo.png';
 import {AiFillHome} from 'react-icons/ai';
 import { CgMenuGridO } from "react-icons/cg";
 import UserMenu from './UserMenu';
+import Search from './Search';
 
 
 
 const Header =(props)=>{
 
   const [userBox,setUserBox] = React.useState(false);
+  const [searchBox, setSearchBox] = React.useState(false);
+  const SearchOpen = () => {
+  // dispatch(postCreators.setDetailPostId(null))
+  setSearchBox(true);
+};
     return (
         <>
         
@@ -22,7 +28,8 @@ const Header =(props)=>{
                       history.push('/main')
                   }}
                 />
-                <MainBtn is_S />
+                <MainBtn is_S  _onClick={SearchOpen}/>
+                {searchBox && <Search searchBox={searchBox} setSearchBox={setSearchBox}/>}
             </Logo>
             <Middle>
               <div className="s">
