@@ -5,7 +5,6 @@ import PostWrite from '../components/PostWrite';
 import PostList from '../components/PostList';
 import CommentWrite from '../components/CommentWrite';
 import { useSelector,useDispatch } from 'react-redux';
-// import Chatting from '../components/Chatting'
 import {postCreators as postActions} from '../redux/modules/post';
 import Spinner from '../components/Spinner';
 

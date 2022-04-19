@@ -11,14 +11,20 @@ const options = [
   
   const ITEM_HEIGHT = 48;
   
-  const CommentSubmenu = () => {
+  const CommentSubmenu = (props) => {
+    console.log(props)
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
-    const handleClose = () => {
-      setAnchorEl(null);
+    const handleClose = (event) => {
+      console.log('클릭')
+      console.log(event.target.value)
+      if(event.target.value == '0')
+        console.log('수정')
+      else if(event.target.value == '1')
+        console.log('삭제')
     };
   
     return (
@@ -48,9 +54,9 @@ const options = [
             },
           }}
         >
-          {options.map((option) => (
-            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-              {option}
+          {options.map((option,idx) => (
+            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose} value={idx}>
+            {option}
             </MenuItem>
           ))}
         </Menu>

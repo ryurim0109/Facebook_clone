@@ -9,13 +9,14 @@ import {actionCreators as CommentAction} from '../redux/modules/Comment_module'
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
+import CommentSubmenu from './CommentSubmenu';
 
 const CommentList = (props) => {
-    const comment_list = useSelector((state) => state.Comment);
+    const comment_list = useSelector((state) => state.Comment.comments);
     const postIds = props.postId;
     const dispatch = useDispatch();
     const [pages,setPage] = useState(1);
-    console.log(comment_list)
+    const [updates, setUpdate] = useState(false);
     console.log(comment_list)
 
     const [loading,setLoding] = useState(false);
@@ -31,7 +32,7 @@ const CommentList = (props) => {
       <div>
         <Box
         sx={{
-          width: 400,
+          width: 425,
           display: 'flex',
           flexDirection : 'column',
           alignItems: 'center',
@@ -41,9 +42,19 @@ const CommentList = (props) => {
               <Stack key={idx} direction="row" spacing={2} sx={{margin : '8px 0px 0px 75px' }} >
                 <Avatar sx={{ width: 32, height: 32 }} src={defaultUserImage}/>
                   <Comment_p >
-                    <Comment_title>{el.userName}</Comment_title>
+                  <Comment_title>{el.userName}</Comment_title>
+                    {updates ?
+                    <Input_styles type='text'/>
+                    :
                     <Comment_content>{el.content}</Comment_content>
+                    }
                   </Comment_p>
+                  <Button_styles>
+                      <button onClick={() => {setUpdate((prev)=> prev+1)}}>수정</button>
+                      <button onClick={() => {
+                         dispatch(CommentAction.DelComment({postId : el.postId, commentid : el.commentId}));
+                      }}>삭제</button>
+                  </Button_styles>
               </Stack>
             );  
           })
@@ -67,7 +78,7 @@ const CommentList = (props) => {
 }
 
 const Comment_p=styled.div`
-    width:395px;
+    width:365px;
     height:auto;
     background-color:#eee;
     color:#67696d;
@@ -101,5 +112,20 @@ const Footer_div = styled.div`
     align-items: center;
   }
 `;
+
+const Input_styles = styled.input`
+  border:none;
+  border-right:0px; 
+  border-top:0px; 
+  boder-left:0px; 
+  boder-bottom:0px;
+  background-color: transparent;
+`
+
+const Button_styles = styled.div`
+  Button{
+    margin: 5px;
+  }
+`
 
 export default CommentList;

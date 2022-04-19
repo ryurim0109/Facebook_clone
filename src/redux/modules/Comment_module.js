@@ -5,10 +5,12 @@ import {instance} from '../../shared/api'
 //action
 const ADD_COMMENT = 'ADD_COMMENT';
 const GET_COMMENT = 'GET_COMMENT';
+const DEL_COMMENT = 'DEL_COMMENT';
 
 //action creators
  const addComment = createAction(ADD_COMMENT,(content) => ({content}));
  const putComment = createAction(GET_COMMENT,(content) => ({content}));
+ const deleteComment = createAction(DEL_COMMENT,(content) => ({content}));
 
 //initialState
 const initialState = {
@@ -48,11 +50,24 @@ const getComment = (Comment_info) => {
     }
 }
 
+const DelComment = (Comment_info) => {
+    return function(dispatch,getState,{history}){
+        console.log(Comment_info)
+        instance.delete(`/api/comment/${Comment_info.commentid}`,{
+            commentId : Comment_info.commentId
+        }).then(function (response){
+            console.log(response)
+            dispatch(deleteComment(Comment_info.commentid))
+        }).catch(function (error){
+            console.log(error)
+        })
+    }
+}
+
 
 // reducer
 export default handleActions(
     {
-       //댓글 가져오기 테스트 추가 진행 필요함
       [ADD_COMMENT]: (state, action) =>
         produce(state, (draft) => {
             const arrays = [...state.comments.comments] //state를 배열로 복사 
@@ -65,6 +80,15 @@ export default handleActions(
             action.payload.content.comments =  state.comments.comments.concat(action.payload.content.comments)
           draft.comments = action.payload.content;
         }),
+      [DEL_COMMENT]: (state, action) =>
+        produce(state, (draft) => {
+            console.log(action.payload.content)
+            const indexs = state.comments.comments.findIndex(el => el.commentId === action.payload.content)
+            console.log(indexs)
+            const arrays = [...state.comments.comments];
+            arrays.splice(indexs,1);
+            draft.comments.comments = arrays;
+        }),
     },
     initialState
   );
@@ -74,6 +98,7 @@ export default handleActions(
 const actionCreators = {
     postComment,
     getComment,
+    DelComment
   };
   
 export { actionCreators };

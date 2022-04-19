@@ -26,6 +26,10 @@ const postLogin = (Login_info) => {
     return function (dispatch, getState,{history}){
         console.log('로그인 시작')
         console.log(Login_info)
+
+        //15.164.96.141:8080
+        //52.79.228.83:8080
+
         axios.post('http://15.164.96.141:8080/user/login',
         Login_info
         ).then(function (response){
