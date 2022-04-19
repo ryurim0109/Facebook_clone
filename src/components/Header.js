@@ -51,7 +51,7 @@ const Header =(props)=>{
                 </svg>
               </div>
             </Middle>
-            <MainGrid display="flex"alignItems="center" width="240px" padding="0 36px 0 0" position="relative">
+            <MainGrid display="flex"alignItems="center" width="240px" padding="0 16px 0 0" position="relative">
             <Btn>
               <CgMenuGridO  style={{fontSize:"28px"}}/>
               </Btn>
