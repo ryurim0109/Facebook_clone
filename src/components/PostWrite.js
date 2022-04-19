@@ -9,7 +9,7 @@ import { FaVideo } from 'react-icons/fa';
 import { MdPhotoLibrary } from 'react-icons/md';
 import { BsFillEmojiLaughingFill } from 'react-icons/bs';
 import defaultUserImage from '../img/기본프로필사진.png';
-import post, { postCreators as postActions } from '../redux/modules/post';
+import { postCreators as postActions } from '../redux/modules/post';
 import {actionCreators as userActions} from '../redux/modules/Login_module';
 
 const PostWrite = (props) => {

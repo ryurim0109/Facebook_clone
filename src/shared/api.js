@@ -16,6 +16,7 @@ instance.interceptors.request.use(
   config => {
     const Token = sessionStorage.getItem('user');
     if (Token === '') {
+      window.alert('로그인을 먼저 해주세요!')
       return config;
     }
     // const tokens = Token.split('=')[1];
