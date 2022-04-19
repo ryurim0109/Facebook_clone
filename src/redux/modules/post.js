@@ -67,7 +67,7 @@ const addPostDB = (token,content,imageFile,pageno) => {
   //   console.log(value);
   // }
   return (dispatch, getState, { history }) => {
-    axios.post(`http://15.164.96.141:8080/api/post`,
+    axios.post(`http://52.79.228.83:8080/api/post`,
     file,{
       headers: {
         Authorization: token,
@@ -97,7 +97,7 @@ const updatePostDB = (token,content,imageFile,postId,pageno) => {
     file.append("image", imageFile);
 
     return (dispatch, getState, { history }) => {
-      axios.put(`http://15.164.96.141:8080/api/post/${postId}`,
+      axios.put(`http://52.79.228.83:8080/api/post/${postId}`,
       file,{
         headers: {
           Authorization: token,
