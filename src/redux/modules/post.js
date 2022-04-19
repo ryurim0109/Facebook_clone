@@ -83,8 +83,6 @@ export const getSearchDB = (username,pageno) => {
 
 const addPostDB = (token,content,imageFile,pageno) => {
   //console.log(token,content,imageFile);
-  
-
   const file = new FormData();
 
   file.append("content", content);
@@ -93,9 +91,6 @@ const addPostDB = (token,content,imageFile,pageno) => {
   //   console.log(value);
   // }
   return (dispatch, getState, { history }) => {
-
-    axios.post(`http://15.164.96.141/api/post`,
-
     //15.164.96.141:8080
     //52.79.228.83:8080
     axios.post(`http://15.164.96.141:8080/api/post`,
