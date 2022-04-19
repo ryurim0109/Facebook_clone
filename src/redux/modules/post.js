@@ -7,18 +7,18 @@ const GET_POST = 'GET_POST';
 const ADD_POST = 'ADD_POST';
 const UPDATE_POST = 'UPDATE_POST';
 const DELETE_POST = 'DELETE_POST';
-//const CLICK_LIKE = 'CLICK_LIKE';
+const CLICK_LIKE = 'CLICK_LIKE';
 const SET_DETAILPOSTID = 'SET_DETAILPOSTID';
 
 
-const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const addPost = createAction(ADD_POST, (post) => ({ post }));
+const getPost = createAction(GET_POST, (post_list,page) => ({ post_list,page }));
+const addPost = createAction(ADD_POST, (post_list) => ({ post_list }));
 const updatePost = createAction(UPDATE_POST, (postId, post) => ({
   postId,
   post,
 }));
 const deletePost = createAction(DELETE_POST, (postId) => ({ postId }));
-//const clickLike = createAction(CLICK_LIKE, (postId) => ({ postId }));
+const clickLike = createAction(CLICK_LIKE, (postId) => ({ postId }));
 
 const setDetailPostId = createAction(SET_DETAILPOSTID, (postId) => ({
   postId,
@@ -35,25 +35,28 @@ const initialState = {
     userName:"키키키",
     userId:1,
     like:"false"
-  }]
+  },],
+  totalPage:{start :null,next:null,size:7}
 };
 
-const getPostDB = (pageno,token) => {
-  console.log(token);
+const getPostDB = (pageno) => {
+  //console.log(token);
   return (dispatch) => {
     instance.get(`/api/post/${pageno}`)
       .then((res) => {
         console.log(res.data.postList,"응답 포스트리스트");
-        dispatch(getPost(res.data.postList));
+        console.log(res.data.totalPage)
+        dispatch(getPost(res.data.postList,res.data.totalPage));
       })
       .catch((err) => {
         console.log(err.response,"게시글 가져오기 오류");
+        console.log(err,"게시글 가져오기 오류");
       });
   };
 };
 
 const addPostDB = (token,content,imageFile,pageno) => {
-  console.log(token,content,imageFile);
+  //console.log(token,content,imageFile);
   
 
   const file = new FormData();
@@ -71,9 +74,12 @@ const addPostDB = (token,content,imageFile,pageno) => {
         "Content-Type":"multipart/form-data",
       },
     }).then((res) =>{
-        window.alert('업로드 성공!!');
-        console.log(res)
-        history.replace('/main');
+      console.log(res.data)
+      dispatch(addPost(res.data));
+      //   window.alert('업로드 성공!!');
+      //   console.log(res)
+      //  dispatch(getPostDB(pageno))
+      history.push('/main');
     }).catch((err)=>{
         console.log('업로드 실패!',err.response)
     })
@@ -81,10 +87,10 @@ const addPostDB = (token,content,imageFile,pageno) => {
     
 };
 
-const updatePostDB = (token,content,imageFile,postId) => {
-  console.log(content,imageFile)
+const updatePostDB = (token,content,imageFile,postId,pageno) => {
+  //console.log(content,imageFile)
   
-  return (dispatch) => {
+  
     const file = new FormData();
 
     file.append("content", content);
@@ -98,25 +104,30 @@ const updatePostDB = (token,content,imageFile,postId) => {
           "Content-Type":"multipart/form-data",
         },
       }).then((res) =>{
-          console.log(res);
+          console.log(res.image);
+          console.log(postId);
+          console.log(content);
 
           window.alert('수정 성공!!');
+          
+          dispatch(getPostDB(pageno))
           history.replace('/main');
       }).catch((err)=>{
           console.log('수정 실패!',err.response)
       })
   }
   };
-};
 
-const deletePostDB= (postId) => {
+const deletePostDB= (postId,pageno) => {
   
     return (dispatch, getState, { history }) => {
       console.log(postId)
       instance.delete(`/api/post/${postId}`)
       .then((res) =>{
+          window.alert('삭제성공')
           console.log(res)
-         // history.replace('/main');
+          dispatch(getPostDB(pageno))
+         history.push('/main');
       }).catch((err)=>{
           console.log('삭제 실패!',err.response)
       })
@@ -124,22 +135,28 @@ const deletePostDB= (postId) => {
   };
 
 
-// const clickLikeMiddleware = (postId) => {
-//   return (dispatch) => {
-//     apis
-//       .clickLike(postId)
-//       .then((res) => {
-//         console.log(res);
-//         if (res.status !== 200) {
-//           return;
-//         }
-//         dispatch(clickLike(postId));
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
-// };
+const clickLikeDB = (postId,pageno) => {
+  return (dispatch) => {
+    instance
+      .post(`/api/post/like/${postId}`)
+      .then((res) => {
+
+        if(res.data===true){
+          window.alert('좋아요를 누르셨습니다.')
+        }else{
+          window.alert('좋아요를 취소했습니다.')
+        }
+        
+        // if (res.status !== 200) {
+        //   return;
+        // }
+        dispatch(getPostDB(pageno))
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
 
 export default handleActions(
   {
@@ -147,6 +164,7 @@ export default handleActions(
       produce(state, (draft) => {
         //console.log(action.payload.post_list);
         draft.post_list = action.payload.post_list;
+        draft.page = action.payload.page;
       }),
     [ADD_POST]: (state, action) =>
       produce(state, (draft) => {
@@ -169,23 +187,23 @@ export default handleActions(
         });
         draft.postList = editArr;
       }),
-    // [CLICK_LIKE]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     let numArr = [];
-    //     draft.postList.filter((val, idx) => {
-    //       if (val.postId === action.payload.postId) {
-    //         return numArr.push(idx);
-    //       }
-    //     });
-    //     console.log(numArr[0]);
-    //     if (draft.postList[numArr[0]].liked === true) {
-    //       draft.postList[numArr[0]].likeCount -= 1;
-    //       draft.postList[numArr[0]].liked = false;
-    //     } else {
-    //       draft.postList[numArr[0]].likeCount += 1;
-    //       draft.postList[numArr[0]].liked = true;
-    //     }
-    //   }),
+    [CLICK_LIKE]: (state, action) =>
+      produce(state, (draft) => {
+        let numArr = [];
+        draft.post_List.filter((val, idx) => {
+          if (val.postId === action.payload.postId) {
+            return numArr.push(idx);
+          }
+        });
+        console.log(numArr[0]);
+        if (draft.post_List[numArr[0]].liked === true) {
+          draft.post_List[numArr[0]].likeCount -= 1;
+          draft.post_List[numArr[0]].liked = false;
+        } else {
+          draft.post_List[numArr[0]].likeCount += 1;
+          draft.post_List[numArr[0]].liked = true;
+        }
+      }),
   },
   initialState
 );
@@ -196,6 +214,7 @@ const postCreators = {
   updatePostDB,
   deletePostDB,
   setDetailPostId,
+  clickLikeDB,
 };
 
 export { postCreators };

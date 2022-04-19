@@ -8,7 +8,7 @@ const Chatting = (props) => {
   const [message, setMessage] = useState("");
   const ROOM_SEQ = 1;
   useEffect(() => {
-    connect();
+   // connect();
 
     return () => disconnect();
   }, []);

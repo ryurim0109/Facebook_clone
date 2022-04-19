@@ -15,13 +15,15 @@ const Main =()=>{
 
   const post_list =useSelector((state)=>state.post.post_list);
 
-  const token = sessionStorage.getItem("user");
+  //const token = sessionStorage.getItem("user");
   const [pageno,setPageno] = React.useState(1);
+  const [bottom,setBottom] =React.useState('');
 
 
   React.useEffect(()=>{
     
-      dispatch(postActions.getPostDB(pageno,token));
+      dispatch(postActions.getPostDB(pageno));
+      console.log(pageno)
     
     
   },[])

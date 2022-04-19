@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { BsHandThumbsUp,BsChatSquare } from "react-icons/bs";
+import { BsHandThumbsUp,BsChatSquare,BsFillHandThumbsUpFill } from "react-icons/bs";
 import { useSelector, useDispatch } from 'react-redux';
 import { history } from '../redux/configStore';
 import WriteModal from './WriteModal';
@@ -17,7 +17,9 @@ const PostList = (props) => {
   const [fcstate,setFcstate] = React.useState(false);
   const dispatch = useDispatch();
   const {postId,content, likeCnt,commentCnt,createAt,userImageUrl,postImageUrl,userName,userId,like } =props;
+  const pageno=useSelector(state => state.post.page)
   const user_info=useSelector((state)=>state.user.user);
+  //console.log(like)
   
   const is_me = userName === user_info?.userName;
 
@@ -44,7 +46,10 @@ const PostList = (props) => {
              modalOpen(postId)
             }}/>
             <MainBtn is_del _onClick={()=>{
-              dispatch(postActions.deletePostDB(postId))
+               window.confirm("게시물을 삭제하시겠습니까?")
+               ? dispatch(postActions.deletePostDB(postId,pageno))
+               : window.alert("삭제가 취소되었습니다");
+              
             }}/>
           
           </MainGrid>}
@@ -66,9 +71,18 @@ const PostList = (props) => {
         </MainGrid>
         <MainGrid  padding="0 16px">
         <MainGrid display="flex" borderTop="1px solid #e4e6eb" borderBottom="1px solid #e4e6eb" margin="5px 0">
-          <LBtn>
+          {like===true ?(<BBtn onClick={()=>{
+            dispatch(postActions.clickLikeDB(postId,pageno))
+          }}>
+             <BsFillHandThumbsUpFill/>좋아요
+          </BBtn>) : (
+            <LBtn onClick={()=>{
+            dispatch(postActions.clickLikeDB(postId,pageno))
+          }}>
              <Like/>좋아요
           </LBtn>
+          )}
+          
           <LBtn onClick={() => {setFcstate((prev) => !prev)}}>
             <Chat/>댓글달기
           </LBtn>
@@ -121,6 +135,23 @@ const LBtn=styled.div`
     justify-content:center;
     align-items:center;
     color:#67696d;
+    &:hover{
+        background:#e0e0e0;
+    }
+`;
+const BBtn=styled.div`
+    width:50%;
+    height:20px; 
+    padding:8px;
+    margin:5px;
+    font-size:15px;
+    text-align:center;
+    cursor:pointer;
+    display:flex;
+    border-radius:8px;
+    justify-content:center;
+    align-items:center;
+    color:#1877F2;
     &:hover{
         background:#e0e0e0;
     }
