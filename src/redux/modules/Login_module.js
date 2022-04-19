@@ -26,8 +26,10 @@ const postLogin = (Login_info) => {
     return function (dispatch, getState,{history}){
         console.log('로그인 시작')
         console.log(Login_info)
+
         //15.164.96.141:8080
         //52.79.228.83:8080
+
         axios.post('http://15.164.96.141:8080/user/login',
         Login_info
         ).then(function (response){
@@ -38,7 +40,8 @@ const postLogin = (Login_info) => {
             dispatch(setLogin(Login_info))
             history.push('/main');
         }).catch(function (error){
-            alert('로그인이 실패했어요')
+            console.log(error.response.data)
+            console.log(error.response)
         })
     }
 }
@@ -64,7 +67,7 @@ const checkUserDB = (token) => {
     return function (dispatch, getState, { history }) {
       
       axios.post(
-        "http://52.79.228.83:8080/api/user/islogin",{
+        "http://15.164.96.141:8080/api/user/islogin",{
   
         },{
           headers: { Authorization:token, },

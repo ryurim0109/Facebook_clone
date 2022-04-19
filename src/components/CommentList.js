@@ -26,7 +26,7 @@ const CommentList = (props) => {
     React.useEffect(() => {
         console.log('기동')
         dispatch(CommentAction.getComment({postId : postIds, page : pages}));
-    },[pages])
+    },[])
 
     return (
       <div>
@@ -37,7 +37,7 @@ const CommentList = (props) => {
           flexDirection : 'column',
           alignItems: 'center',
         }}>
-          {comment_list.comments && comment_list.comments.map((el,idx) => {
+          {comment_list?.comments && comment_list?.comments?.map((el,idx) => {
             return (
               <Stack key={idx} direction="row" spacing={2} sx={{margin : '8px 0px 0px 75px' }} >
                 <Avatar sx={{ width: 32, height: 32 }} src={defaultUserImage}/>
@@ -69,8 +69,8 @@ const CommentList = (props) => {
               </Link>
             </Breadcrumbs>
           </div>
-          {comment_list.totalPage &&
-          <Typography variant="overline" display="block" gutterBottom>총 {comment_list.totalPage}페이지 중 {pages}페이지 </Typography> }
+          {comment_list?.totalPage &&
+          <Typography variant="overline" display="block" gutterBottom>총 {comment_list?.totalPage}페이지 중 {pages}페이지 </Typography> }
         </div>
         </Footer_div>
       </div>

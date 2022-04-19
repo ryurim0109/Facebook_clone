@@ -1,18 +1,32 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { MainGrid,MainInput } from '../elements';
 import styled from 'styled-components';
 import { IoArrowBack } from "react-icons/io5";
-
-
-
-
-
-
+import { postCreators as postActions } from '../redux/modules/post';
+import { history } from '../redux/configStore';
 
 const Search =(props)=>{
+
+  const [userSearch,setUserSearch] = React.useState('');
+    const dispatch = useDispatch();
+
+    const search_user = (e) => {
+      setUserSearch(e.target.value);
+      console.log(e.target.value)
+    }
+
+    const Entercheck = (e) => {
+      if(e.key === 'Enter')
+      {
+        console.log(userSearch);
+        history.push(`discover?query=${userSearch}`);
+       // dispatch(postActions.getSearchDB(userName))
+        e.target.value = "";
+      }
+    }
   
-    const {searchBox,setSearchBox} =props;
+    const {setSearchBox} =props;
     const closeSh =()=>{
       setSearchBox(false);
     }
@@ -23,7 +37,7 @@ const Search =(props)=>{
           <SerB>
             <MainGrid display="flex" padding="5px" justifyContent='space-between'  alignItems='center'>
                 <button onClick={closeSh}><IoArrowBack fontSize="24px"/></button>
-                <input type="text" placeholder="Facebook 검색"/>
+                <input type="text"  maxLength='10'  placeholder="Facebook 검색" onChange={search_user} onKeyUp={Entercheck}/>
             </MainGrid>
           </SerB>
            
