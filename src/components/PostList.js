@@ -19,7 +19,7 @@ const PostList = (props) => {
   const {postId,content, likeCnt,commentCnt,createAt,userImageUrl,postImageUrl,userName,userId,like } =props;
   const pageno=useSelector(state => state.post.page)
   const user_info=useSelector((state)=>state.user.user);
-  //console.log(like)
+  console.log(pageno)
   
   const is_me = userName === user_info?.userName;
 

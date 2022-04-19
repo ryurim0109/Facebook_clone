@@ -3,12 +3,13 @@ import { produce } from 'immer';
 import {instance} from '../../shared/api' 
 import axios from 'axios';
 
-const GET_POST = 'GET_POST';
-const ADD_POST = 'ADD_POST';
-const UPDATE_POST = 'UPDATE_POST';
-const DELETE_POST = 'DELETE_POST';
-const CLICK_LIKE = 'CLICK_LIKE';
-const SET_DETAILPOSTID = 'SET_DETAILPOSTID';
+const GET_POST = 'GET_POST'; //게시물 가져오기
+const ADD_POST = 'ADD_POST'; //게시물 추가하기
+const UPDATE_POST = 'UPDATE_POST'; //게시물 수정하기
+const DELETE_POST = 'DELETE_POST'; //게시물 삭제하기
+const CLICK_LIKE = 'CLICK_LIKE'; //좋아요
+const SEARCH = "SEARCH";
+const LOADING = "LOADING";
 
 
 const getPost = createAction(GET_POST, (post_list,page) => ({ post_list,page }));
@@ -19,10 +20,8 @@ const updatePost = createAction(UPDATE_POST, (postId, post) => ({
 }));
 const deletePost = createAction(DELETE_POST, (postId) => ({ postId }));
 const clickLike = createAction(CLICK_LIKE, (postId) => ({ postId }));
+const search = createAction(SEARCH, (search_list,page) => ({ search_list,page }));
 
-const setDetailPostId = createAction(SET_DETAILPOSTID, (postId) => ({
-  postId,
-}));
 const initialState = {
   post_list:[{
     postId:1,
@@ -36,22 +35,49 @@ const initialState = {
     userId:1,
     like:"false"
   },],
-  totalPage:{start :null,next:null,size:7}
+  totalPage:{start :null,next:null},
 };
 
 const getPostDB = (pageno) => {
-  //console.log(token);
+  console.log(pageno);
   return (dispatch) => {
     instance.get(`/api/post/${pageno}`)
       .then((res) => {
         console.log(res.data.postList,"응답 포스트리스트");
         console.log(res.data.totalPage)
+        //console.log(res.data.currentPage)
         dispatch(getPost(res.data.postList,res.data.totalPage));
       })
       .catch((err) => {
         console.log(err.response,"게시글 가져오기 오류");
         console.log(err,"게시글 가져오기 오류");
       });
+  };
+};
+export const getSearchDB = (username,pageno) => {
+  console.log(username)
+  return function (dispatch, getState, { history }) {
+    
+      
+      instance
+      .get(`/api/post/${username}/${pageno}`)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        const postList = res.data.postList;
+        const totalPage = res.data.totalPage;
+       
+        dispatch(search(postList, totalPage));
+      }).catch((err)=>{
+        console.log(err, "검색에러다!!!");
+        console.log(err.response, "검색에러다!!!");
+      })
+    
+    
+    
+   
+    
+    
   };
 };
 
@@ -67,7 +93,7 @@ const addPostDB = (token,content,imageFile,pageno) => {
   //   console.log(value);
   // }
   return (dispatch, getState, { history }) => {
-    axios.post(`http://52.79.228.83:8080/api/post`,
+    axios.post(`http://15.164.96.141/api/post`,
     file,{
       headers: {
         Authorization: token,
@@ -97,7 +123,7 @@ const updatePostDB = (token,content,imageFile,postId,pageno) => {
     file.append("image", imageFile);
 
     return (dispatch, getState, { history }) => {
-      axios.put(`http://52.79.228.83:8080/api/post/${postId}`,
+      axios.put(`http://15.164.96.141/api/post/${postId}`,
       file,{
         headers: {
           Authorization: token,
@@ -119,14 +145,14 @@ const updatePostDB = (token,content,imageFile,postId,pageno) => {
   };
 
 const deletePostDB= (postId,pageno) => {
-  
+    
     return (dispatch, getState, { history }) => {
       console.log(postId)
       instance.delete(`/api/post/${postId}`)
       .then((res) =>{
           window.alert('삭제성공')
           console.log(res)
-          dispatch(getPostDB(pageno))
+          dispatch(getPostDB(postId))
          history.push('/main');
       }).catch((err)=>{
           console.log('삭제 실패!',err.response)
@@ -136,6 +162,7 @@ const deletePostDB= (postId,pageno) => {
 
 
 const clickLikeDB = (postId,pageno) => {
+  console.log(pageno)
   return (dispatch) => {
     instance
       .post(`/api/post/like/${postId}`)
@@ -164,6 +191,12 @@ export default handleActions(
       produce(state, (draft) => {
         //console.log(action.payload.post_list);
         draft.post_list = action.payload.post_list;
+        draft.page = action.payload.page;
+      }),
+      [SEARCH]: (state, action) =>
+      produce(state, (draft) => {
+       // console.log(action.payload.search_list);
+        draft.search_list = action.payload.search_list;
         draft.page = action.payload.page;
       }),
     [ADD_POST]: (state, action) =>
@@ -213,8 +246,8 @@ const postCreators = {
   addPostDB,
   updatePostDB,
   deletePostDB,
-  setDetailPostId,
   clickLikeDB,
+  getSearchDB,
 };
 
 export { postCreators };

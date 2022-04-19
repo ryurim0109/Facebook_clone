@@ -4,7 +4,8 @@ import { ConnectedRouter } from 'connected-react-router';
 import { history } from '../redux/configStore';
 import { Login, Main } from '../pages';
 import PrivateRoute from './PrivateRoute';
-import TestSocket from '../websocket/TestSocket'
+import TestSocket from '../websocket/TestSocket';
+import SearchUser from '../pages/SearchUser';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         {/* <PrivateRoute path='/main' exact component={Main} /> */}
         <Route path='/main' exact component={Main} />
         <Route path='/chat' exact component={TestSocket} />
+        <Route path='/discover' exact component={SearchUser} />
       </ConnectedRouter>
     </React.Fragment>
   );
