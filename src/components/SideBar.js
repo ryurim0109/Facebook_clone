@@ -6,7 +6,7 @@ const SideBar =(props)=>{
     return(
         <>
             <MainGrid>
-                연락처
+                연락처 시작!
             </MainGrid>
         </>
     )
