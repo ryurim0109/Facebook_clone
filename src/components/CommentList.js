@@ -11,7 +11,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 
 const CommentList = (props) => {
-    const comment_list = useSelector((state) => state.Comment.comments);
+    const comment_list = useSelector((state) => state.Comment);
     const postIds = props.postId;
     const dispatch = useDispatch();
     const [pages,setPage] = useState(1);

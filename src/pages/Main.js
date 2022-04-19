@@ -10,6 +10,7 @@ import {postCreators as postActions} from '../redux/modules/post';
 import Spinner from '../components/Spinner';
 
 
+
 const Main =()=>{
 
   const dispatch =useDispatch()
@@ -54,7 +55,6 @@ const Main =()=>{
                 ): null }
                 <div ref={setBottom}> </div>
               </MainGrid>
-            <Chatting />
           </MainGrid>
           
         </>
