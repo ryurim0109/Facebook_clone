@@ -86,7 +86,7 @@ const WriteModal = (props) => {
 
     dispatch(postActions.updatePostDB(token,_content,imageFile,postId,pageno));
     
-   
+    setImageSrc("");
     setModal(false);
   }
 
