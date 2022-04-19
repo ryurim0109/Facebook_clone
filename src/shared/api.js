@@ -2,7 +2,9 @@ import axios from 'axios';
 
 //1. axios 인터셉터 생성 
 export const instance = axios.create({
-  baseURL: 'http://52.79.228.83:8080',
+  //15.164.96.141:8080
+  //52.79.228.83:8080
+  baseURL: 'http://15.164.96.141:8080',
   headers: {
     'content-type': 'application/json; charset=UTF-8',
     accept: 'application/json',
