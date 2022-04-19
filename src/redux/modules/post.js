@@ -35,16 +35,17 @@ const initialState = {
     userId:1,
     like:"false"
   },],
-  totalPage:{start :null,next:null},
+  totalPage:1,
 };
 
 const getPostDB = (pageno) => {
-  console.log(pageno);
+  //console.log(pageno);
   return (dispatch) => {
     instance.get(`/api/post/${pageno}`)
       .then((res) => {
         console.log(res.data.postList,"응답 포스트리스트");
         console.log(res.data.totalPage)
+        console.log(res.data)
         //console.log(res.data.currentPage)
         dispatch(getPost(res.data.postList,res.data.totalPage));
       })
@@ -55,7 +56,7 @@ const getPostDB = (pageno) => {
   };
 };
 export const getSearchDB = (username,pageno) => {
-  console.log(username)
+ // console.log(username)
   return function (dispatch, getState, { history }) {
     
       
@@ -72,12 +73,7 @@ export const getSearchDB = (username,pageno) => {
         console.log(err, "검색에러다!!!");
         console.log(err.response, "검색에러다!!!");
       })
-    
-    
-    
-   
-    
-    
+      
   };
 };
 
@@ -131,9 +127,9 @@ const updatePostDB = (token,content,imageFile,postId,pageno) => {
           "Content-Type":"multipart/form-data",
         },
       }).then((res) =>{
-          console.log(res.image);
-          console.log(postId);
-          console.log(content);
+          // console.log(res.image);
+          // console.log(postId);
+          // console.log(content);
 
           window.alert('수정 성공!!');
           
@@ -144,17 +140,16 @@ const updatePostDB = (token,content,imageFile,postId,pageno) => {
       })
   }
   };
-
-const deletePostDB= (postId,pageno) => {
-    
-    return (dispatch, getState, { history }) => {
+const deletePostDB= (postId) => {
+  return (dispatch, getState, { history }) => {
       console.log(postId)
+      const pageno=getState().post.page
       instance.delete(`/api/post/${postId}`)
       .then((res) =>{
           window.alert('삭제성공')
           console.log(res)
-          dispatch(getPostDB(postId))
-         history.push('/main');
+          dispatch(getPostDB(pageno))
+         
       }).catch((err)=>{
           console.log('삭제 실패!',err.response)
       })
@@ -174,10 +169,6 @@ const clickLikeDB = (postId,pageno) => {
         }else{
           window.alert('좋아요를 취소했습니다.')
         }
-        
-        // if (res.status !== 200) {
-        //   return;
-        // }
         dispatch(getPostDB(pageno))
       })
       .catch((err) => {
@@ -213,13 +204,9 @@ export default handleActions(
       }),
     [DELETE_POST]: (state, action) =>
       produce(state, (draft) => {
-        const editArr = [];
-        draft.post_list.filter((val, idx) => {
-          if (val.postId !== action.payload.postId) {
-            editArr.push(val);
-          }
-        });
-        draft.postList = editArr;
+        draft.post_list.filter((val)  => 
+        val.postId !== action.payload.post_list.postId
+        );
       }),
     [CLICK_LIKE]: (state, action) =>
       produce(state, (draft) => {

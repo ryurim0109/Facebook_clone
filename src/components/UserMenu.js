@@ -1,17 +1,18 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { MainGrid,Image } from '../elements';
 import styled from 'styled-components';
 import defaultUserImage from '../img/기본프로필사진.png';
 import { AiTwotoneSetting } from "react-icons/ai";
 import { IoHelpCircle,IoMoon,IoWarning,IoLogOut } from "react-icons/io5";
 
-
-
-
+import { actionCreators as userActions } from '../redux/modules/Login_module';
 
 const UserMenu =()=>{
+    const dispatch =useDispatch();
     const [imageSrc, setImageSrc] = React.useState("");
+    const [userImg, setUserImg] = React.useState("");
+    const token =sessionStorage.getItem('user');
 
   //사진 미리보기
   const encodeFileToBase64 = (fileBlob) => {
@@ -26,6 +27,16 @@ const UserMenu =()=>{
       };
     });
   };
+  const addProfile=()=>{
+    let maxSize = 10 * 1024 * 1024;
+    let fileSize=userImg.size;
+    if(fileSize > maxSize){
+		window.alert("첨부파일 사이즈는 10MB 이내로 등록 가능합니다.");
+        setUserImg("");
+		return false;
+    }
+    dispatch(userActions.userImgDB(userImg,token));
+  }
   const user_info=useSelector((state)=>state.user.user);
   const userPro=user_info?.userImage;
   const _user=user_info?.userName;
@@ -44,9 +55,10 @@ const UserMenu =()=>{
                         <label htmlFor="userP">
                             <EditBtn>수정</EditBtn>
                         </label>
-                        <SaveBtn>저장</SaveBtn>
+                        <SaveBtn onClick={addProfile}>저장</SaveBtn>
                         <input type="file" id="userP" style={{display:"none"}} accept="image/jpeg, image/png, image/jpg"  onChange={(e)=>{
                         encodeFileToBase64(e.target.files[0]);
+                        setUserImg(e.target.files[0])
                          }}  />
                           
                 </MainGrid>

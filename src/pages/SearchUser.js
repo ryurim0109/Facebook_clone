@@ -5,7 +5,6 @@ import PostWrite from '../components/PostWrite';
 import PostList from '../components/PostList';
 import CommentWrite from '../components/CommentWrite';
 import { useSelector,useDispatch } from 'react-redux';
-// import Chatting from '../components/Chatting'
 import {postCreators as postActions} from '../redux/modules/post';
 
 
@@ -17,9 +16,6 @@ const SearchUser =(props)=>{
   const [pageno,setPageno] = React.useState(1);
 
   console.log(props.location.search)
-  //const post_list =useSelector((state)=>state.post.post_list);
-  //const search_list =useSelector((state)=>state.post.search_list);
-  //const search = decodeURI(props.location.search).split("=")[1];
   const search = (props.location.search).split("=")[1];
   console.log(search,"나는 서치");
 
@@ -33,7 +29,7 @@ const SearchUser =(props)=>{
     
      dispatch(postActions.getSearchDB(search,pageno));
      
-  },[]);
+  },[search]);
 
   
 
