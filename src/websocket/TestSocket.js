@@ -114,6 +114,7 @@ const TestSocket = () => {
             {/* <SocketClient url='http://52.79.228.83/ws-stomp' topics={['/sub']}
             onMessage={(msg) => { console.log(msg); }}
             ref={webSocket} /> */}
+            <input type='text' /> 
             <button>SendTo</button> 
             <button>SendTemplate</button>
         </div>
