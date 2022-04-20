@@ -77,6 +77,10 @@ const WriteModal = (props) => {
       window.alert('글자수는 100자 이내로 입력해주세요!');
       return;
     }
+    if(imageFile === ''){
+      window.alert('사진이 빠졌군요?')
+      return;
+    }
     let maxSize = 10 * 1024 * 1024;
     let fileSize=imageFile.size;
     if(fileSize > maxSize){

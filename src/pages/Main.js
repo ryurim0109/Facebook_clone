@@ -1,4 +1,4 @@
-import React, {  useState,useCallback } from 'react';
+import React, {  useState,useCallback,useRef } from 'react';
 import Header from '../components/Header';
 import { MainGrid } from '../elements/index';
 import PostWrite from '../components/PostWrite';
@@ -7,21 +7,50 @@ import CommentWrite from '../components/CommentWrite';
 import { useSelector,useDispatch } from 'react-redux';
 import {postCreators as postActions} from '../redux/modules/post';
 import Spinner from '../components/Spinner';
+import LSide from '../components/LSide';
+import RSide from '../components/RSide';
+import styled from 'styled-components';
 import Chatroom from '../components/Chatroom';
 import ContactUs from '../components/ContactUs';
 
 const Main =()=>{
 
-  const dispatch =useDispatch()
-
+  const dispatch =useDispatch();
   const post_list =useSelector((state)=>state.post.post_list);
+  const crrPage = useSelector((state)=>state?.post?.page?.totalPage);
+  //console.log(crrPage)
 
   //const token = sessionStorage.getItem("user");
   const [pageno,setPageno] = useState(1);
-  const [bottom,setBottom] =useState(null); //바텀이 어디인지 인식하는 타겟
+  const [target, setTarget] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [itemLists, setItemLists] = useState([1]);
 
+  const callback = async ([entry], observer) => {
+   // console.log(entry);
+    if (entry.isIntersecting && !isLoading) {
+      observer.unobserve(entry.target);
+      setIsLoading(true);
+      await new Promise((resolve) => {
+        setTimeout(resolve, 2000);
+      });
+      if(post_list?.length===7 ){
+
+        setPageno((pre) => pre + 1);
+      }
+      
+      setIsLoading(false);
+      observer.observe(entry.target);
+    }
+  };
+
+  React.useEffect(() => {
+    let observer;
+    if (target) {
+      observer = new IntersectionObserver(callback, { threshold: 1 });
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target]);
 
   React.useEffect(()=>{
     
@@ -29,47 +58,61 @@ const Main =()=>{
       console.log(pageno)
   },[pageno]);
 
-  // React.useEffect(() => {
-  //   let observer;
-  //   if (bottom) {
-  //     observer = new IntersectionObserver(getPost, {
-  //       threshold: 1,
-  //     });
-  //     observer.observe(bottom);
-  //     return () => observer && observer.disconnect();
-  //   }
-  // }, [bottom]);
+ 
 
     return (
         <>
           <MainGrid bg="#F2F3F5">
             <Header />
-            <MainGrid display="flex">
-              <MainGrid position="relative" top="56px" bg="#f2f3f5">
-                  프로필
-              </MainGrid>
-                <MainGrid position="relative" top="56px" bg="#f2f3f5">
+            <MainGrid display="flex" padding="16px 0 0 8px" position="relative" top="56px" bg="#F2F3F5" height="100vh-56px">
+              <DisplayNone  >
+                  <LSide />
+              </DisplayNone>
+                <MainGrid position="relative" >
                   <PostWrite/>
                   {post_list && post_list?.map((c,idx)=>{
                     return <PostList key={idx} {...c} />
                   })}
-                  <div ref={setBottom}> </div>
-                  {isLoading ? (
+                 
+                  
+                </MainGrid>
+                <ConBox >
+                  <RSide/>
+                </ConBox>
+              </MainGrid >
+              {isLoading ? (
                     <Spinner />
                   ): null }
-                
-                </MainGrid>
-                <MainGrid position="relative" top="56px" bg="#f2f3f5">
-                  <ContactUs />
-                </MainGrid>
+
+              {post_list?.length === 7?<div ref={setTarget}> </div>:
+              null}
+                 
               </MainGrid>
-              <Chatroom />
-          </MainGrid>
+              {/* <Chatroom /> */}
+
+         
           
         </>
       );
 };
 
+const DisplayNone=styled.div`
+  width:100%;
+  background:#F2F3F5;
+  height:100vh;
+
+  @media screen and (max-width: 890px) {
+    display:none;
+  }
+`;
+const ConBox=styled.div`
+  width:100%;
+  background:#F2F3F5;
+  @media screen and (max-width: 783px) {
+    display:none;
+  }
+
+`;
 
 
 
