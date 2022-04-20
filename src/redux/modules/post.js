@@ -57,7 +57,6 @@ const getPostDB = (pageno) => {
 export const getSearchDB = (username,pageno) => {
   console.log(username)
   return function (dispatch, getState, { history }) {
-    
       
       instance
       .get(`/api/post/${username}/${pageno}`)

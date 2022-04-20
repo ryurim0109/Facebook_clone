@@ -76,11 +76,12 @@ const checkUserDB = (token) => {
           //console.log(res,"체크")
           dispatch(
             setUser(
-             { userName:res.data.userName,
-                userImage:res.data.userImage,
-                is_login:res.data.is_login,
-                userId:res.data.userId,
-                userEmail:res.data.userEmail
+             { 
+              userName:res.data.userName,
+              userImage:res.data.userImage,
+              is_login:res.data.is_login,
+              userId:res.data.userId,
+              userEmail:res.data.userEmail
             }
             )
           );
@@ -100,10 +101,9 @@ export default handleActions(
         produce(state, (draft) => {
             sessionStorage.clear();
         }),
-        [SET_USER]: (state, action) =>
+      [SET_USER]: (state, action) =>
         produce(state, (draft) => {
             draft.user = action.payload.user;
-
       }),
     },
     initialState
