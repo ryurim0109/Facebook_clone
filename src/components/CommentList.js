@@ -13,11 +13,27 @@ import CommentSubmenu from './CommentSubmenu';
 
 const CommentList = (props) => {
     const comment_list = useSelector((state) => state.Comment.comments);
+    const user_info=useSelector((state)=>state.user.user);
     const postIds = props.postId;
+    console.log(props.userName)
     const dispatch = useDispatch();
     const [pages,setPage] = useState(1);
     const [updates, setUpdate] = useState(false);
     console.log(comment_list)
+    console.log(comment_list?.comments)
+    let newlist = [];
+    if(comment_list?.comments !== undefined)
+    {
+      console.log(postIds)
+      console.log(comment_list.comments)
+      newlist = comment_list.comments.filter(el => {
+        console.log(el)
+        return el.postId === postIds
+      });
+      console.log(newlist)
+    }
+
+    const is_me = props.userName === user_info?.userName;
 
     const [loading,setLoding] = useState(false);
 
@@ -37,24 +53,26 @@ const CommentList = (props) => {
           flexDirection : 'column',
           alignItems: 'center',
         }}>
-          {comment_list?.comments && comment_list?.comments?.map((el,idx) => {
+          {comment_list?.comments && newlist.map((el,idx) => {
             return (
               <Stack key={idx} direction="row" spacing={2} sx={{margin : '8px 0px 0px 75px' }} >
                 <Avatar sx={{ width: 32, height: 32 }} src={defaultUserImage}/>
                   <Comment_p >
                   <Comment_title>{el.userName}</Comment_title>
-                    {updates ?
+                    {updates && el.userName === props.userName ?
                     <Input_styles type='text'/>
                     :
                     <Comment_content>{el.content}</Comment_content>
                     }
                   </Comment_p>
-                  <Button_styles>
+                  {is_me &&
+                    <Button_styles>
                       <button onClick={() => {setUpdate((prev)=> prev+1)}}>수정</button>
                       <button onClick={() => {
-                         dispatch(CommentAction.DelComment({postId : el.postId, commentid : el.commentId}));
+                        dispatch(CommentAction.DelComment({postId : el.postId, commentid : el.commentId}));
                       }}>삭제</button>
-                  </Button_styles>
+                    </Button_styles>
+                  }
               </Stack>
             );  
           })
