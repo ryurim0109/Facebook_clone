@@ -3,6 +3,7 @@ import { MainGrid,Image } from "../elements";
 import {useSelector} from 'react-redux';
 import defaultUserImage from '../img/기본프로필사진.png';
 import styled from 'styled-components';
+import { IoIosArrowDown } from "react-icons/io";
 
 const LSide =(props)=>{
     const user_info=useSelector((state)=>state.user.user);
@@ -56,7 +57,7 @@ const LSide =(props)=>{
                 </MainGrid>
                 <MainGrid height="44px" padding="0 0 0 5px" display="flex" alignItems="center" hover="#e4e6eb" borderRadius="8px">
                     <Btn>
-                    <svg fill="currentColor" viewBox="0 0 16 16" width="1em" height="1em" class="a8c37x1j ms05siws l3qrxjdp b7h9ocf4 rs22bh7c jnigpg78 odw8uiq3"><g fill-rule="evenodd" transform="translate(-448 -544)"><path fill-rule="nonzero" d="M452.707 549.293a1 1 0 0 0-1.414 1.414l4 4a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L456 552.586l-3.293-3.293z"></path></g></svg>
+                        <IoIosArrowDown />
                     </Btn>
                     <P>더 보기</P>    
                 </MainGrid>
@@ -85,13 +86,14 @@ const P=styled.p`
     padding-left:5px;
 
 `
-const Btn=styled.button`
+const Btn=styled.div`
     width:24px;
     height:24px;
     background:#DADDE1;
     border-radius:12px;
     border:none;
     display:flex;
+    justify-content:center;
     align-items:center;
 
 `;
