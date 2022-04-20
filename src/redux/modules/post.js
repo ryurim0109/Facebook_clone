@@ -24,18 +24,7 @@ const clickLike = createAction(CLICK_LIKE, (postId) => ({ postId }));
 const search = createAction(SEARCH, (search_list,page) => ({ search_list,page }));
 
 const initialState = {
-  post_list:[{
-    postId:1,
-    content:"ㅋ키키키키키",
-    likeCnt:11,
-    commentCnt:11,
-    createAt:'2022-04-16 10:00:00',
-    userImageUrl:"https://i.pinimg.com/474x/19/08/a7/1908a7eae6903f9d5861b62b1e025788.jpg",
-    postImageUrl:"https://i.pinimg.com/474x/19/08/a7/1908a7eae6903f9d5861b62b1e025788.jpg",
-    userName:"키키키",
-    userId:1,
-    like:"false"
-  },],
+  post_list:[],
   totalPage:1,
 };
 
@@ -44,12 +33,14 @@ const getPostDB = (pageno) => {
   return (dispatch) => {
     instance.get(`/api/post/${pageno}`)
       .then((res) => {
-      
-        console.log(res.data.postList,"응답 포스트리스트");
-        console.log(res.data.totalPage)
+        if (res.data.postList.length === 0) {
+          return alert("게시글이 없어요.ㅠㅠ");
+        }
+        // console.log(res.data.postList,"응답 포스트리스트");
+        // console.log(res.data.totalPage)
         console.log(res.data)
         //console.log(res.data.currentPage)
-        dispatch(getPost(res.data.postList,res.data.totalPage));
+        dispatch(getPost(res.data.postList,res.data));
       })
       .catch((err) => {
         console.log(err.response,"게시글 가져오기 오류");
@@ -182,7 +173,7 @@ export default handleActions(
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
         //console.log(action.payload.post_list);
-        draft.post_list = action.payload.post_list;
+        draft.post_list.push(...action.payload.post_list);
         draft.page = action.payload.page;
       }),
       [SEARCH]: (state, action) =>

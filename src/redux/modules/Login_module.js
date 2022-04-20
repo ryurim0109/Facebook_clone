@@ -11,7 +11,7 @@ const USER_IMG ="USER_IMG";
 //action creators
  const setLogin = createAction(LOGIN,(Login) => ({Login}));
  const setUser = createAction(SET_USER, (user) => ({ user }));
- const user_img =createAction(USER_IMG,(user_img)=>(user_img));
+ const user_img =createAction(USER_IMG,(userImage)=>(userImage));
 
 //initialState
 const initialState = {
@@ -106,7 +106,9 @@ const checkUserDB = (token) => {
         }
         ).then((res)=>{
           console.log(res.data,"이미지 데이터")
+          window.alert('이미지 등록이 완료되었습니다.');
           dispatch(user_img(res.data));
+          
         }).catch((err) => {
           console.log("프로필 업로드 에러다!!!!", err.response);
         }); 
@@ -129,7 +131,8 @@ export default handleActions(
       }),
       [USER_IMG]: (state, action) =>
       produce(state, (draft) => {
-          draft.user.user.userImage = action.payload.user.user.userImage;
+          console.log(action.payload)
+          draft.user.userImage = action.payload.userImageUrl;
 
     }),
     },
