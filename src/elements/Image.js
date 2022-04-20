@@ -71,8 +71,7 @@ const AspectInner = styled.div`
 
 const AspectInn = styled.div`
     position:relative;
-    padding-top: 75%;
-    overflow:hidden;
+    padding-top: 100%;
     background-image: url('${(props)=>props.src}');
     background-size:cover;
     ${props => (props.borderRadius ? `border-radius: ${props.borderRadius}` : '')};

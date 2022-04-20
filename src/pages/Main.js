@@ -10,6 +10,8 @@ import Spinner from '../components/Spinner';
 import LSide from '../components/LSide';
 import RSide from '../components/RSide';
 import styled from 'styled-components';
+import Post from '../components/Post';
+import Rooms from '../components/Rooms'
 import Chatroom from '../components/Chatroom';
 
 
@@ -70,7 +72,9 @@ const Main =()=>{
                   <LSide />
               </DisplayNone>
                 <MainGrid position="relative" >
+                  <Post />
                   <PostWrite/>
+                  <Rooms/>
                   {post_list && post_list?.map((c,idx)=>{
                     return <PostList key={idx} {...c} />
                   })}
