@@ -12,8 +12,8 @@ import axios from 'axios';
 import {Client,Message, Stomp} from '@stomp/stompjs'
 
 const Chatroom = () => {
-    const [publisher_name, setPublisher_name] =  useState('테스트8');
-    const [subscriber_name, setSubscriber_name] = useState('테스트7');
+    const [publisher_name, setPublisher_name] =  useState('1');
+    const [subscriber_name, setSubscriber_name] = useState('3');
     const [roomid , setroomid] = useState('');
     const Login_userName = '테스트8'
 
@@ -27,6 +27,23 @@ const Chatroom = () => {
       stompClient.connect({}, function (){
         console.log('connect 성공');
         if(publisher_name !== '' && subscriber_name !== '')
+        {
+          stompClient.subscribe(`/sub/chat/room/1`, (message) => {
+          console.log(message)
+          const return_data = JSON.parse(message.body)
+          console.log(return_data);
+          const arrays = [...Chatting];
+          arrays.push({
+            userName : return_data.sender,
+            content : return_data.message,
+          })
+          setroomid(return_data.roomId);
+          console.log(arrays)
+          setChatting(arrays);
+        });
+        // stompClient.send('/pub/chat/message',{},JSON.stringify(datas))
+          
+        }
           room_create();
       })
       stompClient.debug = (str) => {
@@ -79,21 +96,17 @@ const Chatroom = () => {
       {
         console.log(mymessage)
         console.log(roomid)
-        // const array = Chatting;
-        // array.push({
-        //   userName : Login_userName,
-        //   content : mymessage,
-        // })
-        // setChatting(array)
+       
         const sendData = { 
-          "type": "TALK",
-          "roomId": roomid,
-          "sender":publisher_name, 
+          "type" : "TALK", 
+          "messageSender" : 1, 
+          "messageRecevier" : 3, 
+          "roomId": "1",  
           "message":mymessage
-        }  
+        }
 
         console.log(sendData);
-        const paths = `/pub/chat/message/${roomid}`
+        const paths = `/pub/chat/message`
         console.log(paths)
         stompClient.send(paths,{},JSON.stringify(sendData))
       }

@@ -20,6 +20,7 @@ const CommentList = (props) => {
     const [commentid_u,setComment_u] = useState('');
     const [pages,setPage] = useState(1);
     const [updates, setUpdate] = useState(false);
+    const [update_comment, setUpdate_comment] = useState('');
     console.log(comment_list)
     console.log(comment_list?.comments)
     let newlist = [];
@@ -64,7 +65,7 @@ const CommentList = (props) => {
                   <Comment_p >
                   <Comment_title>{el.userName}</Comment_title>
                     {updates && user_info?.userName === el.userName && el.commentId === commentid_u ?
-                    <Input_styles type='text'/>
+                    <Input_styles type='text' defalutvalue={el.content} onChange={(e) => {setUpdate_comment(e.target.value)}} />
                     :
                     <Comment_content>{el.content}</Comment_content>
                     }
@@ -72,10 +73,15 @@ const CommentList = (props) => {
                   {user_info?.userName === el.userName && 
                     <Button_styles>
                       <button onClick={() => {
+                          setUpdate((prev)=> !prev)
                          if(el.commentId === commentid_u) 
                          {
-                          setUpdate((prev)=> !prev)
-                          setComment_u('');
+                            setComment_u('');
+                            console.log(update_comment)
+                            dispatch(CommentAction.PutComment({
+                              commentId : el.commentId,
+                              comment : update_comment,
+                            }))
                          }
                          else
                          {

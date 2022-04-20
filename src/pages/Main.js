@@ -8,8 +8,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import {postCreators as postActions} from '../redux/modules/post';
 import Spinner from '../components/Spinner';
 import Chatroom from '../components/Chatroom';
-
-
+import ContactUs from '../components/ContactUs';
 
 const Main =()=>{
 
@@ -61,7 +60,7 @@ const Main =()=>{
                 
                 </MainGrid>
                 <MainGrid position="relative" top="56px" bg="#f2f3f5">
-                  연락처
+                  <ContactUs />
                 </MainGrid>
               </MainGrid>
               <Chatroom />
