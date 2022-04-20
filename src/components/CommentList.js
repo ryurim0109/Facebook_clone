@@ -17,6 +17,7 @@ const CommentList = (props) => {
     const postIds = props.postId;
     console.log(props.userName)
     const dispatch = useDispatch();
+    const [commentid_u,setComment_u] = useState('');
     const [pages,setPage] = useState(1);
     const [updates, setUpdate] = useState(false);
     console.log(comment_list)
@@ -34,6 +35,9 @@ const CommentList = (props) => {
     }
 
     const is_me = props.userName === user_info?.userName;
+    console.log(props.userName);
+    console.log(user_info?.userName);
+    console.log(is_me);
 
     const [loading,setLoding] = useState(false);
 
@@ -59,15 +63,26 @@ const CommentList = (props) => {
                 <Avatar sx={{ width: 32, height: 32 }} src={defaultUserImage}/>
                   <Comment_p >
                   <Comment_title>{el.userName}</Comment_title>
-                    {updates && el.userName === props.userName ?
+                    {updates && user_info?.userName === el.userName && el.commentId === commentid_u ?
                     <Input_styles type='text'/>
                     :
                     <Comment_content>{el.content}</Comment_content>
                     }
                   </Comment_p>
-                  {is_me &&
+                  {user_info?.userName === el.userName && 
                     <Button_styles>
-                      <button onClick={() => {setUpdate((prev)=> prev+1)}}>수정</button>
+                      <button onClick={() => {
+                         if(el.commentId === commentid_u) 
+                         {
+                          setUpdate((prev)=> !prev)
+                          setComment_u('');
+                         }
+                         else
+                         {
+                           console.log((el.commentId))
+                           setComment_u(el.commentId)
+                         } 
+                      }}>수정</button>
                       <button onClick={() => {
                         dispatch(CommentAction.DelComment({postId : el.postId, commentid : el.commentId}));
                       }}>삭제</button>
