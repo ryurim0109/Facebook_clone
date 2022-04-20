@@ -6,10 +6,12 @@ import axios from "axios";
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 const SET_USER = "SET_USER";
+const USER_IMG ="USER_IMG";
 
 //action creators
  const setLogin = createAction(LOGIN,(Login) => ({Login}));
  const setUser = createAction(SET_USER, (user) => ({ user }));
+ const user_img =createAction(USER_IMG,(user_img)=>(user_img));
 
 //initialState
 const initialState = {
@@ -90,6 +92,26 @@ const checkUserDB = (token) => {
         }); 
     };
   };
+  //유저 프로필
+  const userImgDB = (image,token) => {
+    const file = new FormData();
+
+    file.append("image", image);
+    return function (dispatch, getState, { history }) {
+      
+      axios.post(
+        "http://15.164.96.141:8080/api/user/image",file,{
+          headers: { Authorization:token,
+            "Content-Type":"multipart/form-data", },
+        }
+        ).then((res)=>{
+          console.log(res.data,"이미지 데이터")
+          dispatch(user_img(res.data));
+        }).catch((err) => {
+          console.log("프로필 업로드 에러다!!!!", err.response);
+        }); 
+    };
+  };
 // reducer
 export default handleActions(
     {
@@ -105,6 +127,11 @@ export default handleActions(
         produce(state, (draft) => {
             draft.user = action.payload.user;
       }),
+      [USER_IMG]: (state, action) =>
+      produce(state, (draft) => {
+          draft.user.user.userImage = action.payload.user.user.userImage;
+
+    }),
     },
     initialState
   );
@@ -115,6 +142,7 @@ const actionCreators = {
     postLogin,
     postSignup,
     checkUserDB,
+    userImgDB,
   };
   
 export { actionCreators };
