@@ -9,6 +9,8 @@ import {postCreators as postActions} from '../redux/modules/post';
 import Spinner from '../components/Spinner';
 import LSide from '../components/LSide';
 import styled from 'styled-components'
+import Chatroom from '../components/Chatroom';
+
 
 
 
@@ -78,6 +80,7 @@ const Main =()=>{
                 <MainGrid >
                   연락처
                 </MainGrid>
+
               </MainGrid >
               {isLoading ? (
                     <Spinner />
@@ -85,6 +88,10 @@ const Main =()=>{
               {post_list?.length === 7?<div ref={setTarget}> </div>:
               null}
                  
+
+              </MainGrid>
+              <Chatroom />
+
           </MainGrid>
           
         </>
