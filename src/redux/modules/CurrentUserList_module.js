@@ -1,21 +1,33 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
+import { instance } from "../../shared/api";
 
 //action
-const ADD_MESSAGE = 'ADD_MESSAGE';
+const GET_USER_LIST = 'GET_USER_LIST';
 
 //action creators
-const addMessage = createAction(ADD_MESSAGE,(message) => ({message}));
+const GETLIST = createAction(GET_USER_LIST,(list) => ({list}));
 
 //initialState
 const initialState = {
-    Message : [],
+    userlist : [],
+}
+
+const getUserLIst = () => {
+    return function (dispath,getState,{history}){
+        instance.get('/api/user/loginlist'
+        ).then(function (response){
+            console.log(response);
+        }).catch(function (error){
+            console.log(error)
+        })
+    }
 }
 
 // reducer
 export default handleActions(
     {
-      [ADD_MESSAGE]: (state, action) =>
+      [GET_USER_LIST]: (state, action) =>
         produce(state, (draft) => {
             console.log(state.Message);
             console.log(action.payload.message);
@@ -27,10 +39,10 @@ export default handleActions(
     initialState
   );
 
-
+  
 //action creator export
 const actionCreators = {
-    addMessage,
+    getUserLIst,
   };
   
 export { actionCreators };

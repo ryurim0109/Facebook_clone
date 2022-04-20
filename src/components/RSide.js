@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { MainGrid,Image } from "../elements";
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import defaultUserImage from '../img/기본프로필사진.png';
 import styled from 'styled-components';
+import {actionCreators as UserListActions} from '../redux/modules/CurrentUserList_module'
+import Chatroom from "./Chatroom";
 
 const RSide =(props)=>{
+    const dispatch = useDispatch();
     const user_info=useSelector((state)=>state.user.user);
     const post_list =useSelector((state)=>state.post.post_list);
     const prof = post_list?.userImageUrl;
     const _user = post_list?.userName;
-
+    const [isOpens,setIsopens] = useState(false);
+    const [subscribes,setSubscribers] = useState('');
+    console.log(user_info)
+    React.useEffect(() => {
+        dispatch(UserListActions.getUserLIst());
+    },[])
     
+    const Call_Charroom = (userid) => {
+        setIsopens((prev)=> !prev)
+        setSubscribers(userid);
+    }
+
     return (
         <>
            <MainGrid  width="264px" position="fixed" right="0" >
@@ -37,10 +50,11 @@ const RSide =(props)=>{
                         <P>연락처</P>
                     </MainGrid>
                     {/* 유저연락처 부분 map돌리면 될것같슴돠~! */}
-                    <MainGrid height="44px" display="flex" alignItems="center" hover="#e4e6eb" borderRadius="8px">
-                        <Image src={defaultUserImage}  size="28"/>
+                    <MainGrid height="44px" display="flex" alignItems="center" hover="#e4e6eb" borderRadius="8px" _onClick ={()=> Call_Charroom(1)}>
+                        <Image src={defaultUserImage}  size="28" />
                         <P>유저네임</P>
                     </MainGrid>
+                    {isOpens &&  <Chatroom publishers = {user_info.userId} subscribes={subscribes} name = {'유저네임'} />}
                      {/* 유저연락처 부분*/}
                 </MainGrid>
                 

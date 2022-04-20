@@ -85,13 +85,13 @@ const checkUserDB = (token) => {
     return function (dispatch, getState, { history }) {
       
       axios.post(
-        "http://15.164.96.141:8080/api/user/islogin",{
+        "http://52.79.228.83:8080/api/user/islogin",{
   
         },{
           headers: { Authorization:token, },
         }
         ).then((res)=>{
-          //console.log(res,"체크")
+          console.log(res)
           dispatch(
             setUser(
              { 
@@ -116,7 +116,7 @@ const checkUserDB = (token) => {
     return function (dispatch, getState, { history }) {
       
       axios.post(
-        "http://15.164.96.141:8080/api/user/image",file,{
+        "http://52.79.228.83:8080/api/user/image",file,{
           headers: { Authorization:token,
             "Content-Type":"multipart/form-data", },
         }
