@@ -121,6 +121,7 @@ MainGrid.defaultProps = {
   left: null,
   right: null,
   hover: null,
+  lh:null,
   _onClick: () => {},
 };
 

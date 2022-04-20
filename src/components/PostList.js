@@ -33,7 +33,7 @@ const PostList = (props) => {
   return (
     <>
       <PostL>
-        <MainGrid width="100%"display="flex" justifyContent="start-end" padding="0 16px">
+        <MainGrid width="100%" display="flex" justifyContent="start-end" padding="0 16px">
           <MainGrid width="10%" position="relative">
             {is_me ? (<Image src={userPro==='없음'? defaultUserImage:userPro} size="36"/>):
             (<Image src={userImageUrl==='없음' ? defaultUserImage:userImageUrl} size="36"/>)}
@@ -41,7 +41,7 @@ const PostList = (props) => {
           </MainGrid>
           <MainGrid width="70%" position="relative" >
             <p style={{fontSize:"15px",color:"#050505"}}> {userName}</p>
-            <p style={{fontSize:"13px",color:"#65676b"}}>{createAt}</p>
+            <p style={{fontSize:"13px",color:"#65676b"}}>{createAt?.split('T')[0]}</p>
           </MainGrid>
           {is_me &&  
           <MainGrid  display="flex" justifyContent="space-between" width="20%" position="relative">
