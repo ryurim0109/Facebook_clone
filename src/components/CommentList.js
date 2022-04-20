@@ -9,7 +9,6 @@ import {actionCreators as CommentAction} from '../redux/modules/Comment_module'
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import CommentSubmenu from './CommentSubmenu';
 
 const CommentList = (props) => {
     const comment_list = useSelector((state) => state.Comment.comments);
@@ -160,7 +159,6 @@ const Input_styles = styled.input`
   boder-bottom:0px;
   background-color: transparent;
 `
-
 const Button_styles = styled.div`
   Button{
     margin: 5px;
