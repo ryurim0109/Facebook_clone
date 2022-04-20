@@ -78,7 +78,7 @@ export const getSearchDB = (username,pageno) => {
   };
 };
 
-const addPostDB = (token,content,imageFile,pageno) => {
+const addPostDB = (token,content,imageFile) => {
   //console.log(token,content,imageFile);
   const file = new FormData();
 
@@ -158,8 +158,7 @@ const deletePostDB= (postId) => {
   };
 
 
-const clickLikeDB = (postId,pageno) => {
-  console.log(pageno)
+const clickLikeDB = (postId) => {
   return (dispatch) => {
     instance
       .post(`/api/post/like/${postId}`)
@@ -170,7 +169,7 @@ const clickLikeDB = (postId,pageno) => {
         }else{
           window.alert('좋아요를 취소했습니다.')
         }
-        dispatch(getPostDB(pageno))
+        dispatch(clickLike(postId))
       })
       .catch((err) => {
         console.log(err);
@@ -213,18 +212,18 @@ export default handleActions(
     [CLICK_LIKE]: (state, action) =>
       produce(state, (draft) => {
         let numArr = [];
-        draft.post_List.filter((val, idx) => {
+        draft.post_list.filter((val, idx) => {
           if (val.postId === action.payload.postId) {
             return numArr.push(idx);
           }
         });
         console.log(numArr[0]);
-        if (draft.post_List[numArr[0]].liked === true) {
-          draft.post_List[numArr[0]].likeCount -= 1;
-          draft.post_List[numArr[0]].liked = false;
+        if (draft.post_list[numArr[0]].like === true) {
+          draft.post_list[numArr[0]].likeCnt -= 1;
+          draft.post_list[numArr[0]].like = false;
         } else {
-          draft.post_List[numArr[0]].likeCount += 1;
-          draft.post_List[numArr[0]].liked = true;
+          draft.post_list[numArr[0]].likeCnt += 1;
+          draft.post_list[numArr[0]].like = true;
         }
       }),
   },

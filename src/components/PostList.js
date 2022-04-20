@@ -17,7 +17,7 @@ const PostList = (props) => {
   const [fcstate,setFcstate] = React.useState(false);
   const dispatch = useDispatch();
   const {postId,content, likeCnt,commentCnt,createAt,userImageUrl,postImageUrl,userName,userId,like } =props;
-  const pageno=useSelector(state => state.post.page)
+  
   const user_info=useSelector((state)=>state.user.user);
   //console.log(pageno)
   
@@ -47,7 +47,7 @@ const PostList = (props) => {
             }}/>
             <MainBtn is_del _onClick={()=>{
                window.confirm("게시물을 삭제하시겠습니까?")
-               ? dispatch(postActions.deletePostDB(postId,pageno))
+               ? dispatch(postActions.deletePostDB(postId))
                : window.alert("삭제가 취소되었습니다");
               
             }}/>
@@ -72,12 +72,12 @@ const PostList = (props) => {
         <MainGrid  padding="0 16px">
         <MainGrid display="flex" borderTop="1px solid #e4e6eb" borderBottom="1px solid #e4e6eb" margin="5px 0">
           {like===true ?(<BBtn onClick={()=>{
-            dispatch(postActions.clickLikeDB(postId,pageno))
+            dispatch(postActions.clickLikeDB(postId))
           }}>
              <BsFillHandThumbsUpFill/>좋아요
           </BBtn>) : (
             <LBtn onClick={()=>{
-            dispatch(postActions.clickLikeDB(postId,pageno))
+            dispatch(postActions.clickLikeDB(postId))
           }}>
              <Like/>좋아요
           </LBtn>
