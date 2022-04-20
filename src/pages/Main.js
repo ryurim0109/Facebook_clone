@@ -79,7 +79,6 @@ const Main =()=>{
                 <MainGrid >
                   연락처
                 </MainGrid>
-                <Chatroom />
               </MainGrid >
               {isLoading ? (
                     <Spinner />
@@ -87,7 +86,11 @@ const Main =()=>{
               {post_list?.length === 7?<div ref={setTarget}> </div>:
               null}
                  
-          </MainGrid>
+
+              </MainGrid>
+              <Chatroom />
+
+         
           
         </>
       );
