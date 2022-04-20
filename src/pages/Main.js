@@ -7,6 +7,7 @@ import CommentWrite from '../components/CommentWrite';
 import { useSelector,useDispatch } from 'react-redux';
 import {postCreators as postActions} from '../redux/modules/post';
 import Spinner from '../components/Spinner';
+import Chatroom from '../components/Chatroom';
 
 
 
@@ -54,6 +55,7 @@ const Main =()=>{
                 ): null }
                 <div ref={setBottom}> </div>
               </MainGrid>
+              <Chatroom />
           </MainGrid>
           
         </>

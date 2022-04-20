@@ -6,6 +6,7 @@ import { Login, Main } from '../pages';
 import PrivateRoute from './PrivateRoute';
 import TestSocket from '../websocket/TestSocket';
 import SearchUser from '../pages/SearchUser';
+import Chatroom from '../components/Chatroom'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/main' exact component={Main} />
         <Route path='/chat' exact component={TestSocket} />
         <Route path='/discover' exact component={SearchUser} />
+        <Route path='/chatroom' exact component={Chatroom} />
       </ConnectedRouter>
     </React.Fragment>
   );
