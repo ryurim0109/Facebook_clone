@@ -24,7 +24,7 @@ const CommentWrite = (props) => {
       {
         console.log(comments);
         const comment_info = {
-          postId : 1,
+          postId : postId,
           comment : comments,
         }
         dispatch(CommentAction.postComment(comment_info))
@@ -47,7 +47,7 @@ const CommentWrite = (props) => {
           <PostDiv placeholder='댓글을 입력하세요...' onChange={change_comment} onKeyUp={Entercheck}/>
         </Box>
         </div>
-        <CommentList postId = {postId} />
+        <CommentList {...props} />
         </Comment_design>
     );
 }

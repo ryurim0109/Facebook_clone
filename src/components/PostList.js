@@ -87,7 +87,7 @@ const PostList = (props) => {
             <Chat/>댓글달기
           </LBtn>
         </MainGrid>
-        {fcstate && <CommentWrite postId={postId} />}
+        {fcstate && <CommentWrite {...props} />}
         </MainGrid>
       </PostL>
     </>
