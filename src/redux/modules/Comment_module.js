@@ -2,15 +2,18 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import {instance} from '../../shared/api' 
 
+
 //action
 const ADD_COMMENT = 'ADD_COMMENT';
 const GET_COMMENT = 'GET_COMMENT';
 const DEL_COMMENT = 'DEL_COMMENT';
+const UPDATE_COMMENT = 'UPDATE_COMMENT';
 
 //action creators
  const addComment = createAction(ADD_COMMENT,(content) => ({content}));
  const putComment = createAction(GET_COMMENT,(content) => ({content}));
  const deleteComment = createAction(DEL_COMMENT,(content) => ({content}));
+ const updateComment = createAction(UPDATE_COMMENT,(content) => ({content}));
 
 //initialState
 const initialState = {
@@ -64,6 +67,18 @@ const DelComment = (Comment_info) => {
     }
 }
 
+const PutComment = (Comment_info) => {
+    return function (dispath, getState, {history}){
+        console.log(Comment_info);
+        instance.put(`/api/comment/${Comment_info.commentId}`,Comment_info
+        ).then(function (response){
+            console.log(response)
+        }).catch(function (error){
+            console.log(error)
+        })
+    }
+}
+
 
 // reducer
 export default handleActions(
@@ -98,7 +113,8 @@ export default handleActions(
 const actionCreators = {
     postComment,
     getComment,
-    DelComment
+    DelComment,
+    PutComment,
   };
   
 export { actionCreators };

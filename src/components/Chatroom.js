@@ -9,30 +9,66 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import SockJS from 'sockjs-client';
 import axios from 'axios';
-import {Client,Message, Stomp} from '@stomp/stompjs'
+import Stomp from 'stompjs'
+import {actionCreators as ChatAction} from '../redux/modules/Chat_module'
+import { useDispatch, useSelector } from 'react-redux';
 
 const Chatroom = () => {
-    const [publisher_name, setPublisher_name] =  useState('테스트8');
-    const [subscriber_name, setSubscriber_name] = useState('테스트7');
+    const dispatch = useDispatch();
+    const [publisher_name, setPublisher_name] =  useState('3');
+    const [subscriber_name, setSubscriber_name] = useState('1');
     const [roomid , setroomid] = useState('');
     const Login_userName = '테스트8'
-
-    let sockjs = SockJS("http://52.79.228.83/stomp")
-    let stompClient = Stomp.client = Stomp.over(sockjs);
-
     const [mymessage,setMymessage] = React.useState('');
-    const [Chatting, setChatting] = React.useState([]);
+    const Chatting = useSelector((state) => state.Chat.Message);
+    let sockjs = SockJS("http://52.79.228.83/stomp")
+    let stompClient = Stomp.over(sockjs);
+
+    
 
     React.useEffect(() => {
       stompClient.connect({}, function (){
         console.log('connect 성공');
-        if(publisher_name !== '' && subscriber_name !== '')
-          room_create();
+        Roomsubscribe();
       })
       stompClient.debug = (str) => {
         console.log(str)
       }
     },[])
+
+    const Roomsubscribe = () =>{
+        stompClient.subscribe(`/sub/chat/room/3`, (message) => {
+        console.log(message)
+        const return_data = JSON.parse(message.body)
+        console.log(return_data);
+        // const arrays = [...Chatting];
+        // arrays.push({
+        //   userName : return_data.sender,
+        //   content : return_data.message,
+        // })
+        setroomid(return_data.roomId);
+        dispatch(ChatAction.addMessage({
+          userName : return_data.sender,
+          content : return_data.message,
+        }))
+      });
+    }
+
+
+    function waitForConnection(stompClient, callback) {
+      setTimeout(
+        function () {
+          // 연결되었을 때 콜백함수 실행
+          if (stompClient.ws.readyState === 1) {
+            callback();
+            // 연결이 안 되었으면 재호출
+          } else {
+            waitForConnection(stompClient, callback);
+          }
+        },
+        1 // 밀리초 간격으로 실행
+      );
+    }
 
     const room_create = () => {
       const Token = sessionStorage.getItem('user');
@@ -64,8 +100,6 @@ const Chatroom = () => {
             content : return_data.message,
           })
           setroomid(return_data.roomId);
-          console.log(arrays)
-          setChatting(arrays);
         });
         stompClient.send('/pub/chat/message',{},JSON.stringify(datas))
         
@@ -79,29 +113,25 @@ const Chatroom = () => {
       {
         console.log(mymessage)
         console.log(roomid)
-        // const array = Chatting;
-        // array.push({
-        //   userName : Login_userName,
-        //   content : mymessage,
-        // })
-        // setChatting(array)
+       
         const sendData = { 
-          "type": "TALK",
-          "roomId": roomid,
-          "sender":publisher_name, 
+          "type" : "TALK", 
+          "messageSender" : 1, 
+          "messageRecevier" : 3, 
+          "roomId": "1",  
           "message":mymessage
-        }  
+        }
 
         console.log(sendData);
-        const paths = `/pub/chat/message/${roomid}`
+        const paths = `/pub/chat/message`
         console.log(paths)
-        stompClient.send(paths,{},JSON.stringify(sendData))
+        waitForConnection(stompClient, function() {
+          stompClient.send(paths,{},JSON.stringify(sendData));
+          console.log(stompClient.ws.readyState);
+        })
       }
     }
 
-    React.useEffect(() => {
-
-    },[Chatting])
 
     return (
       <Contaniers>
@@ -131,7 +161,7 @@ const Chatroom = () => {
                     </Paper>
                   </Bar>
                   <ChatView>
-                    {Chatting.map((el,idx) => {
+                    {Chatting && Chatting.map((el,idx) => {
                       return(
                         <>
                         {el.userName === Login_userName ?

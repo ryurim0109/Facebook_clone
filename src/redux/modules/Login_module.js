@@ -1,6 +1,8 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import axios from "axios";
+import SockJS from 'sockjs-client';
+import {Client,Message, Stomp} from '@stomp/stompjs'
 
 //action
 const LOGIN = 'LOGIN';
@@ -32,13 +34,27 @@ const postLogin = (Login_info) => {
         //15.164.96.141:8080
         //52.79.228.83:8080
 
-        axios.post('http://15.164.96.141:8080/user/login',
+        axios.post('http://52.79.228.83:8080/user/login',
         Login_info
         ).then(function (response){
             alert('로그인 성공')
             console.log(response)
             console.log(response.headers.authorization)
             sessionStorage.setItem('user',response.headers.authorization);
+            let sockjs = SockJS("http://52.79.228.83/stomp")
+            let stompClient = Stomp.client = Stomp.over(sockjs);
+            console.log (`/sub/chat/room/${response.data}`)
+            stompClient.connect( {}, function (){
+              console.log('connect 성공');
+              console.log (`/sub/chat/room/${response.data}`)
+              stompClient.subscribe(`/sub/chat/room/${response.data}`, (message) => {
+                console.log(JSON.parse(message.body))
+              });
+            })
+            stompClient.debug = (str) => {
+              console.log(JSON.parse(str.body))
+            }
+
             dispatch(setLogin(Login_info))
             history.push('/main');
         }).catch(function (error){
@@ -52,7 +68,7 @@ const postLogin = (Login_info) => {
 const postSignup = (Signup_info) => {
     return function (dispatch, getState, {history}){
         console.log(Signup_info)
-        axios.post('http://15.164.96.141:8080/user/signup',
+        axios.post('http://52.79.228.83:8080/user/signup',
         Signup_info
         ).then(function (response){
             console.log(response)

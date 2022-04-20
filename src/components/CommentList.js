@@ -9,7 +9,6 @@ import {actionCreators as CommentAction} from '../redux/modules/Comment_module'
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import CommentSubmenu from './CommentSubmenu';
 
 const CommentList = (props) => {
     const comment_list = useSelector((state) => state.Comment.comments);
@@ -20,6 +19,7 @@ const CommentList = (props) => {
     const [commentid_u,setComment_u] = useState('');
     const [pages,setPage] = useState(1);
     const [updates, setUpdate] = useState(false);
+    const [update_comment, setUpdate_comment] = useState('');
     console.log(comment_list)
     console.log(comment_list?.comments)
     let newlist = [];
@@ -64,7 +64,7 @@ const CommentList = (props) => {
                   <Comment_p >
                   <Comment_title>{el.userName}</Comment_title>
                     {updates && user_info?.userName === el.userName && el.commentId === commentid_u ?
-                    <Input_styles type='text'/>
+                    <Input_styles type='text' defalutvalue={el.content} onChange={(e) => {setUpdate_comment(e.target.value)}} />
                     :
                     <Comment_content>{el.content}</Comment_content>
                     }
@@ -72,10 +72,15 @@ const CommentList = (props) => {
                   {user_info?.userName === el.userName && 
                     <Button_styles>
                       <button onClick={() => {
+                          setUpdate((prev)=> !prev)
                          if(el.commentId === commentid_u) 
                          {
-                          setUpdate((prev)=> !prev)
-                          setComment_u('');
+                            setComment_u('');
+                            console.log(update_comment)
+                            dispatch(CommentAction.PutComment({
+                              commentId : el.commentId,
+                              comment : update_comment,
+                            }))
                          }
                          else
                          {
@@ -154,7 +159,6 @@ const Input_styles = styled.input`
   boder-bottom:0px;
   background-color: transparent;
 `
-
 const Button_styles = styled.div`
   Button{
     margin: 5px;

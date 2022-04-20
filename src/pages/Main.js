@@ -11,8 +11,7 @@ import LSide from '../components/LSide';
 import RSide from '../components/RSide';
 import styled from 'styled-components';
 import Chatroom from '../components/Chatroom';
-
-
+import ContactUs from '../components/ContactUs';
 
 const Main =()=>{
 
@@ -84,10 +83,10 @@ const Main =()=>{
               {isLoading ? (
                     <Spinner />
                   ): null }
+
               {post_list?.length === 7?<div ref={setTarget}> </div>:
               null}
                  
-
               </MainGrid>
               {/* <Chatroom /> */}
 

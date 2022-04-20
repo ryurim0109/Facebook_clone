@@ -6,7 +6,7 @@ export const instance = axios.create({
   //15.164.96.141:8080
   //52.79.228.83:8080
 
-  baseURL: 'http://15.164.96.141:8080',
+  baseURL: 'http://52.79.228.83:8080',
   headers: {
     'content-type': 'application/json; charset=UTF-8',
     accept: 'application/json',
