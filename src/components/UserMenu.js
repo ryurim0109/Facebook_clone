@@ -8,11 +8,12 @@ import { IoHelpCircle,IoMoon,IoWarning,IoLogOut } from "react-icons/io5";
 
 import { actionCreators as userActions } from '../redux/modules/Login_module';
 
-const UserMenu =()=>{
+const UserMenu =(props)=>{
     const dispatch =useDispatch();
     const [imageSrc, setImageSrc] = React.useState("");
     const [userImg, setUserImg] = React.useState("");
     const token =sessionStorage.getItem('user');
+    const {setUserBox}=props;
 
   //사진 미리보기
   const encodeFileToBase64 = (fileBlob) => {
@@ -36,6 +37,7 @@ const UserMenu =()=>{
 		return false;
     }
     dispatch(userActions.userImgDB(userImg,token));
+    setUserBox(false)
   }
   const user_info=useSelector((state)=>state.user.user);
   const userPro=user_info?.userImage;

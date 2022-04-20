@@ -16,9 +16,10 @@ const PostList = (props) => {
 
   const [fcstate,setFcstate] = React.useState(false);
   const dispatch = useDispatch();
-  const {postId,content, likeCnt,commentCnt,createAt,userImageUrl,postImageUrl,userName,userId,like } =props;
-  
+  const {postId,content, likeCnt,commentCnt,createAt,postImageUrl,userName,userId,like } =props;
   const user_info=useSelector((state)=>state.user.user);
+  const userPro=user_info?.userImage;
+  
   //console.log(pageno)
   
   const is_me = userName === user_info?.userName;
@@ -34,7 +35,7 @@ const PostList = (props) => {
       <PostL>
         <MainGrid width="100%"display="flex" justifyContent="start-end" padding="0 16px">
           <MainGrid width="10%" position="relative">
-          <Image src={userImageUrl==='없음'?defaultUserImage:userImageUrl} size="36"/>
+          <Image src={userPro==='없음'?defaultUserImage:userPro} size="36"/>
           </MainGrid>
           <MainGrid width="70%" position="relative" >
             <p style={{fontSize:"15px",color:"#050505"}}> {userName}</p>
