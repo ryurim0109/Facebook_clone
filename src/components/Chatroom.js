@@ -13,42 +13,43 @@ import Stomp from 'stompjs'
 import {actionCreators as ChatAction} from '../redux/modules/Chat_module'
 import { useDispatch, useSelector } from 'react-redux';
 
-const Chatroom = () => {
+const Chatroom = (props) => {
     const dispatch = useDispatch();
-    const [publisher_name, setPublisher_name] =  useState('3');
-    const [subscriber_name, setSubscriber_name] = useState('1');
+    console.log(props);
+    const publisher_name = props.publishers
+    const subscriber_name = props.subscribes
+
     const [roomid , setroomid] = useState('');
     const Login_userName = '테스트8'
     const [mymessage,setMymessage] = React.useState('');
     const Chatting = useSelector((state) => state.Chat.Message);
+    const user_info = useSelector((state)=>state.user.user);
     let sockjs = SockJS("http://52.79.228.83/stomp")
     let stompClient = Stomp.over(sockjs);
 
-    
+    console.log(user_info)
 
     React.useEffect(() => {
       stompClient.connect({}, function (){
         console.log('connect 성공');
-        Roomsubscribe();
+        room_create();
       })
       stompClient.debug = (str) => {
         console.log(str)
       }
+      return () => {
+        Disconnects();
+      };
     },[])
 
-    const Roomsubscribe = () =>{
-        stompClient.subscribe(`/sub/chat/room/3`, (message) => {
+    const Roomsubscribe = (roomId) =>{
+        stompClient.subscribe(`/sub/chat/room/${roomId}`, (message) => {
         console.log(message)
         const return_data = JSON.parse(message.body)
         console.log(return_data);
-        // const arrays = [...Chatting];
-        // arrays.push({
-        //   userName : return_data.sender,
-        //   content : return_data.message,
-        // })
         setroomid(return_data.roomId);
         dispatch(ChatAction.addMessage({
-          userName : return_data.sender,
+          userName : return_data.messageSender,
           content : return_data.message,
         }))
       });
@@ -73,8 +74,8 @@ const Chatroom = () => {
     const room_create = () => {
       const Token = sessionStorage.getItem('user');
       axios.post('http://52.79.228.83:8080/chat/room',{
-        "publisher": publisher_name, 
-        "subscriber":subscriber_name,
+        "sender": publisher_name, 
+        "recevier":subscriber_name,
       },{
         headers : {
           Authorization: `${Token}`,
@@ -83,25 +84,7 @@ const Chatroom = () => {
         console.log(response)
         setroomid(response.data.roomId);
         console.log(roomid)
-        const datas = { 
-          "type": "ENTER",
-          "roomId": response.data.roomId,
-          "sender":publisher_name, 
-          "message":"test"
-        }
-        console.log(datas)
-        stompClient.subscribe(`/sub/chat/room/${response.data.roomId}`, (message) => {
-          console.log(message)
-          const return_data = JSON.parse(message.body)
-          console.log(return_data);
-          const arrays = [...Chatting];
-          arrays.push({
-            userName : return_data.sender,
-            content : return_data.message,
-          })
-          setroomid(return_data.roomId);
-        });
-        stompClient.send('/pub/chat/message',{},JSON.stringify(datas))
+        Roomsubscribe(response.data.roomId)
         
       }).catch(function (error){
         console.log(error)
@@ -116,8 +99,8 @@ const Chatroom = () => {
        
         const sendData = { 
           "type" : "TALK", 
-          "messageSender" : 1, 
-          "messageRecevier" : 3, 
+          "messageSender" : 3, 
+          "messageRecevier" : 1, 
           "roomId": "1",  
           "message":mymessage
         }
@@ -125,13 +108,28 @@ const Chatroom = () => {
         console.log(sendData);
         const paths = `/pub/chat/message`
         console.log(paths)
-        waitForConnection(stompClient, function() {
-          stompClient.send(paths,{},JSON.stringify(sendData));
-          console.log(stompClient.ws.readyState);
-        })
+        stompClient.send(paths,{},JSON.stringify(sendData));
+        // waitForConnection(stompClient, function() {
+        //   stompClient.send(paths,{},JSON.stringify(sendData));
+        //   console.log(stompClient.ws.readyState);
+        // })
+        event.target.value = '';
       }
     }
 
+    // 연결해제, 구독해제
+    function Disconnects() {
+      try {
+        stompClient.disconnect(
+          () => {
+            stompClient.unsubscribe('sub-0');
+          },
+          {}
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     return (
       <Contaniers>
@@ -152,9 +150,9 @@ const Chatroom = () => {
                       <Stack direction="row" spacing={1} alignItems = "center" justifyContent="space-between" >
                         <Stack direction="row" spacing={1} sx={{marginLeft:0.5}}>
                           <Avatar sx={{ width: 32, height: 32 }} src={defaultUserImage}/>
-                          <Chat_title>{subscriber_name}</Chat_title>
+                          <Chat_title>{props.name}</Chat_title>
                         </Stack>
-                          <IconButton aria-label="Close">
+                          <IconButton aria-label="Close" onClick={Disconnects}>
                               <CloseIcon />
                           </IconButton>
                       </Stack>
@@ -164,7 +162,7 @@ const Chatroom = () => {
                     {Chatting && Chatting.map((el,idx) => {
                       return(
                         <>
-                        {el.userName === Login_userName ?
+                        {el.userName == publisher_name ?
                           <ChatLDetail key={idx}>
                           <Message_Lview key={idx}>{el.content}</Message_Lview>
                           </ChatLDetail> 

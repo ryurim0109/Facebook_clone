@@ -92,10 +92,6 @@ const Main =()=>{
               null}
                  
               </MainGrid>
-              {/* <Chatroom /> */}
-
-         
-          
         </>
       );
 };
