@@ -15,7 +15,6 @@ const WriteModal = (props) => {
   // const detailPost = postList.find(post => post.postId === postId);
 
     const user_info=useSelector((state)=>state.user.user);
-    const pageno=useSelector(state => state.post.page)
     //console.log(pageno)
     const userPro=user_info?.userImage;
     const _user=user_info?.userName;
@@ -67,7 +66,9 @@ const WriteModal = (props) => {
       setImageSrc("");
 			return false;
     }
-    dispatch(postActions.addPostDB(token,_content,imageFile,pageno));
+    dispatch(postActions.addPostDB(token,_content,imageFile));
+    setImageSrc("");
+    setContent('');
     setModal(false);
   }
 
@@ -84,7 +85,7 @@ const WriteModal = (props) => {
 			return false;
     }
 
-    dispatch(postActions.updatePostDB(token,_content,imageFile,postId,pageno));
+    dispatch(postActions.updatePostDB(token,_content,imageFile,postId));
     
     setImageSrc("");
     setModal(false);

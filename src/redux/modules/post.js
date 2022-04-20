@@ -14,9 +14,10 @@ const LOADING = "LOADING";
 
 const getPost = createAction(GET_POST, (post_list,page) => ({ post_list,page }));
 const addPost = createAction(ADD_POST, (post_list) => ({ post_list }));
-const updatePost = createAction(UPDATE_POST, (postId, post) => ({
-  postId,
+const updatePost = createAction(UPDATE_POST, (post,postId) => ({
   post,
+  postId,
+  
 }));
 const deletePost = createAction(DELETE_POST, (postId) => ({ postId }));
 const clickLike = createAction(CLICK_LIKE, (postId) => ({ postId }));
@@ -43,6 +44,7 @@ const getPostDB = (pageno) => {
   return (dispatch) => {
     instance.get(`/api/post/${pageno}`)
       .then((res) => {
+      
         console.log(res.data.postList,"응답 포스트리스트");
         console.log(res.data.totalPage)
         console.log(res.data)
@@ -98,7 +100,7 @@ const addPostDB = (token,content,imageFile,pageno) => {
     }).then((res) =>{
       console.log(res.data)
       dispatch(addPost(res.data));
-      //   window.alert('업로드 성공!!');
+      window.alert('업로드 성공!!');
       //   console.log(res)
       //  dispatch(getPostDB(pageno))
       history.push('/main');
@@ -109,7 +111,7 @@ const addPostDB = (token,content,imageFile,pageno) => {
     
 };
 
-const updatePostDB = (token,content,imageFile,postId,pageno) => {
+const updatePostDB = (token,content,imageFile,postId) => {
   //console.log(content,imageFile)
   
   
@@ -126,14 +128,14 @@ const updatePostDB = (token,content,imageFile,postId,pageno) => {
           "Content-Type":"multipart/form-data",
         },
       }).then((res) =>{
-          // console.log(res.image);
-          // console.log(postId);
-          // console.log(content);
-
+       
+    
+          console.log(res.data)
           window.alert('수정 성공!!');
-          
-          dispatch(getPostDB(pageno))
+          dispatch(updatePost(res.data,res.data.postId))
           history.replace('/main');
+        
+          
       }).catch((err)=>{
           console.log('수정 실패!',err.response)
       })
@@ -142,12 +144,12 @@ const updatePostDB = (token,content,imageFile,postId,pageno) => {
 const deletePostDB= (postId) => {
   return (dispatch, getState, { history }) => {
       console.log(postId)
-      const pageno=getState().post.page
+      
       instance.delete(`/api/post/${postId}`)
       .then((res) =>{
           window.alert('삭제성공')
           console.log(res)
-          dispatch(getPostDB(pageno))
+          dispatch(deletePost(postId))
          
       }).catch((err)=>{
           console.log('삭제 실패!',err.response)
@@ -196,16 +198,17 @@ export default handleActions(
       }),
     [UPDATE_POST]: (state, action) =>
       produce(state, (draft) => {
-        let idx = draft.post_list.indexOf(
+        let idx = draft.post_list.findIndex(
           (p) => p.postId === action.payload.postId
         );
-        draft.post_list[idx + 1] = action.payload.post;
+        draft.post_list[idx] = {...draft.post_list[idx],...action.payload.post}
       }),
     [DELETE_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.post_list.filter((val)  => 
-        val.postId !== action.payload.post_list.postId
+        let de_list = draft.post_list.filter((val)  => 
+        val.postId !== action.payload.postId
         );
+        draft.post_list=de_list;
       }),
     [CLICK_LIKE]: (state, action) =>
       produce(state, (draft) => {
