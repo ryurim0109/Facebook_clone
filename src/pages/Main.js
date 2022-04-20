@@ -44,16 +44,24 @@ const Main =()=>{
         <>
           <MainGrid bg="#F2F3F5">
             <Header />
+            <MainGrid display="flex">
               <MainGrid position="relative" top="56px" bg="#f2f3f5">
-                <PostWrite/>
-                {post_list && post_list?.map((c,idx)=>{
-                  return <PostList key={idx} {...c} />
-                })}
-                 <div ref={setBottom}> </div>
-                {isLoading ? (
-                  <Spinner />
-                ): null }
-               
+                  프로필
+              </MainGrid>
+                <MainGrid position="relative" top="56px" bg="#f2f3f5">
+                  <PostWrite/>
+                  {post_list && post_list?.map((c,idx)=>{
+                    return <PostList key={idx} {...c} />
+                  })}
+                  <div ref={setBottom}> </div>
+                  {isLoading ? (
+                    <Spinner />
+                  ): null }
+                
+                </MainGrid>
+                <MainGrid position="relative" top="56px" bg="#f2f3f5">
+                  연락처
+                </MainGrid>
               </MainGrid>
           </MainGrid>
           
