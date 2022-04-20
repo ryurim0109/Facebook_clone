@@ -10,18 +10,22 @@ const RSide =(props)=>{
     const dispatch = useDispatch();
     const user_info=useSelector((state)=>state.user.user);
     const post_list =useSelector((state)=>state.post.post_list);
+    const user_list =useSelector((state)=>state.curinput.userlist);
     const prof = post_list?.userImageUrl;
     const _user = post_list?.userName;
     const [isOpens,setIsopens] = useState(false);
     const [subscribes,setSubscribers] = useState('');
+    const [subscribe_name,setSubscriber_name] = useState('');
     console.log(user_info)
+    console.log(user_list)
     React.useEffect(() => {
         dispatch(UserListActions.getUserLIst());
     },[])
     
-    const Call_Charroom = (userid) => {
+    const Call_Charroom = (user) => {
         setIsopens((prev)=> !prev)
-        setSubscribers(userid);
+        setSubscribers(user.userId);
+        setSubscriber_name(user.userName)
     }
 
     return (
@@ -50,11 +54,16 @@ const RSide =(props)=>{
                         <P>연락처</P>
                     </MainGrid>
                     {/* 유저연락처 부분 map돌리면 될것같슴돠~! */}
-                    <MainGrid height="44px" display="flex" alignItems="center" hover="#e4e6eb" borderRadius="8px" _onClick ={()=> Call_Charroom(1)}>
-                        <Image src={defaultUserImage}  size="28" />
-                        <P>유저네임</P>
-                    </MainGrid>
-                    {isOpens &&  <Chatroom publishers = {user_info.userId} subscribes={subscribes} name = {'유저네임'} />}
+                    {user_list && user_list.map((el) => {
+                        return (
+                            <MainGrid height="44px" display="flex" alignItems="center" hover="#e4e6eb" borderRadius="8px" _onClick ={()=> Call_Charroom(el)}>
+                                <Image src={defaultUserImage}  size="28" />
+                                <P>{el.userName}</P>
+                            </MainGrid>
+                        );
+                    })}
+                    
+                    {isOpens &&  <Chatroom publishers = {user_info.userId} subscribes={subscribes} name = {subscribe_name} />}
                      {/* 유저연락처 부분*/}
                 </MainGrid>
                 

@@ -7,6 +7,7 @@ import Login from './modules/Login_module';
 import Post from './modules/post';
 import Comment from './modules/Comment_module'
 import Chat from './modules/Chat_module'
+import curinput from './modules/CurrentUserList_module'
 
 export const history = createBrowserHistory();
 
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   user:  Login,
   Chat:  Chat,
   Comment : Comment,
+  curinput : curinput,
   router: connectRouter(history),
 });
 

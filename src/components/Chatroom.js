@@ -99,9 +99,9 @@ const Chatroom = (props) => {
        
         const sendData = { 
           "type" : "TALK", 
-          "messageSender" : 3, 
-          "messageRecevier" : 1, 
-          "roomId": "1",  
+          "messageSender" : publisher_name, 
+          "messageRecevier" : subscriber_name, 
+          "roomId": roomid,  
           "message":mymessage
         }
 

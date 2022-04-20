@@ -2,7 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import axios from "axios";
 import SockJS from 'sockjs-client';
-import {Client,Message, Stomp} from '@stomp/stompjs'
+import Stomp from 'stompjs'
 
 //action
 const LOGIN = 'LOGIN';
@@ -30,10 +30,8 @@ const postLogin = (Login_info) => {
     return function (dispatch, getState,{history}){
         console.log('로그인 시작')
         console.log(Login_info)
-
         //15.164.96.141:8080
         //52.79.228.83:8080
-
         axios.post('http://52.79.228.83:8080/user/login',
         Login_info
         ).then(function (response){
@@ -42,7 +40,8 @@ const postLogin = (Login_info) => {
             console.log(response.headers.authorization)
             sessionStorage.setItem('user',response.headers.authorization);
             let sockjs = SockJS("http://52.79.228.83/stomp")
-            let stompClient = Stomp.client = Stomp.over(sockjs);
+            let stompClient = Stomp.over(sockjs);
+            console.log(response.data)
             console.log (`/sub/chat/room/${response.data}`)
             stompClient.connect( {}, function (){
               console.log('connect 성공');
@@ -52,7 +51,7 @@ const postLogin = (Login_info) => {
               });
             })
             stompClient.debug = (str) => {
-              console.log(JSON.parse(str.body))
+              console.log(str)
             }
 
             dispatch(setLogin(Login_info))

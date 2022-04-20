@@ -14,10 +14,11 @@ const initialState = {
 }
 
 const getUserLIst = () => {
-    return function (dispath,getState,{history}){
+    return function (dispatch,getState,{history}){
         instance.get('/api/user/loginlist'
         ).then(function (response){
             console.log(response);
+            dispatch(GETLIST(response.data));
         }).catch(function (error){
             console.log(error)
         })
@@ -29,11 +30,8 @@ export default handleActions(
     {
       [GET_USER_LIST]: (state, action) =>
         produce(state, (draft) => {
-            console.log(state.Message);
-            console.log(action.payload.message);
-            const arrays = [...state.Message] //state를 배열로 복사 
-            arrays.push(action.payload.message); //복사한 배열에 첫번쨰 요소에 신규 comment 추가 
-            draft.Message = arrays 
+            console.log(action.payload.list);
+            draft.userlist = action.payload.list 
         }),
     },
     initialState
