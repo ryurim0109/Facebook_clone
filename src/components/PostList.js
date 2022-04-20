@@ -35,7 +35,7 @@ const PostList = (props) => {
       <PostL>
         <MainGrid width="100%"display="flex" justifyContent="start-end" padding="0 16px">
           <MainGrid width="10%" position="relative">
-            {is_me ? (<Image src={userPro? userPro:defaultUserImage} size="36"/>):
+            {is_me ? (<Image src={userPro==='없음'? defaultUserImage:userPro} size="36"/>):
             (<Image src={userImageUrl==='없음' ? defaultUserImage:userImageUrl} size="36"/>)}
           
           </MainGrid>

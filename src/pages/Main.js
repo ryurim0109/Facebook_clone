@@ -8,6 +8,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import {postCreators as postActions} from '../redux/modules/post';
 import Spinner from '../components/Spinner';
 import LSide from '../components/LSide';
+import RSide from '../components/RSide';
 import styled from 'styled-components';
 import Chatroom from '../components/Chatroom';
 
@@ -76,9 +77,9 @@ const Main =()=>{
                  
                   
                 </MainGrid>
-                <MainGrid >
-                  연락처
-                </MainGrid>
+                <ConBox >
+                  <RSide/>
+                </ConBox>
               </MainGrid >
               {isLoading ? (
                     <Spinner />
@@ -88,7 +89,7 @@ const Main =()=>{
                  
 
               </MainGrid>
-              <Chatroom />
+              {/* <Chatroom /> */}
 
          
           
@@ -100,9 +101,15 @@ const DisplayNone=styled.div`
   width:100%;
   background:#F2F3F5;
   height:100vh;
-  overflow-Y:auto;
 
   @media screen and (max-width: 890px) {
+    display:none;
+  }
+`;
+const ConBox=styled.div`
+  width:100%;
+  background:#F2F3F5;
+  @media screen and (max-width: 783px) {
     display:none;
   }
 

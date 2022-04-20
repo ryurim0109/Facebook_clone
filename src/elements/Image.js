@@ -27,7 +27,14 @@ const Image =(props)=>{
                 <AspectInn {...styles}  onClick={_onClick}></AspectInn>
             </AspectOutter>
         );
-    }
+    }   
+    if(shape==="radius"){
+        return(
+                <ImageR {...styles}  onClick={_onClick}></ImageR>
+        );
+    }   
+
+
 
     return(
         <React.Fragment>
@@ -50,6 +57,7 @@ const AspectOutter = styled.div`
     height:250px;
     min-width:250px;
 `;
+
 const AspectInner = styled.div`
     position:relative;
     padding-top: 75%;
@@ -82,5 +90,17 @@ const ImageCircle =styled.div`
     background-size: cover;
     margin:4px;
 `;
+
+const ImageR =styled.div`
+    --size: ${(props)=>props.size}px;
+    width: var(--size);
+    height: var(--size);
+    border-radius:  8px;
+    padding: ${props => props.padding};
+    background-image: url("${(props)=>props.src}");
+    background-size: cover;
+    margin:4px;
+`;
+
 
 export default Image;
