@@ -27,7 +27,6 @@
 <img src="https://img.shields.io/badge/axios-yellow?style=flat&logo=axios&logoColor=white">
 <img src="https://img.shields.io/badge/redux-764ABC?style=flat&logo=redux&logoColor=EF2D5E">
 <img src="https://img.shields.io/badge/immer-106ece?style=flat&logo=immer&logoColor=immer">
-<img src="https://img.shields.io/badge/moment-3f54a3?style=flat&logo=moment&logoColor=3f54a3">
 <img src="https://img.shields.io/badge/figma-F24E1E?style=flat&logo=figma&logoColor=white">
 <img src="https://img.shields.io/badge/styledcomponents-DB7093?style=flat&logo=styledcomponents&logoColor=white">
 <img src='https://img.shields.io/badge/yarn-v1.22.17-yellow?logo=yarn'/>
@@ -43,7 +42,7 @@
   \- 가입된 회원의 정보와 일치하는지 확인 후, 일치할 경우 로그인 성공
 - 회원가입 페이지  
   \- 아이디 :   
-  \- 닉네임 :  
+  \- 닉네임 : 
   \- 비밀번호 :  
 - 메인 페이지  
   \- 전체 게시글 조회 기능
