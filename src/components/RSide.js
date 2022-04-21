@@ -54,9 +54,9 @@ const RSide =(props)=>{
                         <P>연락처</P>
                     </MainGrid>
                     {/* 유저연락처 부분 map돌리면 될것같슴돠~! */}
-                    {user_list && user_list.map((el) => {
+                    {user_list && user_list.map((el,idx) => {
                         return (
-                            <MainGrid height="44px" display="flex" alignItems="center" hover="#e4e6eb" borderRadius="8px" _onClick ={()=> Call_Charroom(el)}>
+                            <MainGrid key ={idx} height="44px" display="flex" alignItems="center" hover="#e4e6eb" borderRadius="8px" _onClick ={()=> Call_Charroom(el)}>
                                 <Image src={defaultUserImage}  size="28" />
                                 <P>{el.userName}</P>
                             </MainGrid>

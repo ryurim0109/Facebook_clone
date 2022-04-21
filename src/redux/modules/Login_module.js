@@ -20,8 +20,8 @@ const initialState = {
     user : {
         id : '',
         passward : '',
-        userImage:"https://i.pinimg.com/474x/19/08/a7/1908a7eae6903f9d5861b62b1e025788.jpg",
-        userName:"키키키"
+        userImage:"",
+        userName:""
     }
 }
 

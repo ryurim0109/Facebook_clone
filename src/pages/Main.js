@@ -19,14 +19,15 @@ const Main =()=>{
 
   const dispatch =useDispatch();
   const post_list =useSelector((state)=>state.post.post_list);
-  const crrPage = useSelector((state)=>state?.post?.page?.totalPage);
+  const totalPage = useSelector((state)=>state?.post?.page?.totalPage);
+  const currentPage = useSelector((state)=>state?.post?.page?.currentPage);
   //console.log(crrPage)
 
   //const token = sessionStorage.getItem("user");
   const [pageno,setPageno] = useState(1);
   const [target, setTarget] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+ 
   const callback = async ([entry], observer) => {
    // console.log(entry);
     if (entry.isIntersecting && !isLoading) {
@@ -35,9 +36,11 @@ const Main =()=>{
       await new Promise((resolve) => {
         setTimeout(resolve, 2000);
       });
-      if(post_list?.length===7 ){
-
-        setPageno((pre) => pre + 1);
+      
+      if(post_list?.length === 7  ){
+        if(totalPage>pageno){
+          setPageno((pre) => pre + 1);
+        }
       }
       
       setIsLoading(false);
@@ -88,7 +91,7 @@ const Main =()=>{
                     <Spinner />
                   ): null }
 
-              {post_list?.length === 7?<div ref={setTarget}> </div>:
+              {post_list?.length === 7 && totalPage>pageno ?<div ref={setTarget}> </div>:
               null}
                  
               </MainGrid>
