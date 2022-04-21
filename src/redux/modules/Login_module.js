@@ -3,6 +3,7 @@ import { produce } from "immer";
 import axios from "axios";
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs'
+import { instance } from "../../shared/api";
 
 //action
 const LOGIN = 'LOGIN';
@@ -77,6 +78,21 @@ const postSignup = (Signup_info) => {
             console.log(error.response)
         })
     }
+}
+
+const getLogout = () => {
+  return function (dispatch,getState,{history}){
+      console.log('dds')
+      instance.post('http://52.79.228.83:8080/user/logout'
+      ).then(function (response){
+        console.log(response)
+        sessionStorage.clear();
+        history.push('/')
+      }).catch(function (error){
+        console.log(error)
+      })
+  }
+    
 }
 
 //유저 정보
@@ -161,6 +177,7 @@ const actionCreators = {
     postSignup,
     checkUserDB,
     userImgDB,
+    getLogout,
   };
   
 export { actionCreators };

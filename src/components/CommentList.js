@@ -22,12 +22,12 @@ const CommentList = (props) => {
     const [update_comment, setUpdate_comment] = useState('');
     console.log(comment_list)
     console.log(comment_list?.comments)
+    const [types, setTypes] = useState(false);
     let newlist = [];
-    if(comment_list?.comments !== undefined)
+    if(comment_list !== undefined)
     {
       console.log(postIds)
-      console.log(comment_list.comments)
-      newlist = comment_list.comments.filter(el => {
+      newlist = comment_list.filter(el => {
         console.log(el)
         return el.postId === postIds
       });
@@ -45,8 +45,8 @@ const CommentList = (props) => {
 
     React.useEffect(() => {
         console.log('기동')
-        dispatch(CommentAction.getComment({postId : postIds, page : pages}));
-    },[])
+        dispatch(CommentAction.getComment({postId : postIds, page : pages},types));
+    },[pages])
 
     return (
       <div>
@@ -57,7 +57,7 @@ const CommentList = (props) => {
           flexDirection : 'column',
           alignItems: 'center',
         }}>
-          {comment_list?.comments && newlist.map((el,idx) => {
+          {comment_list && newlist.map((el,idx) => {
             return (
               <Stack key={idx} direction="row" spacing={2} sx={{margin : '8px 0px 0px 75px' }} >
                 <Avatar sx={{ width: 32, height: 32 }} src={defaultUserImage}/>
@@ -71,14 +71,15 @@ const CommentList = (props) => {
                   </Comment_p>
                   {user_info?.userName === el.userName && 
                     <Button_styles>
-                      <button onClick={() => {
+                      {/* <button onClick={() => {
                           setUpdate((prev)=> !prev)
                          if(el.commentId === commentid_u) 
                          {
                             setComment_u('');
                             console.log(update_comment)
-                            dispatch(CommentAction.PutComment({
+                            dispatch(CommentAction.Put_Comment({
                               commentId : el.commentId,
+                              postId :el.postId,
                               comment : update_comment,
                             }))
                          }
@@ -87,7 +88,7 @@ const CommentList = (props) => {
                            console.log((el.commentId))
                            setComment_u(el.commentId)
                          } 
-                      }}>수정</button>
+                      }}>수정</button> */}
                       <button onClick={() => {
                         dispatch(CommentAction.DelComment({postId : el.postId, commentid : el.commentId}));
                       }}>삭제</button>
@@ -100,7 +101,7 @@ const CommentList = (props) => {
         </Box>
         <Footer_div>
         <div className='footer_container'>
-          <div role="presentation" onClick={()=>setPage((prev)=> prev+1)}>
+          <div role="presentation" onClick={()=>{setTypes((prev) => !prev);setPage((prev)=> prev+1)}}>
             <Breadcrumbs aria-label="breadcrumb">
               <Link underline="hover" color="inherit">
                 댓글 더보기
@@ -161,7 +162,7 @@ const Input_styles = styled.input`
 `
 const Button_styles = styled.div`
   Button{
-    margin: 5px;
+    margin: 10px;
   }
 `
 

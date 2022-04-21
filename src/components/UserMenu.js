@@ -111,13 +111,15 @@ const UserMenu =(props)=>{
 
                     </MainGrid>
                 </MainGrid>
-                <MainGrid display="flex"  padding="5px" flexDirection="column">
+                <MainGrid display="flex"  padding="5px" flexDirection="column" >
                     <MainGrid display="flex"  alignItems='center' >
-                        <Btn>
+                        <Btn onClick ={() => {
+                             dispatch(userActions.getLogout());
+                            }}>
                             <IoLogOut fontSize="24px"/>
                         </Btn>
-                        <MainGrid display="flex" padding="0 5px" justifyContent='space-evenly'  flexDirection="column">
-                            <p style={{fontSize:"16px"}}>로그아웃 &gt;</p>
+                        <MainGrid display="flex" padding="0 5px" justifyContent='space-evenly'  flexDirection="column" _>
+                            <p style={{fontSize:"16px"}} >로그아웃 &gt;</p>
                         </MainGrid>
 
                     </MainGrid>
