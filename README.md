@@ -46,8 +46,7 @@
    - 닉네임 
    - 비밀번호 
 - 메인 페이지  
-<img src="https://blog.kakaocdn.net/dn/bXH8Vj/btrz34OVGYp/3GVdKsBtS3yLpzUN9kRFjK/img.gif" />
-   - 전체 게시글 조회 기능
+ - 전체 게시글 조회 기능
    - 게시글 수정, 삭제, 추가(글 + 이미지) 기능
    - 로그인 유저 정보 보여주기
    - 좋아요 기능
