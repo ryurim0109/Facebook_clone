@@ -103,13 +103,14 @@ const DisplayNone=styled.div`
   background:#F2F3F5;
   height:100vh;
 
-  @media screen and (max-width: 890px) {
+  @media screen and (max-width: 900px) {
     display:none;
   }
 `;
 const ConBox=styled.div`
   width:100%;
   background:#F2F3F5;
+  height:100vh;
   @media screen and (max-width: 783px) {
     display:none;
   }
