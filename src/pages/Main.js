@@ -35,11 +35,11 @@ const Main =()=>{
       await new Promise((resolve) => {
         setTimeout(resolve, 2000);
       });
-      if(post_list?.length === 7  ){
+      
         if(totalPage>pageno){
           setPageno((pre) => pre + 1);
         }
-      }
+      
 
       
       setIsLoading(false);
@@ -90,7 +90,7 @@ const Main =()=>{
                     <Spinner />
                   ): null }
 
-              { post_list?.length === 7 && totalPage>pageno ?<div ref={setTarget}> </div>:
+              { totalPage>pageno ?<div ref={setTarget}> </div>:
               null}
                  
               </MainGrid>

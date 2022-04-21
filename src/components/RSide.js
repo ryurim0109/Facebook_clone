@@ -84,16 +84,18 @@ const RSide =(props)=>{
                         <P>연락처</P>
                     </MainGrid>
                     {/* 유저연락처 부분 map돌리면 될것같슴돠~! */}
+                    <MainGrid minHeight="700px"  overflowY="scroll">
                     {user_list && user_list.map((el, idx) => {
                         return (
-                        <MainGrid minHeight="700px" key={idx}  overflowY="scroll">
-                            <MainGrid height="44px" display="flex" alignItems="center" hover="#e4e6eb" borderRadius="8px" _onClick ={()=> Call_Charroom(el)}>
-                                <Image src={prof==='없음'?defaultUserImage:prof}  size="28" />
+                       
+                            <MainGrid height="44px"  key={idx}  display="flex" alignItems="center" hover="#e4e6eb" borderRadius="8px" _onClick ={()=> Call_Charroom(el)}>
+                                <Image src={el.userImageUrl?el.userImageUrl:defaultUserImage}  size="28" />
                                 <P>{el.userName}</P>
                             </MainGrid>
-                        </MainGrid>
+                        
                         );
                     })}
+                    </MainGrid>
                     
                     {isOpens &&  <Chatroom publishers = {user_info.userId} subscribes={subscribes} name = {subscribe_name} />}
                      {/* 유저연락처 부분*/}
