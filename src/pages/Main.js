@@ -19,7 +19,7 @@ const Main =()=>{
 
   const dispatch =useDispatch();
   const post_list =useSelector((state)=>state.post.post_list);
-  const crrPage = useSelector((state)=>state?.post?.page?.totalPage);
+  const totalPage = useSelector((state)=>state?.post?.page?.totalPage);
   //console.log(crrPage)
 
   //const token = sessionStorage.getItem("user");
@@ -35,10 +35,12 @@ const Main =()=>{
       await new Promise((resolve) => {
         setTimeout(resolve, 2000);
       });
-      if(post_list?.length===7 ){
-
-        setPageno((pre) => pre + 1);
+      if(post_list?.length === 7  ){
+        if(totalPage>pageno){
+          setPageno((pre) => pre + 1);
+        }
       }
+
       
       setIsLoading(false);
       observer.observe(entry.target);
@@ -88,7 +90,7 @@ const Main =()=>{
                     <Spinner />
                   ): null }
 
-              {post_list?.length === 7?<div ref={setTarget}> </div>:
+              { post_list?.length === 7 && totalPage>pageno ?<div ref={setTarget}> </div>:
               null}
                  
               </MainGrid>
