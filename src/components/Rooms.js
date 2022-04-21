@@ -9,9 +9,11 @@ const Rooms =()=>{
     return(
         <Wrap>
             <MainGrid display="flex"  padding="8px 16px" height="56px" alignItems="center"  >
-                <MainGrid display="flex" width="128px" border="2px solid #E7F3FF" padding="8px 4px" borderRadius="20px" alignItems="center" hover="#EBEDF0">
+                <MainGrid display="flex" width="128px" border="2px solid #E7F3FF" padding="8px 4px" borderRadius="20px" 
+                
+                alignItems="center" hover="#EBEDF0">
                     <R/> 
-                    룸스 만들기
+                    <span style={{color:"#216FDB", fontSize:"15px"}}>룸스 만들기</span>
                 </MainGrid>
                 <Image src={defaultUserImage} />
                 <Image src={defaultUserImage} />
