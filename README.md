@@ -20,7 +20,7 @@
 
 
 
-### 🛠 기술스택 🛠
+### 🛠 라이브러리 🛠
 
 <div>
 <img src="https://img.shields.io/badge/react-1496FF?style=flat&logo=react&logoColor=white">
@@ -29,6 +29,7 @@
 <img src="https://img.shields.io/badge/immer-106ece?style=flat&logo=immer&logoColor=immer">
 <img src="https://img.shields.io/badge/figma-F24E1E?style=flat&logo=figma&logoColor=white">
 <img src="https://img.shields.io/badge/styledcomponents-DB7093?style=flat&logo=styledcomponents&logoColor=white">
+<img src="https://img.shields.io/badge/sockjs-1877F2?style=flat&logo=ssockjs&logoColor=white">
 <img src='https://img.shields.io/badge/yarn-v1.22.17-yellow?logo=yarn'/>
   <img src='https://img.shields.io/badge/AWS-Amazon AWS-yellow?logo=Amazon AWS'/>
 </div>
@@ -39,21 +40,21 @@
 ### 📝 페이지 설명 📝 
 
 - 로그인 페이지  
-  \- 가입된 회원의 정보와 일치하는지 확인 후, 일치할 경우 로그인 성공
+   - 가입된 회원의 정보와 일치하는지 확인 후, 일치할 경우 로그인 성공
 - 회원가입 페이지  
-  \- 아이디 :   
-  \- 닉네임 : 
-  \- 비밀번호 :  
+   - 아이디 :   
+   - 닉네임 : 
+   - 비밀번호 :  
 - 메인 페이지  
-  \- 전체 게시글 조회 기능
-  \- 게시글 수정, 삭제, 추가(글 + 이미지) 기능
-  \- 로그인 유저 정보 보여주기
-  \- 좋아요 기능
-  \- 유저 프로필 수정 기능
+   - 전체 게시글 조회 기능
+   - 게시글 수정, 삭제, 추가(글 + 이미지) 기능
+   - 로그인 유저 정보 보여주기
+   - 좋아요 기능
+   - 유저 프로필 수정 기능
 - 유저 검색 페이지  
-  \- 검색한 유저가 작성한 포스팅 나오는 기능
+   - 검색한 유저가 작성한 포스팅 나오는 기능
 - 실시간 채팅 
-  \- 유저끼리 1대1로 실시간 채팅을 할 수 있음.
+   - 유저끼리 1대1로 실시간 채팅을 할 수 있음.
 
   ### ✌🏻 개인 역할 및 트러블 슈팅 해결과정
 
